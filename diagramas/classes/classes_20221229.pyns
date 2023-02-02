@@ -1,0 +1,4 @@
+# PynSource Version 1.2
+{'type':'meta', 'info1':'Lorem ipsum dolor sit amet, consectetur adipiscing elit is latin. Comments are saved.'}
+{'type':'umlshape', 'id':'Config', 'x':283, 'y':177, 'width':70, 'height':80, 'attrs': '', 'meths': 'getPar|setPar'}
+{'type':'umlshape', 'id':'HistoryReport', 'x':442, 'y':258, 'width':178, 'height':170, 'attrs': 'name_', 'meths': '__init__|_log|execute_sql_source|export_sql_csv_header|get_engine_source|procesa_history_files'}

@@ -1,0 +1,15 @@
+"""comandos.txt"""
+
+git clone https://github.com/ReneDeveloper/db_history_oracle
+
+git add .
+
+git commit
+
+git push
+
+comunes:
+git add class_history_report.py
+git add .gitignore
+
+pylint class_history_report.py
