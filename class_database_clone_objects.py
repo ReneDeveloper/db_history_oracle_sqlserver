@@ -8,13 +8,15 @@ class DatabaseCloneObjectSqllite():
     """DatabaseCloneObjectSqllite: clona vistas"""
     __tagname__ = ""
     __source_url__ = ""
-    __target_url__ = ""
+    __from__ = ""
+    __to__ = ""
     
-    def __init__(self,__tagname__):
+    def __init__(self,__from__,__to__):
         base = 'BRAHMS1P'#TODO: CAMBIAR A INSTALL, y apuntar a INSTALL_EXPORT_HISTORY.db
-        self.__source_url__ = f"sqlite:///{cfg.get_par('out_path')}/{base}_EXPORT_HISTORY.db"
-        self.__target_url__ = f"sqlite:///{cfg.get_par('out_path')}/{__tagname__}_EXPORT_HISTORY.db"
-        self.__tagname__ = __tagname__
+        self.__source_url__ = f"sqlite:///{cfg.get_par('out_path')}/{__from__}_EXPORT_HISTORY.db"
+        self.__target_url__ = f"sqlite:///{cfg.get_par('out_path')}/{__to__}_EXPORT_HISTORY.db"
+        self.__from__ = __from__
+        self.__to__ = __to__
 
     def get_engine_source(self):
         engine = create_engine(self.__source_url__)
@@ -65,9 +67,9 @@ class DatabaseCloneObjectSqllite():
         print(f"data_views:{data_views}")
         return query_views
 
-clone = DatabaseCloneObjectSqllite('BI_DB_test')
+#clone = DatabaseCloneObjectSqllite('BI_DB_test')
 
 #clone_views = clone.clone_objects('table')
-clone_views = clone.clone_objects('view')
+#clone_views = clone.clone_objects('view')
 
-print(f"clone_views:{clone_views}")
+#print(f"clone_views:{clone_views}")

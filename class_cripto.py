@@ -5,9 +5,23 @@ from class_config import Config
 
 cfg = Config()
 
+#to understand what  URL needs to use:
+#you can decide the flavor to use ORACLE or SQLSERVER 
+#or other, but, need to exists in class_config.py the different queries flavor_QUERY_METADATA_COUNTS
+#https://docs.sqlalchemy.org/en/20/core/engines.html
+
 # we will be encrypting the below string.
 message = 'oracle+cx_oracle://{username}:{password}@{host_}:{port}/{database}'
 message = 'oracle+cx_oracle://user:pw@server:port/instance'
+
+message = 'mssql+pymssql://{username}:{password}@{host_}:{port}/{database}'
+message = 'mssql+pymssql://user:pw@server:1443/master'
+#message = 'oracle+cx_oracle://user:pw@server:port/instance'
+
+#engine = create_engine("mssql+pyodbc://scott:tiger@mydsn")
+
+
+#engine = create_engine("mssql+pymssql://scott:tiger@hostname:port/dbname")
 
 #key = Fernet.generate_key()
 key = cfg.get_par('crkey')

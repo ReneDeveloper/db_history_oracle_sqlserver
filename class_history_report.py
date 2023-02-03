@@ -1,4 +1,12 @@
 """Generate the history report of databases - generates the database history by year/month"""
+
+#██╗  ██╗██╗███████╗████████╗ ██████╗ ██████╗ ██╗   ██╗    ██████╗ ███████╗██████╗  ██████╗ ██████╗ ████████╗
+#██║  ██║██║██╔════╝╚══██╔══╝██╔═══██╗██╔══██╗╚██╗ ██╔╝    ██╔══██╗██╔════╝██╔══██╗██╔═══██╗██╔══██╗╚══██╔══╝
+#███████║██║███████╗   ██║   ██║   ██║██████╔╝ ╚████╔╝     ██████╔╝█████╗  ██████╔╝██║   ██║██████╔╝   ██║
+#██╔══██║██║╚════██║   ██║   ██║   ██║██╔══██╗  ╚██╔╝      ██╔══██╗██╔══╝  ██╔═══╝ ██║   ██║██╔══██╗   ██║
+#██║  ██║██║███████║   ██║   ╚██████╔╝██║  ██║   ██║       ██║  ██║███████╗██║     ╚██████╔╝██║  ██║   ██║
+#╚═╝  ╚═╝╚═╝╚══════╝   ╚═╝    ╚═════╝ ╚═╝  ╚═╝   ╚═╝       ╚═╝  ╚═╝╚══════╝╚═╝      ╚═════╝ ╚═╝  ╚═╝   ╚═╝
+
 import os
 import pandas as pd
 from sqlalchemy import create_engine
@@ -6,6 +14,8 @@ from cryptography.fernet import Fernet
 import sqlalchemy
 import cx_Oracle
 from class_config import Config
+from class_database_clone_objects import DatabaseCloneObjectSqllite
+
 
 cfg = Config()
 
@@ -49,7 +59,7 @@ class HistoryReport():
         """function target_execute"""
         data = None
         try:
-            self._log(f"target_execute:INICIO:{sql_}")
+            self._log(f"target_execute:START:{sql_}")
             engine = self.get_engine_target()
             cnx=engine.connect()
             data = cnx.execute(sql_)
@@ -59,19 +69,19 @@ class HistoryReport():
             self._log(f"target_execute:finally:{sql_}")
             cnx.close()
             engine.dispose()
-        self._log(f"target_execute:FIN:{sql_}")
+        self._log(f"target_execute:END:{sql_}")
         return data
 
     def target_copy_to_table(self,data,table_name):
         """function"""
         status = "ok"
-        self._log(f"target_copy_to_table:INICIO:{table_name}")
+        self._log(f"target_copy_to_table:START:{table_name}")
         try:
             engine = self.get_engine_target()
             cnx = engine.connect()
             data.to_sql(f'{table_name}',if_exists='append',con=cnx,index=False,chunksize=100)
             del data
-            self._log(f"target_copy_to_table:FIN:{table_name}")
+            self._log(f"target_copy_to_table:END:{table_name}")
         finally:
             cnx.close()
             engine.dispose()
@@ -106,39 +116,41 @@ class HistoryReport():
 
     def export_metadata_counts(self):
         """function export_metadata_counts"""
-        self._log(f"export_metadata_counts:INICIO")
-        sql_  = cfg.get_par('QUERY_METADATA_COUNTS')
+        self._log(f"export_metadata_counts:START")
+        parameter_name = self.__flavor__ + '_QUERY_METADATA_COUNTS'
+        sql_  = cfg.get_par(parameter_name)
         data  = self.execute_sql_source(sql_)
-        #ELIMINAR METADATA_TABLE_DATE
+        #TODO:ELIMINAR METADATA_TABLE_DATE
         sql_delete = f"DELETE FROM METADATA_COUNTS"
         self.target_execute(sql_delete)
         self.target_copy_to_table(data,'METADATA_COUNTS')
-        self._log(f"export_metadata_counts:FIN")
+        self._log(f"export_metadata_counts:END")
         return data
 
     def export_metadata_daily_space(self):
         """function export_metadata_daily_space"""
-        self._log(f"export_metadata_daily_space:INICIO")
-        sql_  = cfg.get_par('QUERY_METADATA_DAILY_SPACE')
+        self._log(f"export_metadata_daily_space:START")
+        parameter_name = self.__flavor__ + '_QUERY_METADATA_DAILY_SPACE'
+        sql_  = cfg.get_par(parameter_name)
         data  = self.execute_sql_source(sql_)
         #ELIMINAR METADATA_DAILY_SPACE
         sql_delete = f"DELETE FROM METADATA_DAILY_SPACE"
         self.target_execute(sql_delete)
         self.target_copy_to_table(data,'METADATA_DAILY_SPACE')
-        self._log(f"export_metadata_daily_space:FIN")
+        self._log(f"export_metadata_daily_space:END")
         return data
 
     def export_metadata_table_date(self,owner__):
         """function export_metadata_table_date"""
-        self._log(f'export_metadata_table_date:owner__:{owner__}:INICIO')
+        self._log(f'export_metadata_table_date:owner__:{owner__}:START')
         sql_  = cfg.get_par('QUERY_METADATA_TABLE_DATE')
         sql__ = sql_.format(__OWNER__=owner__)
         self._log(f'export_metadata:sql__:{sql__}')
         data  = self.execute_sql_source(sql__)
-        #eliminar METADATA_TABLE_DATE
+        #DELETE METADATA_TABLE_DATE
         sql_delete = f"DELETE FROM METADATA_TABLE_DATE where OWNER = '{owner__}'"
         self.target_execute(sql_delete)
-        #insertar METADATA_TABLE_DATE
+        #INSERT METADATA_TABLE_DATE
         self.target_copy_to_table(data,'METADATA_TABLE_DATE')
 
         file_csv = f'METADATA_TABLE_DATE_{owner__}.csv'
@@ -146,7 +158,7 @@ class HistoryReport():
         data.to_csv(ruta_csv,index=False,sep=";",decimal=",",header=True)
         #f'METADATA_TABLE_DATE_{owner_}.csv'
 
-        self._log(f"export_metadata_table_date:owner__:{owner__}:FIN")
+        self._log(f"export_metadata_table_date:owner__:{owner__}:END")
         return data
 
     def query_history(self,pars_):
@@ -222,8 +234,38 @@ class HistoryReport():
                 target = cfg.get_par('TARGET_NAME')
                 self.target_copy_to_table(df_hist,target)
 
+
+
+
     def procesa_owner(self,owner_):
         """Exporta la metadata de un owner y luego genera la historia usando esa metadata"""
         self.export_metadata_table_date(owner_)
         #self.export_history(f'METADATA_{owner_}.csv',2022)
         self.export_history_owner(owner_)
+
+
+
+    def start(self):
+        """function start: creates the metadata of the server"""
+                                          
+        self._log('███████╗████████╗ █████╗ ██████╗ ████████╗')
+        self._log('██╔════╝╚══██╔══╝██╔══██╗██╔══██╗╚══██╔══╝')
+        self._log('███████╗   ██║   ███████║██████╔╝   ██║   ')
+        self._log('╚════██║   ██║   ██╔══██║██╔══██╗   ██║   ')
+        self._log('███████║   ██║   ██║  ██║██║  ██║   ██║   ')
+        self._log('╚══════╝   ╚═╝   ╚═╝  ╚═╝╚═╝  ╚═╝   ╚═╝   ')
+
+        self.export_metadata_daily_space()
+        self.export_metadata_counts()
+        clone = DatabaseCloneObjectSqllite('BRAHMS1P', self.report_name__)
+        #clone_views = clone.clone_objects('table')
+        clone_views = clone.clone_objects('view')
+        print(f"clone_views:{clone_views}")
+
+        self._log(' ██████╗██████╗ ███████╗ █████╗ ████████╗███████╗██████╗ ')
+        self._log('██╔════╝██╔══██╗██╔════╝██╔══██╗╚══██╔══╝██╔════╝██╔══██╗')
+        self._log('██║     ██████╔╝█████╗  ███████║   ██║   █████╗  ██║  ██║')
+        self._log('██║     ██╔══██╗██╔══╝  ██╔══██║   ██║   ██╔══╝  ██║  ██║')
+        self._log('╚██████╗██║  ██║███████╗██║  ██║   ██║   ███████╗██████╔╝')
+        self._log(' ╚═════╝╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝   ╚═╝   ╚══════╝╚═════╝ ')
+                                                         
