@@ -2,16 +2,20 @@
 import pandas as pd
 from sqlalchemy import create_engine
 from class_config import Config
+from class_base_class import BaseClass
+
 cfg = Config()
 
-class DatabaseCloneObjectSqllite():
+class DatabaseCloneObjectSqllite(BaseClass):
     """DatabaseCloneObjectSqllite: clona vistas"""
     __tagname__ = ""
     __source_url__ = ""
     __from__ = ""
     __to__ = ""
     
-    def __init__(self,__from__,__to__):
+    def __init__(self,__from__,__to__,__log_active__):
+        """ """
+        super().__init__(__log_active__)
         base = 'BRAHMS1P'#TODO: CAMBIAR A INSTALL, y apuntar a INSTALL_EXPORT_HISTORY.db
         self.__source_url__ = f"sqlite:///{cfg.get_par('out_path')}/{__from__}_EXPORT_HISTORY.db"
         self.__target_url__ = f"sqlite:///{cfg.get_par('out_path')}/{__to__}_EXPORT_HISTORY.db"
@@ -41,6 +45,15 @@ class DatabaseCloneObjectSqllite():
         return status
 
     def clone_objects(self,__type__):
+        """clone_objects"""
+        self._log(' ██████╗██╗      ██████╗ ███╗   ██╗██╗███╗   ██╗ ██████╗ ')
+        self._log('██╔════╝██║     ██╔═══██╗████╗  ██║██║████╗  ██║██╔════╝ ')
+        self._log('██║     ██║     ██║   ██║██╔██╗ ██║██║██╔██╗ ██║██║  ███╗')
+        self._log('██║     ██║     ██║   ██║██║╚██╗██║██║██║╚██╗██║██║   ██║')
+        self._log('╚██████╗███████╗╚██████╔╝██║ ╚████║██║██║ ╚████║╚██████╔╝')
+        self._log(' ╚═════╝╚══════╝ ╚═════╝ ╚═╝  ╚═══╝╚═╝╚═╝  ╚═══╝ ╚═════╝ ')
+        self._log(f'CLONING OBJECTS:TYPE:{__type__}')
+
         query_views=f"""
             SELECT 
             NAME,SQL
@@ -55,8 +68,9 @@ class DatabaseCloneObjectSqllite():
             row = dict(row)
             name = row['name']
             sql = row['sql']
-            print(f"name:{name}")
-            print(f"sql:{sql}")
+            #self._log()
+            self._log(f"name:{name}")
+            self._log(f"sql:{sql}")
 
             sql = sql.replace('CREATE TABLE ','CREATE TABLE IF NOT EXISTS ')
             sql = sql.replace('CREATE VIEW ','CREATE VIEW IF NOT EXISTS ')
@@ -64,7 +78,7 @@ class DatabaseCloneObjectSqllite():
 
             self.execute_sql_target_without_result(sql)
 
-        print(f"data_views:{data_views}")
+        self._log(f"data_views:{data_views}")
         return query_views
 
 #clone = DatabaseCloneObjectSqllite('BI_DB_test')

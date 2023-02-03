@@ -8,7 +8,7 @@ class HistoryOracle(HistoryReport):
         """Inicializa"""
         self.report_name__ = None
         self.__engine_url__ = None
-        HistoryReport.__init__(self,report_name__,__engine__,'ORACLE')
+        HistoryReport.__init__(self,report_name__,__engine__,'ORACLE',__log_active__=True)
 
 
     def oracle_table_cost (self,owner_,table_name_,column_name_):
@@ -31,7 +31,7 @@ class HistoryOracle(HistoryReport):
         #data = self.execute_sql_source('select * from table(dbms_xplan.display)')
     
 
-        print(data)
+        self._log(data)
         """Inicializa, con el inicio del nombre de los archivos, ej: caso HIST"""
 
 

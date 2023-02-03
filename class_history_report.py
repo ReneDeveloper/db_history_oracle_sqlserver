@@ -1,11 +1,33 @@
-"""Generate the history report of databases - generates the database history by year/month"""
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+#
+# -----------------------------------------------------------------------------
+# Project: Database History Report
+# Author : René Silva
+# Email  : rsilcas@outlook.es
+# Date   : 2023-02-03
+# -----------------------------------------------------------------------------
+#
+# Description:
+# 
+# This Python script that can Generate the history report of databases
+# that means: generates the database history by year/month by Owner/table
+# such as the project, owner or database user inside the engines
+#
 
-#██╗  ██╗██╗███████╗████████╗ ██████╗ ██████╗ ██╗   ██╗    ██████╗ ███████╗██████╗  ██████╗ ██████╗ ████████╗
-#██║  ██║██║██╔════╝╚══██╔══╝██╔═══██╗██╔══██╗╚██╗ ██╔╝    ██╔══██╗██╔════╝██╔══██╗██╔═══██╗██╔══██╗╚══██╔══╝
-#███████║██║███████╗   ██║   ██║   ██║██████╔╝ ╚████╔╝     ██████╔╝█████╗  ██████╔╝██║   ██║██████╔╝   ██║
-#██╔══██║██║╚════██║   ██║   ██║   ██║██╔══██╗  ╚██╔╝      ██╔══██╗██╔══╝  ██╔═══╝ ██║   ██║██╔══██╗   ██║
-#██║  ██║██║███████║   ██║   ╚██████╔╝██║  ██║   ██║       ██║  ██║███████╗██║     ╚██████╔╝██║  ██║   ██║
-#╚═╝  ╚═╝╚═╝╚══════╝   ╚═╝    ╚═════╝ ╚═╝  ╚═╝   ╚═╝       ╚═╝  ╚═╝╚══════╝╚═╝      ╚═════╝ ╚═╝  ╚═╝   ╚═╝
+#██╗  ██╗██╗███████╗████████╗ ██████╗ ██████╗ ██╗   ██╗
+#██║  ██║██║██╔════╝╚══██╔══╝██╔═══██╗██╔══██╗╚██╗ ██╔╝
+#███████║██║███████╗   ██║   ██║   ██║██████╔╝ ╚████╔╝
+#██╔══██║██║╚════██║   ██║   ██║   ██║██╔══██╗  ╚██╔╝
+#██║  ██║██║███████║   ██║   ╚██████╔╝██║  ██║   ██║
+#╚═╝  ╚═╝╚═╝╚══════╝   ╚═╝    ╚═════╝ ╚═╝  ╚═╝   ╚═╝
+
+#██████╗ ███████╗██████╗  ██████╗ ██████╗ ████████╗
+#██╔══██╗██╔════╝██╔══██╗██╔═══██╗██╔══██╗╚══██╔══╝
+#██████╔╝█████╗  ██████╔╝██║   ██║██████╔╝   ██║
+#██╔══██╗██╔══╝  ██╔═══╝ ██║   ██║██╔══██╗   ██║
+#██║  ██║███████╗██║     ╚██████╔╝██║  ██║   ██║
+#╚═╝  ╚═╝╚══════╝╚═╝      ╚═════╝ ╚═╝  ╚═╝   ╚═╝
 
 import os
 import pandas as pd
@@ -14,26 +36,23 @@ from cryptography.fernet import Fernet
 import sqlalchemy
 import cx_Oracle
 from class_config import Config
+from class_base_class import BaseClass
 from class_database_clone_objects import DatabaseCloneObjectSqllite
-
 
 cfg = Config()
 
 cx_Oracle.init_oracle_client(lib_dir= cfg.get_par('lib_dir'))
 
-class HistoryReport():
+class HistoryReport(BaseClass):
     """Procesa la historia de servidor"""
-    def __init__(self,report_name__,__engine__,__flavor__):
+    def __init__(self,report_name__,__engine__,__flavor__,__log_active__):
+        super().__init__(__log_active__)
         self.report_name__ = report_name__
+        self.__flavor__ = __flavor__
         fernet = Fernet(cfg.get_par('crkey'))
         self.__source_url__ = fernet.decrypt(__engine__).decode()
         self.__target_url__ = f"sqlite:///{cfg.get_par('out_path')}/{report_name__}_EXPORT_HISTORY.db"
-        self.__flavor__ = __flavor__
-
-    def _log(self,var):
-        """function _log"""
-        print(f"{self.report_name__}:{var}")
-
+        
     def get_engine_source(self):
         """function get_engine_source"""
         #oracle_cnx_string = 'oracle+cx_oracle://{username}:{password}@{host_}:{port}/{database}'
@@ -247,7 +266,7 @@ class HistoryReport():
 
     def start(self):
         """function start: creates the metadata of the server"""
-                                          
+
         self._log('███████╗████████╗ █████╗ ██████╗ ████████╗')
         self._log('██╔════╝╚══██╔══╝██╔══██╗██╔══██╗╚══██╔══╝')
         self._log('███████╗   ██║   ███████║██████╔╝   ██║   ')
@@ -257,10 +276,10 @@ class HistoryReport():
 
         self.export_metadata_daily_space()
         self.export_metadata_counts()
-        clone = DatabaseCloneObjectSqllite('BRAHMS1P', self.report_name__)
+        clone = DatabaseCloneObjectSqllite('BRAHMS1P', self.report_name__, self.__log_active__)
         #clone_views = clone.clone_objects('table')
         clone_views = clone.clone_objects('view')
-        print(f"clone_views:{clone_views}")
+        self._log(f"clone_views:{clone_views}")
 
         self._log(' ██████╗██████╗ ███████╗ █████╗ ████████╗███████╗██████╗ ')
         self._log('██╔════╝██╔══██╗██╔════╝██╔══██╗╚══██╔══╝██╔════╝██╔══██╗')

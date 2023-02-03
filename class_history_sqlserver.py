@@ -9,7 +9,7 @@ class HistorySqlServer(HistoryReport):
         """Inicializa"""
         self.report_name__ = None
         self.__engine_url__ = None
-        HistoryReport.__init__(self,report_name__,__engine__,'SQLSERVER')
+        HistoryReport.__init__(self,report_name__,__engine__,'SQLSERVER',True)
 
 
     def sql_cost(self,owner_,table_name_,column_name_):
