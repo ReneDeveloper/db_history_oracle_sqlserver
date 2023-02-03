@@ -45,16 +45,14 @@ class DatabaseCloneObjectSqllite(BaseClass):
         return status
 
     def clone_objects(self,__type__):
-        """clone_objects"""
-        self._log(' ██████╗██╗      ██████╗ ███╗   ██╗██╗███╗   ██╗ ██████╗ ')
-        self._log('██╔════╝██║     ██╔═══██╗████╗  ██║██║████╗  ██║██╔════╝ ')
-        self._log('██║     ██║     ██║   ██║██╔██╗ ██║██║██╔██╗ ██║██║  ███╗')
-        self._log('██║     ██║     ██║   ██║██║╚██╗██║██║██║╚██╗██║██║   ██║')
-        self._log('╚██████╗███████╗╚██████╔╝██║ ╚████║██║██║ ╚████║╚██████╔╝')
-        self._log(' ╚═════╝╚══════╝ ╚═════╝ ╚═╝  ╚═══╝╚═╝╚═╝  ╚═══╝ ╚═════╝ ')
+        """clone_objects: will clone the object structures 
+        from the source to the target
+        __type__ can be a 
+        """
+        status = "OK"
+        self.art_msg('cloning')
         self._log(f'CLONING OBJECTS:TYPE:{__type__}')
-
-        query_views=f"""
+        query_objects=f"""
             SELECT 
             NAME,SQL
             FROM 
@@ -63,14 +61,14 @@ class DatabaseCloneObjectSqllite(BaseClass):
                 type='{__type__}' 
                 --AND name='v_HISTORY'
             """
-        data_views = self.execute_sql_source(query_views)
-        for _, row in data_views.iterrows():
+        data_objects = self.execute_sql_source(query_objects)
+        for _, row in data_objects.iterrows():
             row = dict(row)
             name = row['name']
             sql = row['sql']
             #self._log()
-            self._log(f"name:{name}")
-            self._log(f"sql:{sql}")
+            self._log(f"CLONING:name:{name}")
+            #self._log(f"sql:{sql}")
 
             sql = sql.replace('CREATE TABLE ','CREATE TABLE IF NOT EXISTS ')
             sql = sql.replace('CREATE VIEW ','CREATE VIEW IF NOT EXISTS ')
@@ -78,8 +76,8 @@ class DatabaseCloneObjectSqllite(BaseClass):
 
             self.execute_sql_target_without_result(sql)
 
-        self._log(f"data_views:{data_views}")
-        return query_views
+        #self._log(f"data_views:{data_views}")
+        return status
 
 #clone = DatabaseCloneObjectSqllite('BI_DB_test')
 

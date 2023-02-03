@@ -13,3 +13,9 @@ git add class_history_report.py
 git add .gitignore
 
 pylint class_history_report.py
+
+
+
+
+git config --global user.name "René Developer"
+

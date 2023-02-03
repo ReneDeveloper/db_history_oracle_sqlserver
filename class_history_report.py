@@ -3,17 +3,18 @@
 #
 # -----------------------------------------------------------------------------
 # Project: Database History Report
-# Author : René Silva
+# Author : Rene Silva
 # Email  : rsilcas@outlook.es
 # Date   : 2023-02-03
 # -----------------------------------------------------------------------------
 #
 # Description:
 # 
-# This Python script that can Generate the history report of databases
+# This Python script can Generate the history report of databases
 # that means: generates the database history by year/month by Owner/table
-# such as the project, owner or database user inside the engines
-#
+# such as the project/owner/or database, this need a user to enter inside the engine
+# to connect: the configuration of this, is made by SQLALCHEMY URL
+# to prevent: the url with the user and pass needs to be encripted before the use
 
 #██╗  ██╗██╗███████╗████████╗ ██████╗ ██████╗ ██╗   ██╗
 #██║  ██║██║██╔════╝╚══██╔══╝██╔═══██╗██╔══██╗╚██╗ ██╔╝
@@ -239,7 +240,7 @@ class HistoryReport(BaseClass):
             pars__['_COLUMN_NAME'] = column_name
             pars__['year_'] = year_
             
-            if table_name_.startswith("BIN$"):
+            if table_name_.startswith("BIN$"):#is a BIN table  
                 continue
 
             if table_name_==table:
@@ -253,38 +254,27 @@ class HistoryReport(BaseClass):
                 target = cfg.get_par('TARGET_NAME')
                 self.target_copy_to_table(df_hist,target)
 
-
-
-
     def procesa_owner(self,owner_):
         """Exporta la metadata de un owner y luego genera la historia usando esa metadata"""
         self.export_metadata_table_date(owner_)
         #self.export_history(f'METADATA_{owner_}.csv',2022)
         self.export_history_owner(owner_)
 
-
-
     def start(self):
         """function start: creates the metadata of the server"""
-
-        self._log('███████╗████████╗ █████╗ ██████╗ ████████╗')
-        self._log('██╔════╝╚══██╔══╝██╔══██╗██╔══██╗╚══██╔══╝')
-        self._log('███████╗   ██║   ███████║██████╔╝   ██║   ')
-        self._log('╚════██║   ██║   ██╔══██║██╔══██╗   ██║   ')
-        self._log('███████║   ██║   ██║  ██║██║  ██║   ██║   ')
-        self._log('╚══════╝   ╚═╝   ╚═╝  ╚═╝╚═╝  ╚═╝   ╚═╝   ')
-
+        self.art_msg('start')
         self.export_metadata_daily_space()
         self.export_metadata_counts()
         clone = DatabaseCloneObjectSqllite('BRAHMS1P', self.report_name__, self.__log_active__)
         #clone_views = clone.clone_objects('table')
-        clone_views = clone.clone_objects('view')
-        self._log(f"clone_views:{clone_views}")
+        clone_objects = clone.clone_objects('view')
+        self._log(f"clone_objects:{clone_objects}")
+        self.art_msg('created')
 
-        self._log(' ██████╗██████╗ ███████╗ █████╗ ████████╗███████╗██████╗ ')
-        self._log('██╔════╝██╔══██╗██╔════╝██╔══██╗╚══██╔══╝██╔════╝██╔══██╗')
-        self._log('██║     ██████╔╝█████╗  ███████║   ██║   █████╗  ██║  ██║')
-        self._log('██║     ██╔══██╗██╔══╝  ██╔══██║   ██║   ██╔══╝  ██║  ██║')
-        self._log('╚██████╗██║  ██║███████╗██║  ██║   ██║   ███████╗██████╔╝')
-        self._log(' ╚═════╝╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝   ╚═╝   ╚══════╝╚═════╝ ')
-                                                         
+    def estimate_all(self):
+        """function start: creates the metadata of the server"""
+        self.art_msg('estimate_all')
+
+    def process_all(self):
+        """function start: creates the metadata of the server"""
+        self.art_msg('process_all')

@@ -19,3 +19,8 @@ class BaseClass():
     def _art(self,var):
         """function _art"""
         return self.art.get_art(var)
+
+    def art_msg(self,var):
+        """function _art"""
+        self._log(self._art(var))
+        
