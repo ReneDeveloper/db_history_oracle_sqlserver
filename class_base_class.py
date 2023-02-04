@@ -16,11 +16,11 @@ class BaseClass():
         if self.__log_active__:
             print(f"LOG:{var}")
 
-    def _art(self,var):
+    def get_art(self,var):
         """function _art"""
         return self.art.get_art(var)
 
     def art_msg(self,var):
         """function _art"""
-        self._log(self._art(var))
+        print(self.get_art(var))
         

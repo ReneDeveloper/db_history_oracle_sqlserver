@@ -136,7 +136,11 @@ class HistoryReport(BaseClass):
 
     def export_metadata_counts(self):
         """function export_metadata_counts"""
+        #self.art_msg('creating')
+        self.art_msg('metadata')
         self._log(f"export_metadata_counts:START")
+        self._log(f"export_metadata_counts:Obtaining counts by table")
+
         parameter_name = self.__flavor__ + '_QUERY_METADATA_COUNTS'
         sql_  = cfg.get_par(parameter_name)
         data  = self.execute_sql_source(sql_)
@@ -150,6 +154,7 @@ class HistoryReport(BaseClass):
     def export_metadata_daily_space(self):
         """function export_metadata_daily_space"""
         self._log(f"export_metadata_daily_space:START")
+        self._log(f"export_metadata_daily_space:Obtaining space used by table")
         parameter_name = self.__flavor__ + '_QUERY_METADATA_DAILY_SPACE'
         sql_  = cfg.get_par(parameter_name)
         data  = self.execute_sql_source(sql_)
@@ -262,7 +267,9 @@ class HistoryReport(BaseClass):
 
     def start(self):
         """function start: creates the metadata of the server"""
-        self.art_msg('start')
+        #self.art_msg('start')
+        self.art_msg('database')
+        self.art_msg('aging')
         self.export_metadata_daily_space()
         self.export_metadata_counts()
         clone = DatabaseCloneObjectSqllite('BRAHMS1P', self.report_name__, self.__log_active__)
