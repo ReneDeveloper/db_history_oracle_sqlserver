@@ -1,3 +1,4 @@
+"""class_history_report.py"""
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 #
@@ -9,7 +10,7 @@
 # -----------------------------------------------------------------------------
 #
 # Description:
-# 
+#
 # This Python script can Generate the history report of databases
 # that means: generates the database history by year/month by Owner/table
 # such as the project/owner/or database, this need a user to enter inside the engine
@@ -30,7 +31,6 @@
 #██║  ██║███████╗██║     ╚██████╔╝██║  ██║   ██║
 #╚═╝  ╚═╝╚══════╝╚═╝      ╚═════╝ ╚═╝  ╚═╝   ╚═╝
 
-import os
 import pandas as pd
 from sqlalchemy import create_engine
 from cryptography.fernet import Fernet
@@ -52,15 +52,16 @@ class HistoryReport(BaseClass):
         self.__flavor__ = __flavor__
         fernet = Fernet(cfg.get_par('crkey'))
         self.__source_url__ = fernet.decrypt(__engine__).decode()
-        self.__target_url__ = f"sqlite:///{cfg.get_par('out_path')}/{report_name__}_EXPORT_HISTORY.db"
-        
+        target_db_name = f'{report_name__}_EXPORT_HISTORY.db'
+        self.__target_url__ = f"sqlite:///{cfg.get_par('out_path')}/{target_db_name}"
+
     def get_engine_source(self):
         """function get_engine_source"""
         #oracle_cnx_string = 'oracle+cx_oracle://{username}:{password}@{host_}:{port}/{database}'
         engine = create_engine(self.__source_url__,pool_timeout=999999)
         return engine
 
-    def get_engine_source_NO_ENCRIPTADO(self):
+    def get_engine_source_no_encriptado(self):
         """function """
         oracle_cnx_string = 'oracle+cx_oracle://{username}:{password}@{host_}:{port}/{database}'
         engine = create_engine(
@@ -138,31 +139,31 @@ class HistoryReport(BaseClass):
         """function export_metadata_counts"""
         #self.art_msg('creating')
         self.art_msg('metadata')
-        self._log(f"export_metadata_counts:START")
-        self._log(f"export_metadata_counts:Obtaining counts by table")
+        self._log("export_metadata_counts:START")
+        self._log("export_metadata_counts:Obtaining counts by table")
 
         parameter_name = self.__flavor__ + '_QUERY_METADATA_COUNTS'
         sql_  = cfg.get_par(parameter_name)
         data  = self.execute_sql_source(sql_)
         #TODO:ELIMINAR METADATA_TABLE_DATE
-        sql_delete = f"DELETE FROM METADATA_COUNTS"
+        sql_delete = "DELETE FROM METADATA_COUNTS"
         self.target_execute(sql_delete)
         self.target_copy_to_table(data,'METADATA_COUNTS')
-        self._log(f"export_metadata_counts:END")
+        self._log("export_metadata_counts:END")
         return data
 
     def export_metadata_daily_space(self):
         """function export_metadata_daily_space"""
-        self._log(f"export_metadata_daily_space:START")
-        self._log(f"export_metadata_daily_space:Obtaining space used by table")
+        self._log("export_metadata_daily_space:START")
+        self._log("export_metadata_daily_space:Obtaining space used by table")
         parameter_name = self.__flavor__ + '_QUERY_METADATA_DAILY_SPACE'
         sql_  = cfg.get_par(parameter_name)
         data  = self.execute_sql_source(sql_)
         #ELIMINAR METADATA_DAILY_SPACE
-        sql_delete = f"DELETE FROM METADATA_DAILY_SPACE"
+        sql_delete = "DELETE FROM METADATA_DAILY_SPACE"
         self.target_execute(sql_delete)
         self.target_copy_to_table(data,'METADATA_DAILY_SPACE')
-        self._log(f"export_metadata_daily_space:END")
+        self._log("export_metadata_daily_space:END")
         return data
 
     def export_metadata_table_date(self,owner__):
@@ -216,15 +217,15 @@ class HistoryReport(BaseClass):
             #print (df)
             owner_ = row['owner']
             table_name_ = row['table_name']
-            column_name = row['column_name']
-            pars__ = {}
+            #column_name = row['column_name']
+            #pars__ = {}
             if table_name_.startswith("BIN$"):
                 continue
 
-            pars__['_OWNER'] = owner_
-            pars__['_TABLE_NAME'] = table_name_
-            pars__['_COLUMN_NAME'] = column_name
-            pars__['year_'] = '2022'
+#            pars__['_OWNER'] = owner_
+#            pars__['_TABLE_NAME'] = table_name_
+#            pars__['_COLUMN_NAME'] = column_name
+#            pars__['year_'] = '2022'
             self.export_history_table(owner_,table_name_)
 
     def export_history_table(self,owner_,table):
@@ -244,8 +245,9 @@ class HistoryReport(BaseClass):
             pars__['_TABLE_NAME'] = table_name_
             pars__['_COLUMN_NAME'] = column_name
             pars__['year_'] = year_
-            
-            if table_name_.startswith("BIN$"):#is a BIN table  
+
+            if table_name_.startswith("BIN$"):#is a BIN table
+                #TODO:MARCAR TABLA COMO TABLA EN PAPELERA DE RECICLAJE
                 continue
 
             if table_name_==table:
