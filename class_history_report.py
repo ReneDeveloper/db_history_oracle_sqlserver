@@ -101,6 +101,7 @@ class HistoryReport(BaseClass):
             engine = self.get_engine_target()
             cnx = engine.connect()
             data.to_sql(f'{table_name}',if_exists='append',con=cnx,index=False,chunksize=100)
+            #data.to_sql(f'{table_name}',if_exists='replace',con=cnx,index=False,chunksize=100)
             del data
             self._log(f"target_copy_to_table:END:{table_name}")
         finally:
@@ -116,7 +117,19 @@ class HistoryReport(BaseClass):
     def execute_sql_source(self,sql__):
         """function execute_sql_source"""
         engine = self.get_engine_source()
-        data   = pd.read_sql(sql__, engine)
+        data   = None
+        try:
+            data   = pd.read_sql(sql__, engine)
+        except sqlalchemy.exc.DatabaseError as exception_database:
+            self._log("Exception at Database:")
+            self._log("_____________________")
+            self._log(str(exception_database))
+            self._log("_____________________")
+        except Exception as exception_unknown:
+            self._log("Exception not at database:")
+            self._log("_____________________")
+            self._log(str(exception_unknown))
+            self._log("_____________________")
         return data
 
     def execute_sql_source_without_result(self,sql__):
@@ -130,9 +143,9 @@ class HistoryReport(BaseClass):
     def export_sql_csv_header(self, sql__, file__):
         """function export_sql_csv_header will extract sql results and puts in a CSV file"""
         data = self.execute_sql_source(sql__)
-        data.to_csv(cfg.get_par('out_dir')+file__,index=False,
+        data.to_csv(cfg.get_par('out_path')+file__,index=False,
             sep=";",decimal=",",mode='a',header=True)
-        self._log(f"Export ejecutado:{cfg.get_par('database')}{file__}")
+        self._log(f"Export ejecutado:{file__}")
         return data
 
     def export_metadata_counts(self):
@@ -169,7 +182,7 @@ class HistoryReport(BaseClass):
     def export_metadata_table_date(self,owner__):
         """function export_metadata_table_date"""
         self._log(f'export_metadata_table_date:owner__:{owner__}:START')
-        sql_  = cfg.get_par('QUERY_METADATA_TABLE_DATE')
+        sql_  = cfg.get_par(self.__flavor__ +'_QUERY_METADATA_TABLE_DATE')
         sql__ = sql_.format(__OWNER__=owner__)
         self._log(f'export_metadata:sql__:{sql__}')
         data  = self.execute_sql_source(sql__)
@@ -180,7 +193,7 @@ class HistoryReport(BaseClass):
         self.target_copy_to_table(data,'METADATA_TABLE_DATE')
 
         file_csv = f'METADATA_TABLE_DATE_{owner__}.csv'
-        ruta_csv = cfg.get_par('out_dir') + 'out_METADATA/' + file_csv
+        ruta_csv = cfg.get_par('out_path') + 'out_METADATA/' + file_csv
         data.to_csv(ruta_csv,index=False,sep=";",decimal=",",header=True)
         #f'METADATA_TABLE_DATE_{owner_}.csv'
 
@@ -190,25 +203,39 @@ class HistoryReport(BaseClass):
     def query_history(self,pars_):
         """function """
         #where_  =
-        select_ = f"""--GENERATOR: script tabla:{pars_["_TABLE_NAME"]} -->year_:{pars_["year_"]}
+        select_ = f"""--GENERATOR: script tabla:{pars_["_TABLE_NAME"]} 
                 SELECT 
                 '{pars_["_OWNER"]}' as OWNER,
                 '{pars_["_TABLE_NAME"]}' AS TABLE_NAME, 
                 EXTRACT(YEAR FROM \"{pars_["_COLUMN_NAME"]}\") as YEAR_,
                 EXTRACT(YEAR FROM \"{pars_["_COLUMN_NAME"]}\") * 100 +  EXTRACT(MONTH FROM \"{pars_["_COLUMN_NAME"]}\") AS CODMES, 
                 COUNT(1) AS CNT FROM {pars_["_OWNER"]}.{pars_["_TABLE_NAME"]}
-                --WHERE {pars_["_COLUMN_NAME"]} BETWEEN 
-                --    to_date( '{pars_["year_"]}-01-01 00:00:00', 'yyyy-mm-dd hh24:mi:ss' ) AND 
-                --    to_date( '{pars_["year_"]}-12-31 23:59:59', 'yyyy-mm-dd hh24:mi:ss' )
                 GROUP BY EXTRACT(YEAR FROM \"{pars_["_COLUMN_NAME"]}\"),EXTRACT(YEAR FROM \"{pars_["_COLUMN_NAME"]}\") * 100 +  EXTRACT(MONTH FROM \"{pars_["_COLUMN_NAME"]}\")
                 """
+        return select_
+
+
+    def ERROR_query_history_parametrico(self,pars_):
+        """function """
+        #where_  =
+        select_ = cfg.get_par(self.__flavor__ + '_QUERY_HISTORY_COMPLETE')
+        _OWNER = pars_["_OWNER"]
+        _TABLE_NAME = pars_["_TABLE_NAME"]
+        _COLUMN_NAME = pars_["_COLUMN_NAME"]
+        print("_OWNER:" + _OWNER)
+        select_ = select_.format( __OWNER__=_OWNER,  __TABLE_NAME__=_TABLE_NAME, __COLUMN_NAME__=_COLUMN_NAME)
+
+        print("DEBUG___________________HISTORY PARAMETRICO")
+        print(select_)
+        print("DEBUG___________________HISTORY PARAMETRICO")
+
         return select_
 
 #TODO:PASAR A LISTA Y A PROCESO SEPARADO
     def export_history_owner(self,owner_):
         """Exporta historia de las tablas contenidas en un owner"""
         file_csv = f'METADATA_TABLE_DATE_{owner_}.csv'
-        ruta_csv = cfg.get_par('out_dir') + 'out_METADATA/' + file_csv
+        ruta_csv = cfg.get_par('out_path') + 'out_METADATA/' + file_csv
         df_metadata = pd.read_csv(ruta_csv, sep=";")
 
         #sql_metadata = f"select * from v_RESTANTES where owner='{owner_}'"
@@ -231,7 +258,7 @@ class HistoryReport(BaseClass):
     def export_history_table(self,owner_,table):
         """Exporta historia de la tabla en un owner"""
         file_csv = f'METADATA_TABLE_DATE_{owner_}.csv'
-        ruta_csv = cfg.get_par('out_dir') + 'out_METADATA/' + file_csv
+        ruta_csv = cfg.get_par('out_path') + 'out_METADATA/' + file_csv
         df_metadata = pd.read_csv(ruta_csv, sep=";")
 
         for _ , row in df_metadata.iterrows():
@@ -240,28 +267,75 @@ class HistoryReport(BaseClass):
             table_name_ = row['table_name']
             column_name = row['column_name']
             pars__ = {}
-            year_ = '2023'
+            #year_ = '2023'
             pars__['_OWNER'] = owner_
             pars__['_TABLE_NAME'] = table_name_
             pars__['_COLUMN_NAME'] = column_name
-            pars__['year_'] = year_
+            #pars__['year_'] = year_
 
             if table_name_.startswith("BIN$"):#is a BIN table
                 #TODO:MARCAR TABLA COMO TABLA EN PAPELERA DE RECICLAJE
                 continue
 
+
+
+
             if table_name_==table:
 
+                #hist__query = self.query_history(pars__)
+                print("PARRS::::::::::")
+                print(pars__)
                 hist__query = self.query_history(pars__)
+
                 self._log(hist__query)
-                df_hist = self.export_sql_csv_header(hist__query,f'HIST__{owner_}__.csv')
+                #df_hist = self.export_sql_csv_header(hist__query,f'HIST__{owner_}__.csv')
+                df_hist = self.execute_sql_source(hist__query)
 
-                self._log(f'LARGO:{df_hist.count()}')
+                if isinstance(df_hist, type(None)):
+                    #doesn't exist or error
 
-                target = cfg.get_par('TARGET_NAME')
-                self.target_copy_to_table(df_hist,target)
+                    #self._log(f'COUNT:{df_hist.count()}')
+                    self._log(f'ISSUE_NO_TABLE:{owner_}{table}')
+                    return False
 
-    def procesa_owner(self,owner_):
+                empty_history = len(df_hist.index)==0
+                
+                if empty_history:#issue NO_HISTORY
+                    target = cfg.get_par('TARGET_NAME_ISSUE')
+                    data_issue = cfg.get_par('data_issue').copy()
+                    sql_delete = f"DELETE FROM {target} where OWNER = '{owner_}' and TABLE_NAME='{table}'"
+                    self.target_execute(sql_delete)
+
+                    print("-----------------------DEBUG____________________")
+                    print(data_issue)
+                    print("-----------------------DEBUG____________________")
+                    data_issue['TABLE_NAME']=table_name_
+                    data_issue['OWNER']=owner_
+                    data_issue['ISSUE']='NO_HISTORY'
+                    data_issue['VALUE']=0
+                    print(data_issue)
+                    print("-----------------------DEBUG__________DATAFRAME________")
+                    #columnas = ['OWNER', 'TABLE_NAME', 'ISSUE', 'VALUE']
+
+                    #df_hist = pd.DataFrame.from_dict(data_issue, orient='index')
+                    df_hist = pd.DataFrame([data_issue])
+
+                    print("-----------------------DEBUG_______SAVING_________")
+                    print(df_hist)
+                    #pd.DataFrame.from_dict(data_issue)
+
+                    self.target_copy_to_table(df_hist,target)
+                    self._log(f'LEN:{len(df_hist.index)}')
+
+                if not empty_history:
+                    target = cfg.get_par('TARGET_NAME')
+                    sql_delete = f"DELETE FROM {target} where OWNER = '{owner_}' and TABLE_NAME='{table}'"
+                    self.target_execute(sql_delete)
+                    self.target_copy_to_table(df_hist,target)
+
+                return True
+
+    def process_owner(self,owner_):
         """Exporta la metadata de un owner y luego genera la historia usando esa metadata"""
         self.export_metadata_table_date(owner_)
         #self.export_history(f'METADATA_{owner_}.csv',2022)
