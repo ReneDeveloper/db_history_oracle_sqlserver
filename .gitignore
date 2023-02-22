@@ -1,4 +1,2 @@
-/test_banco*.py
-/test_retail*.py
-/test_insurance*.py
+/test_*.py
 *.pyc

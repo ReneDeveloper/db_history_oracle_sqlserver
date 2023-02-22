@@ -83,6 +83,49 @@ left join dba_indexes i on s.segment_type='INDEX' and i.index_name = s.segment_n
 group by s.tablespace_name,s.owner, s.segment_name,s.segment_type,case when s.segment_type = 'INDEX' then i.table_name when s.segment_type = 'TABLE' then s.segment_name end
                             """
 
+pars_["ORACLE_QUERY_METADATA_DAILY_SPACE_VERSION_2"] = """
+SELECT tablespace_name,owner, segment_name, segment_type,table_name_normalizado,
+SUM(bytes)/1024/1024 total_mb,
+SUM(CASE WHEN segment_type='INDEX' THEN bytes ELSE 0 END)/1024/1024 total_mb_index,
+SUM(CASE WHEN segment_type='TABLE' THEN bytes ELSE 0 END)/1024/1024 total_mb_table,
+COUNT(1) AS cnt_seg  
+FROM 
+    (
+    SELECT segments_.tablespace_name,segments_.owner, segments_.segment_name, segments_.segment_type,
+    CASE 
+        WHEN segments_.segment_type = 'INDEX' THEN indexes_.table_name 
+        WHEN segments_.segment_type = 'TABLE' THEN segments_.segment_name
+        WHEN segments_.segment_type = 'LOBSEGMENT' THEN lobs_.table_name
+        WHEN segments_.segment_type = 'TABLE PARTITION' THEN partitions_.table_name
+        WHEN segments_.segment_type = 'INDEX PARTITION' THEN index_partitions_.table_name
+        
+        --HERE ADD OTHER CASES
+    END AS table_name_normalizado,
+    segments_.bytes
+    FROM dba_segments segments_ 
+    LEFT JOIN dba_indexes indexes_ ON segments_.segment_type='INDEX' AND indexes_.index_name = segments_.segment_name AND indexes_.owner = segments_.owner 
+    LEFT JOIN dba_lobs lobs_ ON segments_.segment_type='LOBSEGMENT' AND segments_.owner = lobs_.owner AND segments_.segment_name = lobs_.segment_name AND segments_.tablespace_name = lobs_.tablespace_name
+    LEFT JOIN  (
+                SELECT --*
+                DISTINCT a.tablespace_name, a.table_owner, a.table_name
+                FROM   dba_tab_partitions a 
+                --where owner = 'DMNORMA_ADM'  
+                )  partitions_ ON segments_.segment_type='TABLE PARTITION' AND segments_.owner = partitions_.table_owner AND segments_.segment_name = partitions_.table_name AND segments_.tablespace_name = partitions_.tablespace_name
+    LEFT JOIN ( --SE CONSTRUYE UN SUBQUERY DADO QUE UN INDICE PUEDE TENER N PARTICIONES DE INDICES
+                SELECT DISTINCT a.tablespace_name, a.index_owner, a.index_name, b.table_name
+                FROM  dba_ind_partitions a
+                LEFT JOIN DBA_INDEXES b on a.index_owner=b.owner  and a.index_name = b.index_name --FAIL ADDING THIS BECAUSE EXISTS TABLESPACE_NAME NULL IN DBA_INDEXES
+              ) index_partitions_ ON segments_.segment_type='INDEX PARTITION' AND indexes_.owner = index_partitions_.index_owner AND indexes_.index_name = index_partitions_.index_name AND indexes_.tablespace_name = index_partitions_.tablespace_name
+    
+        --HERE ADD OTHER CASES
+    ) RESULT
+--where segment_type = 'TABLE PARTITION' AND owner = 'DMNORMA_ADM'
+GROUP BY tablespace_name,OWNER, segment_name,segment_type,table_name_normalizado
+ORDER BY segment_type
+                            """
+
+
+
 pars_["ORACLE_QUERY_METADATA_TABLE_DATE"] = """
 SELECT owner,table_name, column_name
 FROM DBA_TAB_COLUMNS c WHERE (owner, table_name, column_id) in (
@@ -119,6 +162,7 @@ GROUP BY EXTRACT(YEAR FROM \"{__COLUMN_NAME__}\"),EXTRACT(YEAR FROM \"{__COLUMN_
 #███████║╚██████╔╝███████╗    ███████║███████╗██║  ██║ ╚████╔╝ ███████╗██║  ██║
 #╚══════╝ ╚══▀▀═╝ ╚══════╝    ╚══════╝╚══════╝╚═╝  ╚═╝  ╚═══╝  ╚══════╝╚═╝  ╚═╝
 
+#TODO:NEED A QUERY THAT COUNT THE TOTAL OF ALL TABLES
 pars_["SQLSERVER_QUERY_METADATA_COUNTS"] = """
 select owner,
        table_name,
@@ -126,7 +170,7 @@ select owner,
 from sys.dba_tables
 where owner not in ('SYS','SYSTEM','WMSYS','JAEDOC','XDB','DBSNMP')
                             """
-
+#TODO:NEED A QUERY OF SPACES OF SQLSERVER
 pars_["SQLSERVER_QUERY_METADATA_DAILY_SPACE"] = """
 select s.tablespace_name,s.owner, s.segment_name, s.segment_type,
 case when s.segment_type = 'INDEX' then i.table_name when s.segment_type = 'TABLE' then s.segment_name end as table_name_normalizado,
@@ -138,7 +182,7 @@ from dba_segments s
 left join dba_indexes i on s.segment_type='INDEX' and i.index_name = s.segment_name and i.owner = s.owner
 group by s.tablespace_name,s.owner, s.segment_name,s.segment_type,case when s.segment_type = 'INDEX' then i.table_name when s.segment_type = 'TABLE' then s.segment_name end
                             """
-
+#TODO:NEED A QUERY 
 pars_["SQLSERVER_QUERY_METADATA_TABLE_DATE"] = """
 select owner,table_name, column_name
 from DBA_TAB_COLUMNS c WHERE (owner, table_name, column_id) in (
@@ -154,8 +198,15 @@ order by owner,table_name,column_name
 
 
 
+######################################################3
+###################################################3333
+#REPORTS
+######################################################3
+###################################################3333
 
-
+pars_['REPORT_img_001_table_vs_index']="""
+SELECT owner as Grupo, total_mb_table as mb_table, total_mb_index as mb_index FROM v_METADATA_OWNER_SPACE ORDER BY total_mb_table desc
+"""
 
 
 
