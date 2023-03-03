@@ -1,0 +1,4 @@
+cx_Oracle
+cryptography
+pandas
+sqlalchemy
