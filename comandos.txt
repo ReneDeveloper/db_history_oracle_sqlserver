@@ -19,3 +19,5 @@ pylint class_history_report.py
 
 git config --global user.name "René Developer"
 
+C:/Users/rcastillosi/__REPOS__/db_history_oracle_sqlserver
+C/Users/rcastillosi/__REPOS__/db_history_oracle_sqlserver
