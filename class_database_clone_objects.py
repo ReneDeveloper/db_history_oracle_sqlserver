@@ -8,7 +8,7 @@ cfg = Config()
 
 class DatabaseCloneObjectSqllite(BaseClass):
     """DatabaseCloneObjectSqllite: 
-    to cloning database objects from temnplate to the target database"""
+    to cloning database objects from template to the target database"""
     __tagname__ = ""
     __source_url__ = ""
     __from__ = ""

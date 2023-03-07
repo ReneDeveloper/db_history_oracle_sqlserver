@@ -14,8 +14,8 @@ cfg = Config()
 message = 'oracle+cx_oracle://{username}:{password}@{host_}:{port}/{database}'
 message = 'oracle+cx_oracle://user:pw@server:port/instance'
 
-message = 'mssql+pymssql://{username}:{password}@{host_}:{port}/{database}'
-message = 'mssql+pymssql://user:pw@server:1443/master'
+#message = 'mssql+pymssql://{username}:{password}@{host_}:{port}/{database}'
+#message = 'mssql+pymssql://user:pw@server:1443/master'
 #message = 'oracle+cx_oracle://user:pw@server:port/instance'
 
 #engine = create_engine("mssql+pyodbc://scott:tiger@mydsn")

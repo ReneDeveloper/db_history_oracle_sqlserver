@@ -10,8 +10,8 @@ class HistoryOracle(HistoryReport):
         self.__engine_url__ = None
         HistoryReport.__init__(self,report_name__,__engine__,'ORACLE',__log_active__=True)
 
-    def oracle_table_cost (self,owner_,table_name_,column_name_):
-        """Obtiene """
+    def oracle_table_cost (self,owner_,table_name_,column_name_):#TODO:OBTAIN TOTAL COST IN ORACLE
+        """Obtiene oracle_table_cost"""
         pars__ = {}
         #year_ = '2023'
         pars__['_OWNER'] = owner_
@@ -24,7 +24,7 @@ class HistoryOracle(HistoryReport):
         self.execute_sql_source_without_result(f'EXPLAIN PLAN FOR {query_}')
 
         #data = self.execute_sql_source("select * from table(dbms_xplan.display(null, null, 'SERIAL'))")
-        data = self.execute_sql_source("select * PLAN")
+        data = self.execute_sql_source("select * FROM PLAN")
 
         salida = {}
         #data = self.execute_sql_source('select * from table(dbms_xplan.display)')
