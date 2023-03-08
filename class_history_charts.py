@@ -1,3 +1,5 @@
+import os
+import random
 from class_config import Config
 from class_base_class import BaseClass
 from sqlalchemy import create_engine
@@ -14,6 +16,21 @@ class HistoryCharts(BaseClass):
         self.report_name__ = report_name__
         self.__flavor__ = __flavor__
         self.__target_url__ = __target_url__
+
+        html_folder = f"{cfg.get_par('out_path')}{report_name__}"
+
+
+
+
+
+        try:
+            os.mkdir(html_folder)
+            print(f"Folder '{html_folder}' created successfully.")
+        except FileExistsError:
+            print(f"Folder '{html_folder}' already exists.")
+        except Exception as e:
+            print(f"An error occurred: {e}")
+
 
     def get_engine_target(self):
         """function get_engine_target"""
@@ -503,12 +520,83 @@ class HistoryCharts(BaseClass):
         left join METADATA_TABLE_DATE METADATA ON TABLAS.owner = METADATA.owner AND TABLAS.table_name = METADATA.table_name
         """)
 
+    def dev_EVOLUTIVO(self):
 
-"""
+        sql_ = """
+        SELECT mes_id, 
+        case when Y2019 = 0 then NULL else Y2019 end as Y2019,
+        case when Y2020 = 0 then NULL else Y2020 end as Y2020,
+        case when Y2021 = 0 then NULL else Y2021 end as Y2021,
+        case when Y2022 = 0 then NULL else Y2022 end as Y2022,
+        case when Y2023 = 0 then NULL else Y2023 end as Y2023
+
+        from (
+            SELECT 
+            mes_id, 
+            sum(case when year_=2019 then mb_estimado else 0 end) as Y2019,
+            sum(case when year_=2020 then mb_estimado else 0 end) as Y2020,
+            sum(case when year_=2021 then mb_estimado else 0 end) as Y2021,
+            sum(case when year_=2022 then mb_estimado else 0 end) as Y2022,
+            sum(case when year_=2023 then mb_estimado else 0 end) as Y2023
+            FROM 
+                v_HISTORY_MES_MB
+            WHERE mes_id>0
+                GROUP BY mes_id
+            ) A
+
+        """
+
+        datos = self.read_sql_query(sql_)
+
+        datos = datos.replace(0, None)
+
+        # Datos aleatorios en un DataFrame
+        #datos = pd.DataFrame(index=range(1, 13), columns=[2020, 2021, 2022])
+        #for año in [2020, 2021, 2022]:
+        #    datos[año] = [random.randint(0, 100) for _ in range(12)]
+
+        # Colores para cada año
+        #colores = {'Y2020': 'red', 'Y2020': 'yellow', 'Y2020': 'green'}
+
+
+        # Colores aleatorios para cada año
+        colores = {}
+        for columna in datos.columns:
+            color = tuple(random.uniform(0, 1) for _ in range(3))
+            colores[columna] = color
+
+
+        # Gráfico evolutivo
+
+        # Gráfico evolutivo
+        for columna in datos.columns:
+            #print( f"{columna}")
+            if f"{columna}"=='mes_id':
+                print( f"{columna}")
+                continue
+            plt.plot(datos.index, datos[columna], color=colores[columna], label=columna)
+
+        #for año in ['Y2019','Y2020','Y2021','Y2022','Y2023']:
+        #    plt.plot(datos.index, datos[año], color=colores[año], label=str(año))
+
+        # Configuración del gráfico
+        plt.title('Gráfico evolutivo por mes')
+        plt.xlabel('Mes')
+        plt.ylabel('Valor')
+        plt.xticks(range(1, 13))
+        plt.legend()
+
+        # Mostrar el gráfico
+        plt.show()
+
+        #self.generate_pie_from_sql('PIE0:Tablas con fecha',
+
+
+
 report_name__ = 'BRAHMS1P_stable_002'
 target_db_name = f'{report_name__}_EXPORT_HISTORY.db'
 __target_url__ = f"sqlite:///{cfg.get_par('out_path')}/{target_db_name}"
 
 history_charts= HistoryCharts(report_name__,  __target_url__ ,'ORACLE',True)
-history_charts.dev()
-"""
+history_charts.dev_EVOLUTIVO()
+

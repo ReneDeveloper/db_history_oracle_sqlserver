@@ -368,6 +368,11 @@ class HistoryReport(BaseClass):
         self._log(f"export_metadata_table_date:owner__:{owner__}:END")
         return data
 
+
+
+
+
+
     def start(self):
         """function start: creates the metadata of the server"""
         #self.art_msg('start')

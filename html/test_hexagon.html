@@ -39,28 +39,40 @@
 
       // Define the extrude settings
       const extrudeSettings = {
-        depth: 5,
+        depth: 1,
         bevelEnabled: false,
       };
 
       // Create the geometry by extruding the shape
       const hexagonGeometry = new THREE.ExtrudeGeometry(hexagonShape, extrudeSettings);
 
-      // Create a mesh and add it to the scene
-      const hexagonMaterial = new THREE.MeshBasicMaterial({ color: 0xff0000 });
+      // Create a mesh for the main hexagon and add it to the scene
+      const hexagonMaterial = new THREE.MeshBasicMaterial({ color: 0xAAAAAA });
       const hexagonMesh = new THREE.Mesh(hexagonGeometry, hexagonMaterial);
       scene.add(hexagonMesh);
 
-      // Render the scene
-      function animate() {
-        requestAnimationFrame(animate);
-        hexagonMesh.rotation.x += 0.01;
-        hexagonMesh.rotation.y += 0.01;
-        renderer.render(scene, camera);
-      }
-      animate();
-    </script>
-  </body>
-</html>
+      // Define the number of rows and columns for the hexagonal grid
+      const rows = 4;
+      const cols = 4;
 
-TEST2
+      // Define the size of each hexagon in the grid
+      const hexSize = 1;
+
+      // Create a group to hold the smaller hexagon meshes
+      const hexGroup = new THREE.Group();
+      scene.add(hexGroup);
+
+      // Create a loop to generate the hexagonal grid
+      for (let row = 0; row < rows; row++) {
+        for (let col = 0; col < cols; col++) {
+          // Create a hexagon shape for each grid cell
+          const cellShape = new THREE.Shape();
+          cellShape.moveTo(0, hexSize);
+          cellShape.lineTo(hexSize * 0.866, hexSize * 0.5);
+          cellShape.lineTo(hexSize * 0.866, -hexSize * 0.5);
+          cellShape.lineTo(0, -hexSize);
+          cellShape.lineTo(-hexSize * 0.866, -hexSize * 0.5);
+          cellShape.lineTo(-hexSize * 0.866, hexSize * 0.5);
+          cellShape.lineTo(0, hexSize);
+
+         
