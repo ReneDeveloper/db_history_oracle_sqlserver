@@ -32,7 +32,9 @@ pars_["crkey"]=b'ixg0tK8e3dlzVT5NBzMGqEgfkaeRfsPFc76wZxAaD-0='
 ###DEPRECATED###pars_["port"]="1521"
 ###DEPRECATED###pars_["database"]="database"
 #parametros de paths
-pars_["lib_dir"]="C:/Users/rcastillosi/Downloads/PORTABLE/instantclient_21_7/"
+pars_["lib_dir"]="C:/Users/rsilc/Downloads/PORTABLE/instantclient_21_9/"#win11
+#pars_["lib_dir"]="C:/Users/rcastillosi/Downloads/PORTABLE/instantclient_21_7/"#win10
+
 ###DEPRECATED###pars_["out_dir"]="C:/Users/rcastillosi/__SQL_DATABASE_STATS__/__EXPORT_DATA__/"
 #parametros de bbdd TARGET
 pars_["TARGET_NAME"]="HISTORY_REPORT"
@@ -71,7 +73,7 @@ from sys.dba_tables
 where owner not in ('SYS','SYSTEM','WMSYS','JAEDOC','XDB','DBSNMP')
                             """
 
-pars_["ORACLE_QUERY_METADATA_DAILY_SPACE"] = """
+pars_["ORACLE_QUERY_METADATA_DAILY_SPACE__________DEPRECATED"] = """
 select s.tablespace_name,s.owner, s.segment_name, s.segment_type,
 case when s.segment_type = 'INDEX' then i.table_name when s.segment_type = 'TABLE' then s.segment_name end as table_name_normalizado,
 sum(s.bytes)/1024/1024 total_mb, 
@@ -83,7 +85,7 @@ left join dba_indexes i on s.segment_type='INDEX' and i.index_name = s.segment_n
 group by s.tablespace_name,s.owner, s.segment_name,s.segment_type,case when s.segment_type = 'INDEX' then i.table_name when s.segment_type = 'TABLE' then s.segment_name end
                             """
 
-pars_["ORACLE_QUERY_METADATA_DAILY_SPACE_VERSION_2"] = """
+pars_["ORACLE_QUERY_METADATA_DAILY_SPACE"] = """
 SELECT tablespace_name,owner, segment_name, segment_type,table_name_normalizado,
 SUM(bytes)/1024/1024 total_mb,
 SUM(CASE WHEN segment_type='INDEX' THEN bytes ELSE 0 END)/1024/1024 total_mb_index,

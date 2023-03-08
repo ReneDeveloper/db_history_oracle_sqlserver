@@ -44,8 +44,9 @@ from class_database_clone_objects import DatabaseCloneObjectSqllite
 from class_history_charts import HistoryCharts
 
 cfg = Config()
-
+print("LA RUTA: " + cfg.get_par('lib_dir'))
 cx_Oracle.init_oracle_client(lib_dir= cfg.get_par('lib_dir'))
+
 
 class HistoryReport(BaseClass):
     """Procesa la historia de servidor"""
@@ -207,7 +208,7 @@ class HistoryReport(BaseClass):
         """function export_metadata_daily_space"""
         self._log("export_metadata_daily_space:START")
         self._log("export_metadata_daily_space:Obtaining space used by table")
-        parameter_name = self.__flavor__ + '_QUERY_METADATA_DAILY_SPACE_VERSION_2'
+        parameter_name = self.__flavor__ + '_QUERY_METADATA_DAILY_SPACE'
         sql_  = cfg.get_par(parameter_name)
         data  = self.execute_sql_source(sql_)
         sql_delete = "DELETE FROM METADATA_DAILY_SPACE"

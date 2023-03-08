@@ -1,0 +1,26 @@
+
+1.-TO RUN IN ORACLE AND WINDOWS
+
+1.1.-INSTALL ORACLE DRIVER
+
+https://www.oracle.com/database/technologies/instant-client.html
+
+LINK 64BITS
+https://download.oracle.com/otn_software/nt/instantclient/219000/instantclient-basiclite-windows.x64-21.9.0.0.0dbru.zip
+
+#MODIFY class_config: LINE 35:
+pars_["lib_dir"]="C:/Users/rsilc/Downloads/PORTABLE/instantclient_21_9/"#win11
+
+You can download different versions, 32 o 64 Bits for different versions of oracle
+for example:
+#pars_["lib_dir"]="C:/Users/rcastillosi/Downloads/PORTABLE/instantclient_21_7/"#win10
+
+Y MODIFICAR LA RUTA DEL DRIVER DE ORACLE
+EJEMPLO:
+cfg = Config()
+cfg.set_par('lib_dir','C:/Users/rsilc/Downloads/PORTABLE/instantclient_21_7/')
+
+
+#TODO:TRADUCIR ESTE TXT
+
+2.-TO RUN IN ORACLE AND WINDOWS
