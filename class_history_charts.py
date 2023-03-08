@@ -591,12 +591,11 @@ class HistoryCharts(BaseClass):
 
         #self.generate_pie_from_sql('PIE0:Tablas con fecha',
 
-
-
+"""
 report_name__ = 'BRAHMS1P_stable_002'
 target_db_name = f'{report_name__}_EXPORT_HISTORY.db'
 __target_url__ = f"sqlite:///{cfg.get_par('out_path')}/{target_db_name}"
 
 history_charts= HistoryCharts(report_name__,  __target_url__ ,'ORACLE',True)
 history_charts.dev_EVOLUTIVO()
-
+"""
