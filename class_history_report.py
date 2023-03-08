@@ -90,10 +90,10 @@ class HistoryReport(BaseClass):
         except sqlalchemy.exc.OperationalError:
             self._log(f"target_execute:OperationalError:{sql_}")
         finally:
-            self._log(f"target_execute:finally:{sql_}")
+            #self._log(f"target_execute:finally:{sql_}")
             cnx.close()
             engine.dispose()
-        self._log(f"target_execute:END:{sql_}")
+        #self._log(f"target_execute:END:{sql_}")
         return data
 
     def read_sql_query(self,sql_):
@@ -108,10 +108,10 @@ class HistoryReport(BaseClass):
         except sqlalchemy.exc.OperationalError:
             self._log(f"target_execute:OperationalError:{sql_}")
         finally:
-            self._log(f"target_execute:finally:{sql_}")
+            #self._log(f"target_execute:finally:{sql_}")
             cnx.close()
             engine.dispose()
-        self._log(f"target_execute:END:{sql_}")
+        #self._log(f"target_execute:END:{sql_}")
         return data
 
     def target_execute_select(self,sql_):
@@ -207,7 +207,7 @@ class HistoryReport(BaseClass):
         """function export_metadata_daily_space"""
         self._log("export_metadata_daily_space:START")
         self._log("export_metadata_daily_space:Obtaining space used by table")
-        parameter_name = self.__flavor__ + '_QUERY_METADATA_DAILY_SPACE'
+        parameter_name = self.__flavor__ + '_QUERY_METADATA_DAILY_SPACE_VERSION_2'
         sql_  = cfg.get_par(parameter_name)
         data  = self.execute_sql_source(sql_)
         sql_delete = "DELETE FROM METADATA_DAILY_SPACE"
@@ -389,12 +389,16 @@ class HistoryReport(BaseClass):
         self._log(f"clone_objects:{clone_objects}")
         self.art_msg('created')
 
-
-
-
     def generate_reports(self):
         # HistoryCharts (report_name__,__target_url__,__flavor__,__log_active__)
         history_charts= HistoryCharts(self.report_name__,self.__target_url__,self.__flavor__,self.__log_active__)
+        history_charts.report_v1_indexes()
+        history_charts.report_v1_issues()
+        history_charts.report_v1_space()
+        history_charts.report_v1_history()
 
-        history_charts.report_v1()
-        
+
+    def dev(self):
+        # HistoryCharts (report_name__,__target_url__,__flavor__,__log_active__)
+        history_charts= HistoryCharts(self.report_name__,self.__target_url__,self.__flavor__,self.__log_active__)
+        history_charts.dev()

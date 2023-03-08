@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Three.js Hexagon Example</title>
+    <style>
+      body {
+        margin: 0;
+      }
+      canvas {
+        display: block;
+      }
+    </style>
+  </head>
+  <body>
+    <script src="https://threejs.org/build/three.min.js"></script>
+    <script>
+      // Create the scene
+      const scene = new THREE.Scene();
+
+      // Create the camera
+      const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+      camera.position.z = 20;
+
+      // Create the renderer
+      const renderer = new THREE.WebGLRenderer();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      document.body.appendChild(renderer.domElement);
+
+      // Define the vertices of the hexagon
+      const hexagonShape = new THREE.Shape();
+      hexagonShape.moveTo(0, 10);
+      hexagonShape.lineTo(8.66, 5);
+      hexagonShape.lineTo(8.66, -5);
+      hexagonShape.lineTo(0, -10);
+      hexagonShape.lineTo(-8.66, -5);
+      hexagonShape.lineTo(-8.66, 5);
+      hexagonShape.lineTo(0, 10);
+
+      // Define the extrude settings
+      const extrudeSettings = {
+        depth: 5,
+        bevelEnabled: false,
+      };
+
+      // Create the geometry by extruding the shape
+      const hexagonGeometry = new THREE.ExtrudeGeometry(hexagonShape, extrudeSettings);
+
+      // Create a mesh and add it to the scene
+      const hexagonMaterial = new THREE.MeshBasicMaterial({ color: 0xff0000 });
+      const hexagonMesh = new THREE.Mesh(hexagonGeometry, hexagonMaterial);
+      scene.add(hexagonMesh);
+
+      // Render the scene
+      function animate() {
+        requestAnimationFrame(animate);
+        hexagonMesh.rotation.x += 0.01;
+        hexagonMesh.rotation.y += 0.01;
+        renderer.render(scene, camera);
+      }
+      animate();
+    </script>
+  </body>
+</html>
+
+TEST2
