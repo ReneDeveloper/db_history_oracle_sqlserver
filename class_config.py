@@ -174,15 +174,53 @@ where owner not in ('SYS','SYSTEM','WMSYS','JAEDOC','XDB','DBSNMP')
                             """
 #TODO:NEED A QUERY OF SPACES OF SQLSERVER
 pars_["SQLSERVER_QUERY_METADATA_DAILY_SPACE"] = """
-select s.tablespace_name,s.owner, s.segment_name, s.segment_type,
-case when s.segment_type = 'INDEX' then i.table_name when s.segment_type = 'TABLE' then s.segment_name end as table_name_normalizado,
-sum(s.bytes)/1024/1024 total_mb, 
-sum(case when s.segment_type='INDEX' then s.bytes else 0 end)/1024/1024 total_mb_index, 
-sum(case when s.segment_type='TABLE' then s.bytes else 0 end)/1024/1024 total_mb_table, 
-count(1) as cnt_seg  
-from dba_segments s 
-left join dba_indexes i on s.segment_type='INDEX' and i.index_name = s.segment_name and i.owner = s.owner
-group by s.tablespace_name,s.owner, s.segment_name,s.segment_type,case when s.segment_type = 'INDEX' then i.table_name when s.segment_type = 'TABLE' then s.segment_name end
+
+
+
+set nocount on
+
+USE [master]
+--GO
+
+if object_id('tempdb..#temp') is not null drop table #temp
+
+CREATE TABLE #temp(
+    rec_id      int IDENTITY (1, 1),
+    db sysname, 
+    TableName   varchar(128),
+    SchemaName varchar(128),
+    RowCounts   bigint,
+    TotalSpaceMB    decimal(15,2),  
+    UsedSpaceMB decimal(15,2),
+    UnusedSpaceMB   decimal(15,2)   )
+
+
+exec sp_MSforeachdb 'USE [?]; 
+insert into #temp (db, TableName, SchemaName, RowCounts, TotalSpaceMB, UsedSpaceMB, UnusedSpaceMB)
+SELECT  
+''?'' as db,    
+t.NAME AS TableName,    
+s.Name AS SchemaName,    
+p.rows AS RowCounts,    
+SUM(a.total_pages) * 8/1024 AS TotalSpaceMB,     
+SUM(a.used_pages) * 8/1024 AS UsedSpaceMB, 
+(SUM(a.total_pages) - SUM(a.used_pages)) * 8/1024 AS UnusedSpaceMB 
+FROM     sys.tables t 
+INNER JOIN      sys.indexes i ON t.OBJECT_ID = i.object_id
+INNER JOIN    sys.partitions p ON i.object_id = p.OBJECT_ID AND i.index_id = p.index_id 
+INNER JOIN     sys.allocation_units a ON p.partition_id = a.container_id
+LEFT OUTER JOIN     sys.schemas s ON t.schema_id = s.schema_id 
+WHERE    p.rows > 0 AND t.is_ms_shipped = 0    AND i.OBJECT_ID > 255 
+GROUP BY     t.Name, s.Name, p.Rows 
+ORDER BY p.rows DESC' ;
+
+select db, TableName, SchemaName, RowCounts, TotalSpaceMB, UsedSpaceMB, UnusedSpaceMB
+from #temp
+order by db, SchemaName, TableName
+
+
+
+
                             """
 #TODO:NEED A QUERY 
 pars_["SQLSERVER_QUERY_METADATA_TABLE_DATE"] = """
