@@ -7,7 +7,7 @@ import sqlalchemy
 import pandas as pd
 import matplotlib.pyplot as plt
 
-cfg = Config()
+cfg = Config("NO_INICIALIZADO",'NO_INICIALIZADO')
 
 class HistoryCharts(BaseClass):
     """Generate the history charts of the database"""
@@ -18,10 +18,6 @@ class HistoryCharts(BaseClass):
         self.__target_url__ = __target_url__
 
         html_folder = f"{cfg.get_par('out_path')}{report_name__}"
-
-
-
-
 
         try:
             os.mkdir(html_folder)
@@ -365,7 +361,7 @@ class HistoryCharts(BaseClass):
         df_metadata['mb_BIG'] = df_metadata['mb_BIG'].round(0).astype(int)
 
 
-     
+
 
         #df_metadata['mb_BIG'] = df_metadata['total_mb_table'].round(0).astype(int)
         
@@ -510,7 +506,7 @@ class HistoryCharts(BaseClass):
         # Show the chart
         plt.show()
 
-    def dev(self):
+    def dev_pie(self):
         self.generate_pie_from_sql('PIE0:Tablas con fecha',"""
 
         SELECT 'SIN FECHA' AS LABEL_ , COUNT(CASE WHEN METADATA.OWNER IS NULL THEN 1 ELSE NULL END) AS CNT FROM v_METADATA_TABLE_SPACE TABLAS
@@ -520,7 +516,7 @@ class HistoryCharts(BaseClass):
         left join METADATA_TABLE_DATE METADATA ON TABLAS.owner = METADATA.owner AND TABLAS.table_name = METADATA.table_name
         """)
 
-    def dev_EVOLUTIVO(self):
+    def dev_rpt_evolutivo(self):
 
         sql_ = """
         SELECT mes_id, 
@@ -529,7 +525,6 @@ class HistoryCharts(BaseClass):
         case when Y2021 = 0 then NULL else Y2021 end as Y2021,
         case when Y2022 = 0 then NULL else Y2022 end as Y2022,
         case when Y2023 = 0 then NULL else Y2023 end as Y2023
-
         from (
             SELECT 
             mes_id, 
@@ -543,7 +538,6 @@ class HistoryCharts(BaseClass):
             WHERE mes_id>0
                 GROUP BY mes_id
             ) A
-
         """
 
         datos = self.read_sql_query(sql_)
@@ -591,6 +585,7 @@ class HistoryCharts(BaseClass):
 
         #self.generate_pie_from_sql('PIE0:Tablas con fecha',
 
+
 """
 report_name__ = 'BRAHMS1P_stable_002'
 target_db_name = f'{report_name__}_EXPORT_HISTORY.db'
@@ -598,4 +593,5 @@ __target_url__ = f"sqlite:///{cfg.get_par('out_path')}/{target_db_name}"
 
 history_charts= HistoryCharts(report_name__,  __target_url__ ,'ORACLE',True)
 history_charts.dev_EVOLUTIVO()
+
 """

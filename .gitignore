@@ -1,3 +1,5 @@
+/dev*.py
+/test/*
 /test_*.py
 /etl_*.py
 *.pyc

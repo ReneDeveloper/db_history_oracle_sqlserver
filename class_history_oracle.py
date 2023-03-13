@@ -4,11 +4,11 @@ from class_config import Config
 
 class HistoryOracle(HistoryReport):
     """Procesa la historia de un servidor ORACLE"""
-    def __init__(self,report_name__,__engine__):
+    def __init__(self,cfg):
         """Inicializa"""
-        self.report_name__ = None
-        self.__engine_url__ = None
-        HistoryReport.__init__(self,report_name__,__engine__,'ORACLE',__log_active__=True)
+        self.report_name__ = cfg.get_cfg('report_name')
+        #self.__engine_url__ = None
+        HistoryReport.__init__(self,cfg)
 
     def oracle_table_cost (self,owner_,table_name_,column_name_):#TODO:OBTAIN TOTAL COST IN ORACLE
         """Obtiene oracle_table_cost"""

@@ -4,7 +4,7 @@ from sqlalchemy import create_engine
 from class_config import Config
 from class_base_class import BaseClass
 
-cfg = Config()
+cfg = Config('NO_INICIALIZADO','NO_INICIALIZADO')
 
 class DatabaseCloneObjectSqllite(BaseClass):
     """DatabaseCloneObjectSqllite: 

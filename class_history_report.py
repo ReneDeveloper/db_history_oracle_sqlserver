@@ -31,6 +31,8 @@
 # to connect: the configuration of this, is made by SQLALCHEMY URL
 # to prevent: the url with the user and pass needs to be encripted before the use
 
+import warnings
+
 import pandas as pd
 import matplotlib.pyplot as plt
 from sqlalchemy import create_engine
@@ -43,21 +45,31 @@ from class_database_clone_objects import DatabaseCloneObjectSqllite
 #TODO:move to html generator
 from class_history_charts import HistoryCharts
 
-cfg = Config()
+cfg = Config("NO_INICIALIZADO",'NO_INICIALIZADO')
 print("LA RUTA: " + cfg.get_par('lib_dir'))
+warnings.warn("DEPRECATED:NO DEBE EJECUTARSE SIEMPRE:cx_Oracle.init_oracle_client")
 cx_Oracle.init_oracle_client(lib_dir= cfg.get_par('lib_dir'))
-
 
 class HistoryReport(BaseClass):
     """Procesa la historia de servidor"""
-    def __init__(self,report_name__,__engine__,__flavor__,__log_active__):
-        super().__init__(__log_active__)
-        self.report_name__ = report_name__
-        self.__flavor__ = __flavor__
-        fernet = Fernet(cfg.get_par('crkey'))
-        self.__source_url__ = fernet.decrypt(__engine__).decode()
+    __source_url__ = None
+    __cfg__ = None
+
+    def __init__(self,cfg):
+        #self._log('DEPRECATED:HistoryReport:__init__')
+        report_name__ = cfg.get_cfg('report_name')
+        #__flavor__ = 
+
+        warnings.warn("DEPRECATED:este método se reemplaza por __init__(Config)")
+        super().__init__(cfg.get_cfg('log_active'))
         target_db_name = f'{report_name__}_EXPORT_HISTORY.db'
+
+        self.report_name__ = report_name__
+        self.__flavor__ = cfg.get_cfg('sql_flavor')
         self.__target_url__ = f"sqlite:///{cfg.get_par('out_path')}/{target_db_name}"
+
+        fernet = Fernet(cfg.get_par('crkey'))
+        self.__source_url__ = fernet.decrypt(cfg.get_encripted_source_url()).decode()
 
     def get_engine_source(self):
         """function get_engine_source"""
@@ -402,6 +414,9 @@ class HistoryReport(BaseClass):
         history_charts.report_v1_issues()
         history_charts.report_v1_space()
         history_charts.report_v1_history()
+        
+        #history_charts.dev_rpt_evolutivo()
+
 
 
     def dev(self):

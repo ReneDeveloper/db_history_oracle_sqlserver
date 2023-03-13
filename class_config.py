@@ -7,20 +7,61 @@
 #╚██████╗╚██████╔╝██║ ╚████║██║     ██║╚██████╔╝
 # ╚═════╝ ╚═════╝ ╚═╝  ╚═══╝╚═╝     ╚═╝ ╚═════╝ 
                                                
+import warnings
+from class_base_class import BaseClass
+
+
 pars_ = {}
 
 def get_parameter(par_):
+    warnings.warn("the get_parameter module is deprecated", DeprecationWarning,stacklevel=2)
     """Get config parameter"""
     return pars_[par_]
 
-class Config:
+
+class Config(BaseClass):
     """class to obtain config parameters"""
+    
+    __parameters__ = {}
+    __log_active__ = False
+    __encripted_source_url__ = None
+
+    def __init__(self,report_name__,sql_flavor__):
+        #super().__init__(__log_active__)
+        super().__init__(True)
+        print(f"Config:__init__:{report_name__}")
+        self.set_cfg('report_name',report_name__)
+        self.set_cfg('sql_flavor',sql_flavor__)
+    
+
+    
     def get_par(self, par__):
         """Get config parameter"""
+        self._log('DEPRECATED:Config.get_par')
         return get_parameter(par__)
     def set_par(self, par__, val__):
         """Set config parameter"""
+        self._log('DEPRECATED:Config.set_par')
+
         pars_[par__]=val__
+
+    def set_encripted_source_url(self, par__):
+        """Set config parameter"""
+        self.__encripted_source_url__ = par__
+
+    def get_encripted_source_url(self):
+        """Set config parameter"""
+        return self.__encripted_source_url__
+
+    def set_cfg(self, cfg, val):
+        """Set config parameter"""
+        self.__parameters__[cfg]=val
+
+    def get_cfg(self, cfg):
+        """get config parameter"""
+        return self.__parameters__[cfg]
+
+
 
 #parametro crkey
 pars_["crkey"]=b'ixg0tK8e3dlzVT5NBzMGqEgfkaeRfsPFc76wZxAaD-0='
@@ -32,8 +73,8 @@ pars_["crkey"]=b'ixg0tK8e3dlzVT5NBzMGqEgfkaeRfsPFc76wZxAaD-0='
 ###DEPRECATED###pars_["port"]="1521"
 ###DEPRECATED###pars_["database"]="database"
 #parametros de paths
-pars_["lib_dir"]="C:/Users/rsilc/Downloads/PORTABLE/instantclient_21_9/"#win11
-#pars_["lib_dir"]="C:/Users/rcastillosi/Downloads/PORTABLE/instantclient_21_7/"#win10
+#pars_["lib_dir"]="C:/Users/rsilc/Downloads/PORTABLE/instantclient_21_9/"#win11
+pars_["lib_dir"]="C:/Users/rcastillosi/Downloads/PORTABLE/instantclient_21_7"#win10
 
 ###DEPRECATED###pars_["out_dir"]="C:/Users/rcastillosi/__SQL_DATABASE_STATS__/__EXPORT_DATA__/"
 #parametros de bbdd TARGET
