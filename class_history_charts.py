@@ -449,15 +449,15 @@ class HistoryCharts(BaseClass):
 
         header_01L = f'<div {cen}><h2>Databases LITE: LITE Group - less 1GB</h2></div>\n'
         self.img_001_table_vs_index('LITE Group - less 1GB','LITE')
-        img_001_table_vs_index_lite = f'<img src="{name}img_001_table_vs_index_lite.png"></img>'
+        img_001_table_vs_index_lite = f'<img src="{name}img_001_table_vs_index_LITE.png"></img>'
 
         header_01M = f'<div {cen}><h2>Databases MEDIUM: Medium Group - less 100GB</h2></div>\n'
         self.img_001_table_vs_index('MEDIUM Group - less 100GB','MED')
-        img_001_table_vs_index_medium = f'<img src="{name}img_001_table_vs_index_medium.png"></img>\n'
+        img_001_table_vs_index_medium = f'<img src="{name}img_001_table_vs_index_MED.png"></img>\n'
 
         header_01B = f'<div {cen}><h2>Databases BIG: Big Group - more than 100GB</h2></div>\n'
         self.img_001_table_vs_index('BIG Group - more tha 100GB','BIG')
-        img_001_table_vs_index_big = f'<img src="{name}img_001_table_vs_index_big.png"></img>\n'
+        img_001_table_vs_index_big = f'<img src="{name}img_001_table_vs_index_BIG.png"></img>\n'
 
 
         header_002 = '<div style="text-align:center"><h2>Owners Detail - History Resport</h2></div>\n'

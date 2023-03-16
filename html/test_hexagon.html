@@ -1,78 +1,48 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="UTF-8">
-    <title>Three.js Hexagon Example</title>
-    <style>
-      body {
-        margin: 0;
-      }
-      canvas {
-        display: block;
-      }
-    </style>
-  </head>
-  <body>
-    <script src="https://threejs.org/build/three.min.js"></script>
-    <script>
-      // Create the scene
-      const scene = new THREE.Scene();
+<head>
+  <title>Hexagon Example</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="https://cdn.jsdelivr.net/npm/three@0.132.2/build/three.min.js"></script>
+  <script src="hexagon.js"></script>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+    }
+    canvas {
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <script>
+    // Create the scene, camera, and renderer
 
-      // Create the camera
-      const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-      camera.position.z = 20;
 
-      // Create the renderer
-      const renderer = new THREE.WebGLRenderer();
-      renderer.setSize(window.innerWidth, window.innerHeight);
-      document.body.appendChild(renderer.domElement);
 
-      // Define the vertices of the hexagon
-      const hexagonShape = new THREE.Shape();
-      hexagonShape.moveTo(0, 10);
-      hexagonShape.lineTo(8.66, 5);
-      hexagonShape.lineTo(8.66, -5);
-      hexagonShape.lineTo(0, -10);
-      hexagonShape.lineTo(-8.66, -5);
-      hexagonShape.lineTo(-8.66, 5);
-      hexagonShape.lineTo(0, 10);
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    camera.position.z = 5;
+    const renderer = new THREE.WebGLRenderer();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    document.body.appendChild(renderer.domElement);
 
-      // Define the extrude settings
-      const extrudeSettings = {
-        depth: 1,
-        bevelEnabled: false,
-      };
+    // Create a new hexagon with size 2
+    const hexagon = new Hexagon(2);
 
-      // Create the geometry by extruding the shape
-      const hexagonGeometry = new THREE.ExtrudeGeometry(hexagonShape, extrudeSettings);
+    // Add the hexagon to the scene
+    scene.add(hexagon.mesh);
 
-      // Create a mesh for the main hexagon and add it to the scene
-      const hexagonMaterial = new THREE.MeshBasicMaterial({ color: 0xAAAAAA });
-      const hexagonMesh = new THREE.Mesh(hexagonGeometry, hexagonMaterial);
-      scene.add(hexagonMesh);
-
-      // Define the number of rows and columns for the hexagonal grid
-      const rows = 4;
-      const cols = 4;
-
-      // Define the size of each hexagon in the grid
-      const hexSize = 1;
-
-      // Create a group to hold the smaller hexagon meshes
-      const hexGroup = new THREE.Group();
-      scene.add(hexGroup);
-
-      // Create a loop to generate the hexagonal grid
-      for (let row = 0; row < rows; row++) {
-        for (let col = 0; col < cols; col++) {
-          // Create a hexagon shape for each grid cell
-          const cellShape = new THREE.Shape();
-          cellShape.moveTo(0, hexSize);
-          cellShape.lineTo(hexSize * 0.866, hexSize * 0.5);
-          cellShape.lineTo(hexSize * 0.866, -hexSize * 0.5);
-          cellShape.lineTo(0, -hexSize);
-          cellShape.lineTo(-hexSize * 0.866, -hexSize * 0.5);
-          cellShape.lineTo(-hexSize * 0.866, hexSize * 0.5);
-          cellShape.lineTo(0, hexSize);
-
-         
+    // Render the scene
+    function render() {
+      requestAnimationFrame(render);
+      hexagon.mesh.rotation.z += 0.01;
+      renderer.render(scene, camera);
+    }
+    render();
+  </script>
+</body>
+</html>
