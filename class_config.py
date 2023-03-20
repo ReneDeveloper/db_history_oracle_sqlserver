@@ -1,4 +1,12 @@
 """configuration class"""
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+#██╗  ██╗██╗███████╗████████╗ ██████╗ ██████╗ ██╗   ██╗
+#██║  ██║██║██╔════╝╚══██╔══╝██╔═══██╗██╔══██╗╚██╗ ██╔╝
+#███████║██║███████╗   ██║   ██║   ██║██████╔╝ ╚████╔╝
+#██╔══██║██║╚════██║   ██║   ██║   ██║██╔══██╗  ╚██╔╝
+#██║  ██║██║███████║   ██║   ╚██████╔╝██║  ██║   ██║
+#╚═╝  ╚═╝╚═╝╚══════╝   ╚═╝    ╚═════╝ ╚═╝  ╚═╝   ╚═╝
 
 # ██████╗ ██████╗ ███╗   ██╗███████╗██╗ ██████╗ 
 #██╔════╝██╔═══██╗████╗  ██║██╔════╝██║██╔════╝ 
@@ -6,63 +14,96 @@
 #██║     ██║   ██║██║╚██╗██║██╔══╝  ██║██║   ██║
 #╚██████╗╚██████╔╝██║ ╚████║██║     ██║╚██████╔╝
 # ╚═════╝ ╚═════╝ ╚═╝  ╚═══╝╚═╝     ╚═╝ ╚═════╝ 
+
+# -----------------------------------------------------------------------------
+# Project: Database History Report
+# Author : René Silva
+# Email  : rsilcas@outlook.es
+# Date   : 2023-02-03
+# Updated: 2023-03-16
+# -----------------------------------------------------------------------------
+#
+# Description:
+#
+# This Python script have the minimal parameters to obtain the history report of database
+# that means: generates the database history by year/month by Owner/table using parametric queries
+#             those queries are different to different SQL flavors and engines
+#             for example for SQLSERVER obtain the METADATA from one way but in Oracle in other way
+#             to obtain different behaviors on the process, the config class will have "flavor"
+#             at this time the flavor is "ORACLE" or "SQLSERVER"
+# such as the project/owner/or database, this need a user to enter inside the engine
+# to connect: the configuration of this, is made by encripted SQLALCHEMY URL
+# to prevent: the url with the user and pass needs to be encripted before the use
                                                
 import warnings
 from class_base_class import BaseClass
 
-
 pars_ = {}
 
 def get_parameter(par_):
-    warnings.warn("the get_parameter module is deprecated", DeprecationWarning,stacklevel=2)
+    warnings.warn("the get_parameter module is deprecated")
     """Get config parameter"""
     return pars_[par_]
-
 
 class Config(BaseClass):
     """class to obtain config parameters"""
     
     __parameters__ = {}
+    __queries__ = {}
     __log_active__ = False
     __encripted_source_url__ = None
 
     def __init__(self,report_name__,sql_flavor__):
-        #super().__init__(__log_active__)
         super().__init__(True)
-        print(f"Config:__init__:{report_name__}")
         self.set_cfg('report_name',report_name__)
         self.set_cfg('sql_flavor',sql_flavor__)
-    
+        self.set_default_values()
 
-    
     def get_par(self, par__):
         """Get config parameter"""
-        self._log('DEPRECATED:Config.get_par')
+        warnings.warn("DEPRECATED: use get_cfg('par__')")
+        self._log('DEPRECATED:use Config.get_cfg')
         return get_parameter(par__)
+
     def set_par(self, par__, val__):
         """Set config parameter"""
+        warnings.warn("DEPRECATED: use set_cfg('par__','val__')")
         self._log('DEPRECATED:Config.set_par')
-
         pars_[par__]=val__
 
     def set_encripted_source_url(self, par__):
-        """Set config parameter"""
+        """set_encripted_source_url"""
         self.__encripted_source_url__ = par__
 
     def get_encripted_source_url(self):
-        """Set config parameter"""
+        """get_encripted_source_url"""
         return self.__encripted_source_url__
 
     def set_cfg(self, cfg, val):
-        """Set config parameter"""
+        """method set_cfg: Set config parameter"""
         self.__parameters__[cfg]=val
 
-    def get_cfg(self, cfg):
-        """get config parameter"""
-        return self.__parameters__[cfg]
+    def get_cfg(self, cfg_key):
+        """method get_cfg: get config parameter"""
+        return self.__parameters__[cfg_key]
 
+    def set_query(self, query_key, query):
+        """method set_query: set query parameter asociated to the flavor"""
+        self.__queries__[query_key]=query
 
+    def get_query(self, query_key):
+        """method get_query: get query parameter"""
+        return self.__queries__[query_key]
 
+    def set_default_values(self):
+        """method set_default_values: Set config default parameters"""
+        self.set_cfg("crkey",b'ixg0tK8e3dlzVT5NBzMGqEgfkaeRfsPFc76wZxAaD-0=')
+        self.set_cfg("lib_dir",'C:/Users/rcastillosi/Downloads/PORTABLE/instantclient_21_7')
+        self.set_cfg("out_path",'C:/Users/rcastillosi/__SQL_DATABASE_STATS__/__EXPORT_DATA__/')
+
+    def get_parameter_dict(self):#TODO:POR SEGURIDAD QUITAR ESTE METODO, SE USA SOLO PARA EFECTOS DE DEVELOP
+        return self.__parameters__
+        
 #parametro crkey
 pars_["crkey"]=b'ixg0tK8e3dlzVT5NBzMGqEgfkaeRfsPFc76wZxAaD-0='
 
@@ -81,12 +122,11 @@ pars_["lib_dir"]="C:/Users/rcastillosi/Downloads/PORTABLE/instantclient_21_7"#wi
 pars_["TARGET_NAME"]="HISTORY_REPORT"
 pars_["TARGET_NAME_ISSUE"]="HISTORY_ISSUE"
 
-pars_["out_path"]="C:/Users/rcastillosi/__SQL_DATABASE_STATS__/__EXPORT_DATA__/"
+#pars_["out_path"]="C:/Users/rcastillosi/__SQL_DATABASE_STATS__/__EXPORT_DATA__/"
 ###DEPRECATED####pars_["out_sqllit_file"]='sqlite:///{out_path}/SQLLITE_EXPORT_HISTORY_{out_owner}.db'
 ###DEPRECATED####pars_["out_sqllite"]=f'sqlite:///{pars_["out_path"]}/SQLLITE_EXPORT_HISTORY.db'
-#parametros para nombres de archivos
-pars_["pre_metadata"]="METADATA_"
-
+###DEPRECATED#####parametros para nombres de archivos
+###DEPRECATED#####pars_["pre_metadata"]="METADATA_"
 
 data_issue = {
 'OWNER': ['THE_OWNER'], 'TABLE_NAME': ['THE_TABLE'], 'ISSUE': ['THE_ISSUE'], 
@@ -95,37 +135,27 @@ data_issue = {
 
 pars_["data_issue"]=data_issue
 
-
-
-
 # ██████╗ ██████╗  █████╗  ██████╗██╗     ███████╗
 #██╔═══██╗██╔══██╗██╔══██╗██╔════╝██║     ██╔════╝
 #██║   ██║██████╔╝███████║██║     ██║     █████╗  
 #██║   ██║██╔══██╗██╔══██║██║     ██║     ██╔══╝  
 #╚██████╔╝██║  ██║██║  ██║╚██████╗███████╗███████╗
 # ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝ ╚═════╝╚══════╝╚══════╝
-                                                 
 
+
+
+#TODO:DEPRECATED
+warnings.warn('DEPRECATED:pars_["ORACLE_QUERY_METADATA_COUNTS"]')
 pars_["ORACLE_QUERY_METADATA_COUNTS"] = """
-select owner,
+SELECT owner,
        table_name,
        num_rows
 from sys.dba_tables
-where owner not in ('SYS','SYSTEM','WMSYS','JAEDOC','XDB','DBSNMP')
-                            """
+where owner not in ('SYS','SYSTEM','WMSYS','XDB','DBSNMP')
+"""
 
-pars_["ORACLE_QUERY_METADATA_DAILY_SPACE__________DEPRECATED"] = """
-select s.tablespace_name,s.owner, s.segment_name, s.segment_type,
-case when s.segment_type = 'INDEX' then i.table_name when s.segment_type = 'TABLE' then s.segment_name end as table_name_normalizado,
-sum(s.bytes)/1024/1024 total_mb, 
-sum(case when s.segment_type='INDEX' then s.bytes else 0 end)/1024/1024 total_mb_index, 
-sum(case when s.segment_type='TABLE' then s.bytes else 0 end)/1024/1024 total_mb_table, 
-count(1) as cnt_seg  
-from dba_segments s 
-left join dba_indexes i on s.segment_type='INDEX' and i.index_name = s.segment_name and i.owner = s.owner
-group by s.tablespace_name,s.owner, s.segment_name,s.segment_type,case when s.segment_type = 'INDEX' then i.table_name when s.segment_type = 'TABLE' then s.segment_name end
-                            """
-
+#TODO:DEPRECATED
+warnings.warn('DEPRECATED:pars_["ORACLE_QUERY_METADATA_DAILY_SPACE"]')
 pars_["ORACLE_QUERY_METADATA_DAILY_SPACE"] = """
 SELECT tablespace_name,owner, segment_name, segment_type,table_name_normalizado,
 SUM(bytes)/1024/1024 total_mb,
@@ -165,10 +195,10 @@ FROM
 --where segment_type = 'TABLE PARTITION' AND owner = 'DMNORMA_ADM'
 GROUP BY tablespace_name,OWNER, segment_name,segment_type,table_name_normalizado
 ORDER BY segment_type
-                            """
+"""
 
-
-
+#TODO:DEPRECATED
+warnings.warn('DEPRECATED:pars_["ORACLE_QUERY_METADATA_TABLE_DATE"]')
 pars_["ORACLE_QUERY_METADATA_TABLE_DATE"] = """
 SELECT owner,table_name, column_name
 FROM DBA_TAB_COLUMNS c WHERE (owner, table_name, column_id) in (
@@ -179,9 +209,7 @@ FROM DBA_TAB_COLUMNS c WHERE (owner, table_name, column_id) in (
     group by owner,table_name
 )
 order by owner,table_name,column_name
-                            """
-
-
+"""
 
 #TODO:FAILED
 pars_["ORACLE_QUERY_HISTORY_COMPLETE"] = """
@@ -197,7 +225,6 @@ COUNT(1) AS CNT FROM {__OWNER__}.{__TABLE_NAME__}
 GROUP BY EXTRACT(YEAR FROM \"{__COLUMN_NAME__}\"),EXTRACT(YEAR FROM \"{__COLUMN_NAME__}\") * 100 +  EXTRACT(MONTH FROM \"{__COLUMN_NAME__}\")
                             """
 
-
 #███████╗ ██████╗ ██╗         ███████╗███████╗██████╗ ██╗   ██╗███████╗██████╗
 #██╔════╝██╔═══██╗██║         ██╔════╝██╔════╝██╔══██╗██║   ██║██╔════╝██╔══██╗
 #███████╗██║   ██║██║         ███████╗█████╗  ██████╔╝██║   ██║█████╗  ██████╔╝
@@ -211,12 +238,10 @@ select owner,
        table_name,
        num_rows
 from sys.dba_tables
-where owner not in ('SYS','SYSTEM','WMSYS','JAEDOC','XDB','DBSNMP')
+where owner not in ('SYS','SYSTEM','WMSYS','XDB','DBSNMP')
                             """
 #TODO:NEED A QUERY OF SPACES OF SQLSERVER
 pars_["SQLSERVER_QUERY_METADATA_DAILY_SPACE"] = """
-
-
 
 set nocount on
 

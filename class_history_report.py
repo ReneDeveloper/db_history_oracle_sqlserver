@@ -28,7 +28,7 @@
 # This Python script can Generate the history report of databases
 # that means: generates the database history by year/month by Owner/table
 # such as the project/owner/or database, this need a user to enter inside the engine
-# to connect: the configuration of this, is made by SQLALCHEMY URL
+# to connect: the configuration of this, is made by encripted SQLALCHEMY URL
 # to prevent: the url with the user and pass needs to be encripted before the use
 
 import warnings
@@ -55,41 +55,33 @@ class HistoryReport(BaseClass):
     __source_url__ = None
     __cfg__ = None
 
-    def __init__(self,cfg):
+    def __init__(self,cfg__):
         #self._log('DEPRECATED:HistoryReport:__init__')
-        report_name__ = cfg.get_cfg('report_name')
-        #__flavor__ = 
-
-        warnings.warn("DEPRECATED:este método se reemplaza por __init__(Config)")
-        super().__init__(cfg.get_cfg('log_active'))
+        report_name__ = cfg__.get_cfg('report_name')
+        #__flavor__ =
+        self.__cfg__ = cfg__
+        super().__init__(cfg__.get_cfg('log_active'))
         target_db_name = f'{report_name__}_EXPORT_HISTORY.db'
 
         self.report_name__ = report_name__
-        self.__flavor__ = cfg.get_cfg('sql_flavor')
-        self.__target_url__ = f"sqlite:///{cfg.get_par('out_path')}/{target_db_name}"
+        self.__flavor__ = cfg__.get_cfg('sql_flavor')
+        self.__target_url__ = f"sqlite:///{cfg__.get_cfg('out_path')}/{target_db_name}"
 
-        fernet = Fernet(cfg.get_par('crkey'))
-        self.__source_url__ = fernet.decrypt(cfg.get_encripted_source_url()).decode()
+        fernet = Fernet(cfg__.get_cfg('crkey'))
+        self.__source_url__ = fernet.decrypt(cfg__.get_encripted_source_url()).decode()
+
+    def get_config(self):
+        """get_config"""
+        return self.__cfg__
+
+    def get_cfg(self,key):
+        """get_cfg"""
+        return self.__cfg__.get_cfg(key)
 
     def get_engine_source(self):
-        """function get_engine_source"""
+        """method get_engine_source"""
         #oracle_cnx_string = 'oracle+cx_oracle://{username}:{password}@{host_}:{port}/{database}'
         engine = create_engine(self.__source_url__,pool_timeout=999999)
-        return engine
-
-    def get_engine_source_no_encriptado(self):
-        """function """
-        oracle_cnx_string = 'oracle+cx_oracle://{username}:{password}@{host_}:{port}/{database}'
-        engine = create_engine(
-            oracle_cnx_string.format(
-                username = cfg.get_par('username'),
-                password = cfg.get_par('password'),
-                host_    = cfg.get_par('hostname'),
-                port     = cfg.get_par('port'),
-                database = cfg.get_par('database')
-            )
-            ,pool_timeout=99999
-        )
         return engine
 
     def target_execute(self,sql_):
@@ -112,6 +104,7 @@ class HistoryReport(BaseClass):
     def read_sql_query(self,sql_):
         """function read_sql_query"""
         data = None
+        cnx = None
         try:
             self._log(f"target_execute_select:START:{sql_}")
             engine = self.get_engine_target()
@@ -130,6 +123,7 @@ class HistoryReport(BaseClass):
     def target_execute_select(self,sql_):
         """function target_execute"""
         data = None
+        cnx = None
         try:
             self._log(f"target_execute_select:START:{sql_}")
             engine = self.get_engine_target()
@@ -194,7 +188,7 @@ class HistoryReport(BaseClass):
     def export_sql_csv_header(self, sql__, file__):
         """function export_sql_csv_header will extract sql results and puts in a CSV file"""
         data = self.execute_sql_source(sql__)
-        data.to_csv(cfg.get_par('out_path')+file__,index=False,
+        data.to_csv(self.__cfg__.get_cfg('out_path')+file__,index=False,
             sep=";",decimal=",",mode='a',header=True)
         self._log(f"Export ejecutado:{file__}")
         return data
@@ -207,7 +201,8 @@ class HistoryReport(BaseClass):
         self._log("export_metadata_counts:Obtaining counts by table")
 
         parameter_name = self.__flavor__ + '_QUERY_METADATA_COUNTS'
-        sql_  = cfg.get_par(parameter_name)
+        #sql_  = cfg.get_par(parameter_name)
+        sql_  = self.__cfg__.get_query(parameter_name)
         data  = self.execute_sql_source(sql_)
 
         sql_delete = "DELETE FROM METADATA_COUNTS"
@@ -221,7 +216,8 @@ class HistoryReport(BaseClass):
         self._log("export_metadata_daily_space:START")
         self._log("export_metadata_daily_space:Obtaining space used by table")
         parameter_name = self.__flavor__ + '_QUERY_METADATA_DAILY_SPACE'
-        sql_  = cfg.get_par(parameter_name)
+        #sql_  = cfg.get_par(parameter_name)
+        sql_  = self.__cfg__.get_query(parameter_name)
         data  = self.execute_sql_source(sql_)
         sql_delete = "DELETE FROM METADATA_DAILY_SPACE"
         self.target_execute(sql_delete)
@@ -242,26 +238,10 @@ class HistoryReport(BaseClass):
                 """
         return select_
 
-    def ERROR_query_history_parametrico(self,pars_):#TODO: THIS DOESNT WORK
-        """function """
-        #where_  =
-        select_ = cfg.get_par(self.__flavor__ + '_QUERY_HISTORY_COMPLETE')
-        _OWNER = pars_["_OWNER"]
-        _TABLE_NAME = pars_["_TABLE_NAME"]
-        _COLUMN_NAME = pars_["_COLUMN_NAME"]
-        self._log("_OWNER:" + _OWNER)
-        select_ = select_.format( __OWNER__=_OWNER,  __TABLE_NAME__=_TABLE_NAME, 
-            __COLUMN_NAME__=_COLUMN_NAME)
-        self._log("DEBUG___________________HISTORY PARAMETRICO")
-        self._log(select_)
-        self._log("DEBUG___________________HISTORY PARAMETRICO")
-        return select_
-
-
     def export_history_owner(self,owner_):#TODO:MOVE TO LIST AND SEPARATE PROCESS
         """Exporta historia de las tablas contenidas en un owner"""
         file_csv = f'METADATA_TABLE_DATE_{owner_}.csv'
-        ruta_csv = cfg.get_par('out_path') + 'out_METADATA/' + file_csv
+        ruta_csv = self.__cfg__.get_cfg('out_path') + 'out_METADATA/' + file_csv
         df_metadata = pd.read_csv(ruta_csv, sep=";")
 
         #sql_metadata = f"select * from v_RESTANTES where owner='{owner_}'"
@@ -280,7 +260,7 @@ class HistoryReport(BaseClass):
     def export_history_table(self,owner_,table):
         """Exporta historia de la tabla en un owner"""
         file_csv = f'METADATA_TABLE_DATE_{owner_}.csv'
-        ruta_csv = cfg.get_par('out_path') + 'out_METADATA/' + file_csv
+        ruta_csv = self.__cfg__.get_cfg('out_path') + 'out_METADATA/' + file_csv
         df_metadata = pd.read_csv(ruta_csv, sep=";")
 
         for _ , row in df_metadata.iterrows():
@@ -311,11 +291,13 @@ class HistoryReport(BaseClass):
                     return False
 
                 empty_history = len(df_hist.index)==0
-                
+
                 if empty_history:#issue NO_HISTORY
                     target = cfg.get_par('TARGET_NAME_ISSUE')
                     data_issue = cfg.get_par('data_issue').copy()
-                    sql_delete = f"DELETE FROM {target} where OWNER = '{owner_}' and TABLE_NAME='{table}'"
+                    sql_delete = f"""
+                    DELETE FROM {target} where OWNER = '{owner_}' and TABLE_NAME='{table}'
+                    """
                     self.target_execute(sql_delete)
                     data_issue['TABLE_NAME']=table_name_
                     data_issue['OWNER']=owner_
@@ -327,7 +309,9 @@ class HistoryReport(BaseClass):
 
                 if not empty_history:
                     target = cfg.get_par('TARGET_NAME')
-                    sql_delete = f"DELETE FROM {target} where OWNER = '{owner_}' and TABLE_NAME='{table}'"
+                    sql_delete = f"""
+                    DELETE FROM {target} where OWNER = '{owner_}' and TABLE_NAME='{table}'
+                    """
                     self.target_execute(sql_delete)
                     self.target_copy_to_table(df_hist,target)
 
@@ -363,7 +347,8 @@ class HistoryReport(BaseClass):
     def export_metadata_table_date_owner(self,owner__):
         """function export_metadata_table_date"""
         self._log(f'export_metadata_table_date:owner__:{owner__}:START')
-        sql_  = cfg.get_par(self.__flavor__ +'_QUERY_METADATA_TABLE_DATE')
+        #sql_  = cfg.get_par(self.__flavor__ +'_QUERY_METADATA_TABLE_DATE')
+        sql_  = self.get_config().get_query(self.__flavor__ +'_QUERY_METADATA_TABLE_DATE')
         sql__ = sql_.format(__OWNER__=owner__)
         self._log(f'export_metadata:sql__:{sql__}')
         data  = self.execute_sql_source(sql__)
@@ -374,17 +359,12 @@ class HistoryReport(BaseClass):
         self.target_copy_to_table(data,'METADATA_TABLE_DATE')
 
         file_csv = f'METADATA_TABLE_DATE_{owner__}.csv'
-        ruta_csv = cfg.get_par('out_path') + 'out_METADATA/' + file_csv
+        ruta_csv = self.__cfg__.get_cfg('out_path') + 'out_METADATA/' + file_csv
         data.to_csv(ruta_csv,index=False,sep=";",decimal=",",header=True)
         #f'METADATA_TABLE_DATE_{owner_}.csv'
 
         self._log(f"export_metadata_table_date:owner__:{owner__}:END")
         return data
-
-
-
-
-
 
     def start(self):
         """function start: creates the metadata of the server"""
@@ -393,7 +373,7 @@ class HistoryReport(BaseClass):
         self.art_msg('aging')
         self.export_metadata_daily_space()
         self.export_metadata_counts()
-        clone = DatabaseCloneObjectSqllite('BRAHMS1P', self.report_name__, self.__log_active__)
+        clone = DatabaseCloneObjectSqllite(self.get_config(),'BRAHMS1P', self.report_name__, self.__log_active__)
         #clone_views = clone.clone_objects('table')
         clone_objects = clone.clone_objects('view')
         self.art_msg('created')
@@ -407,19 +387,27 @@ class HistoryReport(BaseClass):
         self._log(f"clone_objects:{clone_objects}")
         self.art_msg('created')
 
-    def generate_reports(self):
-        # HistoryCharts (report_name__,__target_url__,__flavor__,__log_active__)
-        history_charts= HistoryCharts(self.report_name__,self.__target_url__,self.__flavor__,self.__log_active__)
+
+    def generate_report_start_step_1(self):
+        """generate_report_start_step_1"""
+        history_charts= HistoryCharts(self.__cfg__,self.__target_url__)
         history_charts.report_v1_indexes()
         history_charts.report_v1_issues()
         history_charts.report_v1_space()
+
+    def generate_report_start_step_2(self):
+        """generate_report_start_step_2"""
+        history_charts= HistoryCharts(self.__cfg__,self.__target_url__)
         history_charts.report_v1_history()
-        
         #history_charts.dev_rpt_evolutivo()
 
-
+    def generate_report_start_step_3(self):
+        """generate_report_start_step_3"""
+        history_charts= HistoryCharts(self.__cfg__,self.__target_url__)
+        #history_charts.generate_report_start_step_3()
+        history_charts.generate_report_start_step_4()
+        #history_charts.dev_rpt_evolutivo()
 
     def dev(self):
-        # HistoryCharts (report_name__,__target_url__,__flavor__,__log_active__)
-        history_charts= HistoryCharts(self.report_name__,self.__target_url__,self.__flavor__,self.__log_active__)
+        history_charts= HistoryCharts(self.__cfg__,self.__target_url__)
         history_charts.dev()

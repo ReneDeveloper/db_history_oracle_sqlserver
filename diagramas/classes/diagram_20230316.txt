@@ -1,0 +1,90 @@
+"""diagram_20230316.txt"""
+
++-----------------------------------+                    
+|             BaseClass             |                    
+|-----------------------------------|                    
+| __log_active__                    |  ---->  [ TextArt ]
+| art                               |                    
+|-----------------------------------|                    
+| __init__                          |                    
+| _log                              |                    
+| art_msg                           |                    
+| get_art                           |                    
++-----------------------------------+                    
+                 .                                                                                                                                                         
+                /_\                                                                                                                                                        
+                 |                                [ BaseClass ]                     [ BaseClass ]                       [ BaseClass ]                    [ BaseClass ]     
+                 |                                      .                                 .                                   .                                .           
+                 |                                     /_\                               /_\                                 /_\                              /_\          
+                 |                                      |                                 |                                   |                                |           
+                 |                                      |                                 |                                   |                                |           
++-----------------------------------+       +-------------------------+       +--------------------------+       +----------------------------+       +-------------------+
+|           HistoryReport           |       |      HistoryCharts      |       |          Config          |       | DatabaseCloneObjectSqllite |       |   ChartBaseClass  |
+|-----------------------------------|       |-------------------------|       |--------------------------|       |----------------------------|       |-------------------|
+| __cfg__                           |       | __cfg__                 |       | __encripted_source_url__ |       | __from__                   |       | __cfg__           |
+| __flavor__                        |       | __flavor__              |       | __log_active__           |       | __source_url__             |       | __chart_dict__    |
+| __source_url__                    |       | __target_url__          |       | __parameters__           |       | __tagname__                |       | __chart_name__    |
+| __target_url__                    |       | report_name__           |       | __queries__              |       | __target_url__             |       | __target_url__    |
+| report_name__                     |       |-------------------------|       |--------------------------|       | __to__                     |       |-------------------|
+|-----------------------------------|       | __init__                |       | __init__                 |       |----------------------------|       | __init__          |
+| ERROR_query_history_parametrico   |       | dev                     |       | get_cfg                  |       | __init__                   |       | get               |
+| __init__                          |       | dev_EVOLUTIVO           |       | get_encripted_source_url |       | clone_objects              |       | get_engine_target |
+| dev                               |       | dev_pie                 |       | get_par                  |       | execute_ddl                |       | read_sql_query    |
+| estimate_all                      |       | dev_rpt_evolutivo       |       | get_parameter_dict       |       | execute_sql_source         |       +-------------------+
+| execute_sql_source                |       | generate_excel_from_sql |       | get_query                |       | get_engine_source          |                            
+| execute_sql_source_without_result |       | generate_pie_from_sql   |       | set_cfg                  |       | get_engine_target          |                            
+| export_history_owner              |       | get_engine_target       |       | set_default_values       |       +----------------------------+                            
+| export_history_table              |       | get_html_sql            |       | set_encripted_source_url |                                                                 
+| export_metadata_counts            |       | img_001_table_vs_index  |       | set_par                  |                                                                 
+| export_metadata_daily_space       |       | img_002_owner_history   |       | set_query                |                                                                 
+| export_metadata_table_date_owner  |       | read_sql_query          |       +--------------------------+                                                                 
+| export_metadata_table_date_owners |       | report_v1_history       |                                                                                                    
+| export_sql_csv_header             |       | report_v1_indexes       |                                                                                                    
+| generate_report_start_step_1      |       | report_v1_issues        |                                                                                                    
+| generate_report_start_step_2      |       | report_v1_space         |                                                                                                    
+| generate_reports                  |       +-------------------------+                                                                                                    
+| get_cfg                           |                                                                                                                                      
+| get_config                        |                                                                                                                                      
+| get_engine_source                 |                                                                                                                                      
+| get_engine_source_no_encriptado   |                                                                                                                                      
+| get_engine_target                 |                                                                                                                                      
+| process_all                       |                                                                                                                                      
+| process_owner                     |                                                                                                                                      
+| query_history                     |                                                                                                                                      
+| read_sql_query                    |                                                                                                                                      
+| start                             |                                                                                                                                      
+| target_copy_to_table              |                                                                                                                                      
+| target_execute                    |                                                                                                                                      
+| target_execute_select             |                                                                                                                                      
++-----------------------------------+                                                                                                                                      
+          .                                       
+         /_\                                      
+          |                   [ HistoryReport ]   
+          |                           .           
+          |                          /_\          
+          |                           |           
+          |                           |           
++---------------------+       +------------------+
+|    HistoryOracle    |       | HistorySqlServer |
+|---------------------|       |------------------|
+| __engine_url__      |       | __engine_url__   |
+| report_name__       |       | report_name__    |
+|---------------------|       |------------------|
+| __init__            |       | __init__         |
+| oracle_table_cost   |       | sql_cost         |
+| set_default_queries |       +------------------+
++---------------------+                           
+                                    
+                                    
+                                    
+                                    
+[ ChartBaseClass ]       +---------+
+       .                 | TextArt |
+      /_\                |---------|
+       |                 | get_art |
+       |                 +---------+
++---------------+                   
+| ChartBarClass |                   
+|---------------|                   
+| img_bar       |                   
++---------------+                   

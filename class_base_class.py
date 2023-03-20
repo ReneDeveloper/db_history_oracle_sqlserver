@@ -12,15 +12,15 @@ class BaseClass():
         self.art = TextArt()
 
     def _log(self,var):
-        """function _log"""
+        """method _log"""
         if self.__log_active__:
             print(f"LOG:{var}")
 
     def get_art(self,var):
-        """function _art"""
+        """method get_art"""
         return self.art.get_art(var)
 
     def art_msg(self,var):
-        """function _art"""
+        """method art_msg"""
         print(self.get_art(var))
         
