@@ -520,7 +520,7 @@ class HistoryCharts(BaseClass):
         writer.save()
 
 
-    def generate_report_start_step_4(self):
+    def generate_report_start_step_3_2(self):
         """generate_report_start_step_4"""
         sql_ = """
         select * from v_RPT_POSIBLE_BK

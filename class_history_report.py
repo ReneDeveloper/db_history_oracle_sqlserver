@@ -382,7 +382,8 @@ class HistoryReport(BaseClass):
         self.export_metadata_table_date_owners()
 
         #TODO:THIS NEEDS TO CHANGE IN SQLSERVER CASES
-        self.export_history_owner('SYSTEM')#to create the basic structure
+        #self.export_history_owner('SYSTEM')#to create the basic structure
+        self.export_history_owner('SYS')#to create the basic structure
 
         self._log(f"clone_objects:{clone_objects}")
         self.art_msg('created')
@@ -404,8 +405,8 @@ class HistoryReport(BaseClass):
     def generate_report_start_step_3(self):
         """generate_report_start_step_3"""
         history_charts= HistoryCharts(self.__cfg__,self.__target_url__)
-        #history_charts.generate_report_start_step_3()
-        history_charts.generate_report_start_step_4()
+        history_charts.generate_report_start_step_3()
+        history_charts.generate_report_start_step_3_2()
         #history_charts.dev_rpt_evolutivo()
 
     def dev(self):
