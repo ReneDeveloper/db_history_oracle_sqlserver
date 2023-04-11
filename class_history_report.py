@@ -31,14 +31,11 @@
 # to connect: the configuration of this, is made by encripted SQLALCHEMY URL
 # to prevent: the url with the user and pass needs to be encripted before the use
 
-import warnings
-
+#import warnings
 import pandas as pd
-import matplotlib.pyplot as plt
 from sqlalchemy import create_engine
 from cryptography.fernet import Fernet
 import sqlalchemy
-import cx_Oracle
 from class_config import Config
 from class_base_class import BaseClass
 from class_database_clone_objects import DatabaseCloneObjectSqllite
@@ -46,9 +43,6 @@ from class_database_clone_objects import DatabaseCloneObjectSqllite
 from class_history_charts import HistoryCharts
 
 cfg = Config("NO_INICIALIZADO",'NO_INICIALIZADO')
-print("LA RUTA: " + cfg.get_par('lib_dir'))
-warnings.warn("DEPRECATED:NO DEBE EJECUTARSE SIEMPRE:cx_Oracle.init_oracle_client")
-cx_Oracle.init_oracle_client(lib_dir= cfg.get_par('lib_dir'))
 
 class HistoryReport(BaseClass):
     """Procesa la historia de servidor"""
@@ -323,14 +317,6 @@ class HistoryReport(BaseClass):
         #self.export_history(f'METADATA_{owner_}.csv',2022)
         self.export_history_owner(owner_)
 
-    def estimate_all(self):
-        """function start: creates the metadata of the server"""
-        self.art_msg('estimate_all')
-
-    def process_all(self):
-        """function start: creates the metadata of the server"""
-        self.art_msg('process_all')
-
     def export_metadata_table_date_owners(self):
         """Exporta historia de las tablas contenidas en un owner"""
         owners_ = "SELECT * FROM v_METADATA_OWNER_SPACE"
@@ -342,7 +328,6 @@ class HistoryReport(BaseClass):
             print (row)
             print(f'owner_:{owner_}')
             self.export_metadata_table_date_owner(owner_)
-            #print (df)
 
     def export_metadata_table_date_owner(self,owner__):
         """function export_metadata_table_date"""
@@ -361,7 +346,6 @@ class HistoryReport(BaseClass):
         file_csv = f'METADATA_TABLE_DATE_{owner__}.csv'
         ruta_csv = self.__cfg__.get_cfg('out_path') + 'out_METADATA/' + file_csv
         data.to_csv(ruta_csv,index=False,sep=";",decimal=",",header=True)
-        #f'METADATA_TABLE_DATE_{owner_}.csv'
 
         self._log(f"export_metadata_table_date:owner__:{owner__}:END")
         return data
@@ -373,7 +357,8 @@ class HistoryReport(BaseClass):
         self.art_msg('aging')
         self.export_metadata_daily_space()
         self.export_metadata_counts()
-        clone = DatabaseCloneObjectSqllite(self.get_config(),'BRAHMS1P', self.report_name__, self.__log_active__)
+        clone = DatabaseCloneObjectSqllite(self.get_config(),'BRAHMS1P',
+            self.report_name__, self.__log_active__)
         #clone_views = clone.clone_objects('table')
         clone_objects = clone.clone_objects('view')
         self.art_msg('created')
@@ -382,12 +367,11 @@ class HistoryReport(BaseClass):
         self.export_metadata_table_date_owners()
 
         #TODO:THIS NEEDS TO CHANGE IN SQLSERVER CASES
-        #self.export_history_owner('SYSTEM')#to create the basic structure
-        self.export_history_owner('SYS')#to create the basic structure
+        self.export_history_owner('SYSTEM')#to create the basic structure
+        #self.export_history_owner('SYS')#to create the basic structure
 
         self._log(f"clone_objects:{clone_objects}")
         self.art_msg('created')
-
 
     def generate_report_start_step_1(self):
         """generate_report_start_step_1"""

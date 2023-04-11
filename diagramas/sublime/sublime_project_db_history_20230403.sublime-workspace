@@ -1,0 +1,630 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"__",
+				"__cfg__"
+			],
+			[
+				"get",
+				"get_config"
+			],
+			[
+				"lo",
+				"_log"
+			],
+			[
+				"set",
+				"set_default_queries"
+			],
+			[
+				"limi",
+				"limit_a"
+			],
+			[
+				"for",
+				"format"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "/C/Users/rcastillosi/__REPOS__/db_history_oracle_sqlserver/class_cripto.py",
+			"settings":
+			{
+				"buffer_size": 1543,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "/C/Users/rcastillosi/__REPOS__/db_history_oracle_sqlserver/test_cnx.py",
+			"settings":
+			{
+				"buffer_size": 1242,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"contents": "\"\"\"test_banco_sqlserver.py\"\"\"\n\nfrom class_config import Config\nfrom class_history_sqlserver import HistorySqlServer\n\n#FORMAT engine: sql_string='mssql+pyodbc://{username}:{password}@{host_}:{port}/{database}?TrustServerCertificate=yes&driver=SQL+Server'\n\nengine_encriptado = b'gAAAAABkGcNUiRXO-n-qWss_bYQEm8NOc6BiqNdAqP7gBRdvIuUoCMG7QyZXdi3M1kQU7l-N5QDsGBrWiYQH141k17aGfQPEoNJPLumwWoPa7U1BGOkUdIU2vFtPdUbzGDwVkwt5nZU7d5KaarCqhY3-HGYu6ax1Q7gwM0VW0_KUdi5rClv3nYL_kIYr1Buo89OCXh3-oO_j'\n\nname_ = 'sql_ve_paris_test'\n\nstatus_test = \"prueba_bbdd\"#prueba_bbdd,prueba_reporte\n#status_test = \"prueba_reporte\"#prueba_bbdd,prueba_reporte\n\nif status_test==\"prueba_reporte\":\n    cfg = Config(name_,'SQLSERVER')\n    #cfg.set_cfg('lib_dir','C:/Users/rcastillosi/Downloads/PORTABLE/instantclient_21_7/')\n    cfg.set_cfg('log_active',True)\n    cfg.set_encripted_source_url(engine_encriptado)\n\n    hp = HistorySqlServer(cfg)\n    hp.start()\n\n    \n    #hp.dev()\n    #hp.generate_reports()\n    hp.generate_report_start_step_1()\n    hp.generate_report_start_step_2()\n    hp.generate_report_start_step_3()\n\nif status_test==\"prueba_bbdd\":\n    cfg = Config(name_,'SQLSERVER')\n    #cfg.set_cfg('lib_dir','C:/Users/rcastillosi/Downloads/PORTABLE/instantclient_21_7/')\n    cfg.set_cfg('log_active',True)\n    cfg.set_encripted_source_url(engine_encriptado)\n\n    #hp = HistoryOracle(cfg,'BRAHMS1P_stable_002','url_mala')\n    hp = HistorySqlServer(cfg)\n    hp.start()\n    hp.generate_report_start_step_1()\n\n\"\"\"\n\nfrom class_config import Config\nfrom class_history_sqlserver import HistorySqlServer\n\n# pyodbc\n#engine = create_engine(\"mssql+pyodbc://scott:tiger@mydsn\")\n# pymssql\n#engine = create_engine(\"mssql+pymssql://scott:tiger@hostname:port/dbname\")\n\n#FORMAT engine: oracle_string='oracle+cx_oracle://{username}:{password}@{host_}:{port}/{database}'_\neng_0 = b'gAAAAABjyZteIGKhn1Zykyqhn8HytEuGDoAG8cht-ZWyRFjZNTXvxt1PrQqrxzmZTU5VlTme5VdEdEgN-'\neng_1 = b'5hllqZuF5HNhNnqrc9bdpZG72K2V6X4tfY65xxTX7lBxD9lmnyt2qdNOSnP85TiqzPcAHKxFqHq0o9qwg=='\n\nengine_encriptado = eng_0+eng_1\nhp = HistorySqlServer('BI_DB_automatico10',engine_encriptado)\n\nhp.start()\nhp.estimate_all()\nhp.process_all()\n\n\"\"\"",
+			"file": "/C/Users/rcastillosi/__REPOS__/db_history_oracle_sqlserver/test_banco_sqlserver.py",
+			"file_size": 2211,
+			"file_write_time": 133239085324217374,
+			"settings":
+			{
+				"buffer_size": 2157,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "/C/Users/rcastillosi/__REPOS__/db_history_oracle_sqlserver/class_history_sqlserver.py",
+			"settings":
+			{
+				"buffer_size": 4068,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"contents": "Package Control Messages\n========================\n\nVirtualenv\n----------\n\n  Sublime Text - Virtualenv\n  =========================\n\n  Manage your virtualenvs directly from Sublime Text 3. (BETA)\n\n  ## Features\n\n  - Reusable build system. Execute code with a virtualenv without\n  editing your paths manually.\n  - Virtualenv search. Finds virtualenvs in the open folders or anywhere in your system.\n  - Activation/Deactivation. Select or disable the current virtualenv easily.\n  - Create and delete virtualenvs. With target python selection.\n\n\n  ## Support\n\n  Only Sublime Text 3. Tested in Linux and Windows but it should work in OS X as well.\n\n\n  ## Usage\n\n  - Set your build system to `Python + Virtualenv`. (Tools -> Build System)\n  - Search \"Virtualenv\" in the command palette.\n\n\n  For further details and instructions see the README:\n  Preferences -> Package Settings -> Virtualenv -> README\n\n  -----------------------------------------------------------------------------------------\n\n  Hello! Thank you for testing this package.\n\n  IMPORTANT:\n\n  Before you start using the commands verify that the default settings are suitable for\n  your system. Check them in Preferences -> Package Settings -> Virtualenv.\n  *But* do not modify the default settings as you will lose all the changes if the package\n  is updated. You should override the necessary settings in Virtualenv -> User instead.\n\n  Please report any issues or suggestions in the issue tracker:\n  https://github.com/AdrianLC/sublime-text-virtualenv/issues",
+			"settings":
+			{
+				"buffer_size": 1517,
+				"line_ending": "Windows",
+				"name": "Package Control Messages",
+				"read_only": true,
+				"scratch": true
+			}
+		},
+		{
+			"contents": "// Default settings for Virtualenv plugin:\n{\n    // Assuming virtualenv installed on default python prefix.\n    // Depending on your setup you might want to change this to something like:\n    // \"virtualenv\", \"virtualenv-3.3\", \"python3 -m virtualenv\" ...\n    \"executable\": \"python -m virtualenv\",\n\n    // Directory paths searched for virtualenvs.\n    // First one will be used as default destination for new virtualenvs.\n    \"virtualenv_directories\": [\n        \"~/.virtualenvs\",  // virtualenvwrapper $WORKON_HOME\n    ],\n\n    // Additonal paths searched for python installations.\n    // Portable pythons? Perhaps?\n    \"extra_paths\": []\n}",
+			"file": "/C/Users/rcastillosi/Downloads/PORTABLE/Sublime Text Build 3211/Data/Packages/Virtualenv/Virtualenv.sublime-settings",
+			"file_size": -1,
+			"file_write_time": -1,
+			"settings":
+			{
+				"buffer_size": 637,
+				"line_ending": "Windows",
+				"read_only": true,
+				"scratch": true
+			}
+		},
+		{
+			"file": "/C/Users/rcastillosi/__REPOS__/db_history_oracle_sqlserver/class_history_report.py",
+			"settings":
+			{
+				"buffer_size": 16800,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"contents": "import os\nimport warnings\nimport random\nimport sqlalchemy\nfrom sqlalchemy import create_engine\nimport pandas as pd\nimport matplotlib.pyplot as plt\nfrom class_config import Config\nfrom class_base_class import BaseClass\n\n#cfg = Config(\"NO_INICIALIZADO\",'NO_INICIALIZADO')\n\nclass HistoryCharts(BaseClass):\n    \"\"\"HistoryCharts\"\"\"\n    __cfg__ = None\n    \"\"\"Generate the history charts of the database\"\"\"\n    def __init__(self,cfg__,__target_url__):\n        \"\"\"__init__\"\"\"\n        print(f\"cfg__.parameters:{cfg__.get_parameter_dict()}\")\n        super().__init__( cfg__.get_cfg('log_active') )\n        warnings.warn(\"DEPRECATED:al recibir cfg__ ya no requiere (__target_url__,__flavor__)\")\n        self.report_name__ = cfg__.get_cfg('report_name')# report_name__\n        self.__flavor__ = cfg__.get_cfg('sql_flavor')\n        self.__target_url__ = __target_url__\n        self.__cfg__ = cfg__\n\n        html_folder = f\"{cfg__.get_cfg('out_path')}{self.report_name__}\"\n\n        try:\n            os.mkdir(html_folder)\n            print(f\"Folder '{html_folder}' created successfully.\")\n        except FileExistsError:\n            print(f\"Folder '{html_folder}' already exists.\")\n        except Exception as e:\n            print(f\"An error occurred: {e}\")\n\n    def get_engine_target(self):\n        \"\"\"method get_engine_target\"\"\"\n        engine = create_engine(self.__target_url__)\n        return engine\n\n    def read_sql_query(self,sql_):\n        \"\"\"method read_sql_query\"\"\"\n        data = None\n        try:\n            self._log(f\"target_execute_select:START:{sql_}\")\n            engine = self.get_engine_target()\n            cnx=engine.connect()\n            data = pd.read_sql_query(sql_, engine)\n            #data = cnx.execute(sql_)\n        except sqlalchemy.exc.OperationalError:\n            self._log(f\"target_execute:OperationalError:{sql_}\")\n        finally:\n            #self._log(f\"target_execute:finally:{sql_}\")\n            cnx.close()\n            engine.dispose()\n        #self._log(f\"target_execute:END:{sql_}\")\n        return data\n\n    def img_001_table_vs_index(self, group_desc, group_name):\n        \"\"\"method img_001_table_vs_index\"\"\"\n        owners_ = f\"\"\"\n        SELECT  owner as Grupo, total_mb_table as mb_table, total_mb_index as mb_index\n\n        FROM v_METADATA_OWNER_SPACE A\n        WHERE\n\n        CASE \n        WHEN total_mb between 0 and 1000 THEN 'LITE' \n        WHEN total_mb between 1000 and 100000 THEN 'MED' \n        WHEN total_mb between 100000 and 999999999 THEN 'BIG' \n        END \n        = '{group_name}'\n        ORDER BY total_mb DESC\n\n        \"\"\"\n        df_tb_vs_idx = self.read_sql_query(owners_)\n\n        #df = pd.DataFrame(data).set_index('Grupo')\n        df_tb_vs_idx = df_tb_vs_idx.set_index('Grupo')\n\n        # Normalizar los datos\n        df_tb_vs_idx = df_tb_vs_idx.div(df_tb_vs_idx.sum(axis=1), axis=0) * 100\n\n        # Normalize the data while ignoring the first column\n        #df.iloc[:, 1:] = df.iloc[:, 1:].div(df.iloc[:, 1:].sum(axis=1), axis=0) * 100\n\n        # Definir los colores de las barras\n        #colors = ['#FF4136' , '#FFDC00', '#2ECC40' ]#ryb\n        colors = ['#2ECC40' , '#0074D9' ]#gb\n\n        # Crear el gráfico de barras apiladas horizontal con los colores definidos\n        ax = df_tb_vs_idx.plot(kind='barh', stacked=True, width=0.8, figsize=(12,10), color=colors)\n\n        ax.set_title('MB in tables vs MB in indexes')\n        ax.set_xlabel('Percent (%)')\n        ax.set_ylabel('Databases ' + group_name)\n        ax.set_xlim([0, 100])\n        ax.tick_params(axis='y', labelsize=8)\n        ax.tick_params(axis='x', labelsize=8)\n        # Agregar etiquetas en el centro de cada barra\n        for container in ax.containers:\n            ax.bar_label(container, label_type='center', labels=[f'{x:.2f}%' for x in container.datavalues], fontsize=6)\n\n            #ax.bar_label(container, label_type='center', labels=[f'{x:.0f}' for x in container.datavalues], fontsize=10)\n\n        # Ajustar el tamaño de la figura para que quepan todas las etiquetas del eje Y\n        #plt.subplots_adjust(left=0.4, right=0.9, top=0.9, bottom=0.1)\n        plt.subplots_adjust(left=0.3)\n\n        out__ = self.__cfg__.get_cfg('out_path') #+ \"reports\"\n\n        plt.savefig(f'{out__}{self.report_name__}/{self.report_name__}img_001_table_vs_index_{group_name}.png')\n\n    def img_002_owner_history(self, group_desc, group_name):\n        \n        owners_ = f\"\"\"\n        SELECT \n        a.owner as Grupo,\n        total_LAST_4,\n        total_LAST_8,\n        total_LAST_12\n        FROM v_HISTORY_YEARS_MB_OWNER A WHERE \n        CASE \n        WHEN total_mb_owner between 0 and 1000 THEN 'LITE' \n        WHEN total_mb_owner between 1000 and 100000 THEN 'MED' \n        WHEN total_mb_owner between 100000 and 999999999 THEN 'BIG' \n        END \n        ='{group_name}'\n        \"\"\"\n        df = self.read_sql_query(owners_)\n\n        #df = pd.DataFrame(data).set_index('Grupo')\n        df = df.set_index('Grupo')\n\n        # Normalizar los datos\n        df = df.div(df.sum(axis=1), axis=0) * 100\n\n        # Normalize the data while ignoring the first column\n        #df.iloc[:, 1:] = df.iloc[:, 1:].div(df.iloc[:, 1:].sum(axis=1), axis=0) * 100\n\n        # Definir los colores de las barras\n        #colors = ['#FF4136' , '#FFDC00', '#2ECC40' ]#ryb\n        colors = ['#2ECC40' , '#FFDC00',  '#FF4136' ]#GYR\n        #colors = ['#2ECC40' , '#0074D9' ]#gb\n\n        # Crear el gráfico de barras apiladas horizontal con los colores definidos\n        ax = df.plot(kind='barh', stacked=True, width=0.8, figsize=(12,10), color=colors)\n\n        ax.set_title('Owner History')\n        ax.set_xlabel('Percent (%)')\n        ax.set_ylabel('Databases ' + group_name)\n        ax.set_xlim([0, 100])\n        ax.tick_params(axis='y', labelsize=8)\n        ax.tick_params(axis='x', labelsize=8)\n        # Agregar etiquetas en el centro de cada barra\n        for container in ax.containers:\n            ax.bar_label(container, label_type='center', labels=[f'{x:.2f}%' for x in container.datavalues], fontsize=6)\n\n            #ax.bar_label(container, label_type='center', labels=[f'{x:.0f}' for x in container.datavalues], fontsize=10)\n\n        # Ajustar el tamaño de la figura para que quepan todas las etiquetas del eje Y\n        #plt.subplots_adjust(left=0.4, right=0.9, top=0.9, bottom=0.1)\n        plt.subplots_adjust(left=0.3)\n\n        out__ = self.__cfg__.get_cfg('out_path') #+ \"reports\"\n\n        plt.savefig(f'{out__}{self.report_name__}/{self.report_name__}img_002_owner_history_{group_name}.png')\n\n\n    def get_html_sql(self, sql_):#TODO: ESTO NO FUNCIONA\n\n        #owners_ = \"SELECT * FROM v_METADATA_OWNER_SPACE ORDER BY total_mb_table desc\"\n        df_metadata = self.read_sql_query(sql_)\n        df_metadata['total_mb_table'] = df_metadata['total_mb_table'].round(0).astype(int)\n        df_metadata['mb_BIG'] = df_metadata['total_mb_table'].round(0).astype(int)\n\n        # Set the 'text-align' CSS style for the 'Age' column to 'right'\n        styles = [{'selector': '.dataframe td', 'props': [('text-align', 'right')]}]\n        df_metadata.style.set_table_styles(styles)\n\n        html = df_metadata.to_html()\n\n    def report_v1_issues(self):\n        \"\"\"report_v1_issues\"\"\"\n        pass\n\n    def report_v1_space(self):\n        \"\"\"report_v1_space\"\"\"\n        pass\n\n    def report_v1_history(self):\n        \"\"\"report_v1_history\"\"\"\n        name = self.report_name__\n\n        ########################## INICIO LITE\n        owners_ = \"\"\"\n        SELECT \n        a.owner as Grupo,\n        total_mb_owner,\n        total_LAST_4,\n        total_LAST_8,\n        total_LAST_12\n        FROM v_HISTORY_YEARS_MB_OWNER A WHERE \n        CASE \n        WHEN total_mb_owner between 0 and 1000 THEN 'LITE' \n        WHEN total_mb_owner between 1000 and 100000 THEN 'MED' \n        WHEN total_mb_owner between 100000 and 999999999 THEN 'BIG' \n        END \n        ='LITE'\n\n        \"\"\"\n        df_metadata = self.read_sql_query(owners_)\n        df_metadata['total_mb_owner'] = df_metadata['total_mb_owner'].round(0).astype(int)\n        df_metadata['total_LAST_4'] = df_metadata['total_LAST_4'].round(0).astype(int)\n        df_metadata['total_LAST_8'] = df_metadata['total_LAST_8'].round(0).astype(int)\n        df_metadata['total_LAST_12'] = df_metadata['total_LAST_12'].round(0).astype(int)\n\n        # Set the 'text-align' CSS style for the 'Age' column to 'right'\n        styles = [{'selector': '.dataframe td', 'props': [('text-align', 'right')]}]\n        df_metadata.style.set_table_styles(styles)\n\n        html_lite = df_metadata.to_html()\n        ##########################33 FIN LITE\n\n\n        ########################## INICIO MED\n        owners_ = \"\"\"\n        SELECT \n        a.owner as Grupo,\n        total_mb_owner,\n        total_LAST_4,\n        total_LAST_8,\n        total_LAST_12\n        FROM v_HISTORY_YEARS_MB_OWNER A WHERE \n        CASE \n        WHEN total_mb_owner between 0 and 1000 THEN 'LITE' \n        WHEN total_mb_owner between 1000 and 100000 THEN 'MED' \n        WHEN total_mb_owner between 100000 and 999999999 THEN 'BIG' \n        END \n        ='MED'\n\n        \"\"\"\n        df_metadata = self.read_sql_query(owners_)\n        df_metadata['total_mb_owner'] = df_metadata['total_mb_owner'].round(0).astype(int)\n        df_metadata['total_LAST_4'] = df_metadata['total_LAST_4'].round(0).astype(int)\n        df_metadata['total_LAST_8'] = df_metadata['total_LAST_8'].round(0).astype(int)\n        df_metadata['total_LAST_12'] = df_metadata['total_LAST_12'].round(0).astype(int)\n        #df_metadata['mb_BIG'] = df_metadata['total_mb_table'].round(0).astype(int)\n\n        # Set the 'text-align' CSS style for the 'Age' column to 'right'\n        styles = [{'selector': '.dataframe td', 'props': [('text-align', 'right')]}]\n        df_metadata.style.set_table_styles(styles)\n\n        html_med = df_metadata.to_html()\n        ##########################33 FIN MED\n\n        ########################## INICIO BIG\n        owners_ = \"\"\"\n        SELECT \n        a.owner as Grupo,\n        total_mb_owner,\n        total_LAST_4,\n        total_LAST_8,\n        total_LAST_12\n        FROM v_HISTORY_YEARS_MB_OWNER A WHERE \n        CASE \n        WHEN total_mb_owner between 0 and 1000 THEN 'LITE' \n        WHEN total_mb_owner between 1000 and 100000 THEN 'MED' \n        WHEN total_mb_owner between 100000 and 999999999 THEN 'BIG' \n        END \n        ='BIG'\n\n        \"\"\"\n        df_metadata = self.read_sql_query(owners_)\n        df_metadata['total_mb_owner'] = df_metadata['total_mb_owner'].round(0).astype(int)\n        df_metadata['total_LAST_4'] = df_metadata['total_LAST_4'].round(0).astype(int)\n        df_metadata['total_LAST_8'] = df_metadata['total_LAST_8'].round(0).astype(int)\n        df_metadata['total_LAST_12'] = df_metadata['total_LAST_12'].round(0).astype(int)\n       \n        # Set the 'text-align' CSS style for the 'Age' column to 'right'\n        styles = [{'selector': '.dataframe td', 'props': [('text-align', 'right')]}]\n        df_metadata.style.set_table_styles(styles)\n\n        html_big = df_metadata.to_html()\n        ##########################33 FIN MED\n\n        # Save the HTML code to a file\n\n        # HistoryCharts (report_name__,__target_url__,__flavor__,__log_active__)\n        #history_charts= HistoryCharts(self.report_name__,self.__target_url__,self.__flavor__,self.__log_active__)\n\n        cen = 'style=\"text-align:center\"'\n\n        header_000 = f'<div {cen}><h1>Database History Report:{name}</h1></div>\\n'\n\n        #header_01_ = f'<div {cen}><h2>MB in Tables vs MB in Indexes</h2></div>\\n'\n\n        header_01_lite = f'<div {cen}><h2>Databases LITE: LITE Group - less than 1GB</h2></div>\\n'\n        self.img_002_owner_history ('LITE Group - less 1GB','LITE')\n        img_002_owner_history_lite = f'<img src=\"{name}img_002_owner_history_LITE.png\"></img>'\n\n        header_01_med = f'<div {cen}><h2>Databases MEDIUM: Medium Group - less than 100GB</h2></div>\\n'\n        self.img_002_owner_history('MEDIUM Group - less 100GB','MED')\n        img_002_owner_history_medium = f'<img src=\"{name}img_002_owner_history_MED.png\"></img>\\n'\n\n        header_01_big = f'<div {cen}><h2>Databases BIG: Big Group - more than 100GB</h2></div>\\n'\n        self.img_002_owner_history('BIG Group - more tha 100GB','BIG')\n        img_002_owner_history_big = f'<img src=\"{name}img_002_owner_history_BIG.png\"></img>\\n'\n\n\n        header_002 = '<div style=\"text-align:center\"><h2>Owners Detail - MB by Table sizes</h2></div>\\n'\n\n        out__ = f\"{self.__cfg__.get_cfg('out_path')}{self.report_name__}/{self.report_name__}_HISTORY.html\" #+ \"reports\"\n        with open(out__, 'w') as f:\n            f.write(header_000)\n            #f.write(header_01_)\n\n            f.write(header_01_lite)\n            f.write(html_lite)\n            f.write(img_002_owner_history_lite)\n\n            f.write(header_01_med)\n            f.write(html_med)\n            f.write(img_002_owner_history_medium)\n\n            f.write(header_01_big)\n            f.write(html_big)\n            f.write(img_002_owner_history_big)\n\n            #f.write(header_01B)\n            #f.write(img_001_table_vs_index_big)\n\n            #f.write(header_002)\n\n    def report_v1_indexes(self):\n        \"\"\"report_v1_indexes\"\"\"\n        name = self.report_name__\n\n        ########################## INICIO LITE\n        owners_ = \"\"\"\n        SELECT  A.*,\n        CASE \n        WHEN total_mb between 0 and 1000 THEN 'LITE' \n        WHEN total_mb between 1000 and 100000 THEN 'MED' \n        WHEN total_mb between 100000 and 999999999 THEN 'BIG' \n        END AS GROUP_SIZE\n        FROM v_METADATA_OWNER_SPACE A\n        WHERE GROUP_SIZE = 'LITE'\n        ORDER BY total_mb DESC\n\n        \"\"\"\n        df_metadata = self.read_sql_query(owners_)\n        df_metadata['total_mb_table'] = df_metadata['total_mb_table'].round(0).astype(int)\n        df_metadata['total_mb_index'] = df_metadata['total_mb_index'].round(0).astype(int)\n        df_metadata['total_mb'] = df_metadata['total_mb'].round(0).astype(int)\n        df_metadata['mb_BIN'] = df_metadata['mb_BIN'].round(0).astype(int)\n        df_metadata['mb_LITE'] = df_metadata['mb_LITE'].round(0).astype(int)\n        df_metadata['mb_MED'] = df_metadata['mb_MED'].round(0).astype(int)\n        df_metadata['mb_BIG'] = df_metadata['mb_BIG'].round(0).astype(int)\n\n        # Set the 'text-align' CSS style for the 'Age' column to 'right'\n        styles = [{'selector': '.dataframe td', 'props': [('text-align', 'right')]}]\n        df_metadata.style.set_table_styles(styles)\n\n        html_lite = df_metadata.to_html()\n        ##########################33 FIN LITE\n\n\n        ########################## INICIO MED\n        owners_ = \"\"\"\n        SELECT  A.*,\n        CASE \n        WHEN total_mb between 0 and 1000 THEN 'LITE' \n        WHEN total_mb between 1000 and 100000 THEN 'MED' \n        WHEN total_mb between 100000 and 999999999 THEN 'BIG' \n        END AS GROUP_SIZE\n        FROM v_METADATA_OWNER_SPACE A\n        WHERE GROUP_SIZE = 'MED'\n        ORDER BY total_mb DESC\n\n        \"\"\"\n        df_metadata = self.read_sql_query(owners_)\n        df_metadata['total_mb_table'] = df_metadata['total_mb_table'].round(0).astype(int)\n        df_metadata['total_mb_index'] = df_metadata['total_mb_index'].round(0).astype(int)\n        df_metadata['total_mb'] = df_metadata['total_mb'].round(0).astype(int)\n\n        df_metadata['mb_BIN'] = df_metadata['mb_BIN'].round(0).astype(int)\n        df_metadata['mb_LITE'] = df_metadata['mb_LITE'].round(0).astype(int)\n        df_metadata['mb_MED'] = df_metadata['mb_MED'].round(0).astype(int)\n        df_metadata['mb_BIG'] = df_metadata['mb_BIG'].round(0).astype(int)\n\n        # Set the 'text-align' CSS style for the 'Age' column to 'right'\n        styles = [{'selector': '.dataframe td', 'props': [('text-align', 'right')]}]\n        df_metadata.style.set_table_styles(styles)\n\n        html_med = df_metadata.to_html()\n        ##########################33 FIN MED\n\n        ########################## INICIO BIG\n        owners_ = \"\"\"\n        SELECT  A.*,\n        CASE \n        WHEN total_mb between 0 and 1000 THEN 'LITE' \n        WHEN total_mb between 1000 and 100000 THEN 'MED' \n        WHEN total_mb between 100000 and 999999999 THEN 'BIG' \n        END AS GROUP_SIZE\n        FROM v_METADATA_OWNER_SPACE A\n        WHERE GROUP_SIZE = 'BIG'\n        ORDER BY total_mb DESC\n\n        \"\"\"\n        df_metadata = self.read_sql_query(owners_)\n        df_metadata['total_mb_table'] = df_metadata['total_mb_table'].round(0).astype(int)\n        df_metadata['total_mb_index'] = df_metadata['total_mb_index'].round(0).astype(int)\n        df_metadata['total_mb'] = df_metadata['total_mb'].round(0).astype(int)\n\n        df_metadata['mb_BIN'] = df_metadata['mb_BIN'].round(0).astype(int)\n        df_metadata['mb_LITE'] = df_metadata['mb_LITE'].round(0).astype(int)\n        df_metadata['mb_MED'] = df_metadata['mb_MED'].round(0).astype(int)\n        df_metadata['mb_BIG'] = df_metadata['mb_BIG'].round(0).astype(int)\n        #df_metadata['mb_BIG'] = df_metadata['total_mb_table'].round(0).astype(int)\n        \n        # Set the 'text-align' CSS style for the 'Age' column to 'right'\n        styles = [{'selector': '.dataframe td', 'props': [('text-align', 'right')]}]\n        df_metadata.style.set_table_styles(styles)\n\n        html_big = df_metadata.to_html()\n        ##########################33 FIN MED\n\n        # Save the HTML code to a file\n\n        cen = 'style=\"text-align:center\"'\n\n        header_000 = f'<div {cen}><h1>Database History Report:{name}</h1></div>\\n'\n\n        #header_01_ = f'<div {cen}><h2>MB in Tables vs MB in Indexes</h2></div>\\n'\n\n        header_01L = f'<div {cen}><h2>Databases LITE: LITE Group - less 1GB</h2></div>\\n'\n        self.img_001_table_vs_index('LITE Group - less 1GB','LITE')\n        img_001_table_vs_index_lite = f'<img src=\"{name}img_001_table_vs_index_LITE.png\"></img>'\n\n        header_01M = f'<div {cen}><h2>Databases MEDIUM: Medium Group - less 100GB</h2></div>\\n'\n        self.img_001_table_vs_index('MEDIUM Group - less 100GB','MED')\n        img_001_table_vs_index_medium = f'<img src=\"{name}img_001_table_vs_index_MED.png\"></img>\\n'\n\n        header_01B = f'<div {cen}><h2>Databases BIG: Big Group - more than 100GB</h2></div>\\n'\n        self.img_001_table_vs_index('BIG Group - more tha 100GB','BIG')\n        img_001_table_vs_index_big = f'<img src=\"{name}img_001_table_vs_index_BIG.png\"></img>\\n'\n\n\n        header_002 = '<div style=\"text-align:center\"><h2>Owners Detail - History Resport</h2></div>\\n'\n\n        out__ = f\"{self.__cfg__.get_cfg('out_path')}{self.report_name__}/{self.report_name__}_INDEXES.html\" #+ \"reports\"\n        with open(out__, 'w') as f:\n            f.write(header_000)\n            #f.write(header_01_)\n\n            f.write(header_01L)\n            f.write(html_lite)\n            f.write(img_001_table_vs_index_lite)\n\n            f.write(header_01M)\n            f.write(html_med)\n            f.write(img_001_table_vs_index_medium)\n\n            f.write(header_01B)\n            f.write(html_big)\n            f.write(img_001_table_vs_index_big)\n\n    def generate_pie_from_sql(self, title, sql_):#TODO: ESTO NO FUNCIONA\n        # Connect to the database and execute a query\n        df = self.read_sql_query(sql_)\n        print(df.index)\n        #df = pd.read_sql(query, self.get_engine_target(), index_col='label_')\n\n        # Create a pie chart\n        fig, ax = plt.subplots()\n#        ax.pie(df['CNT_TABLES'], labels=df['LABEL_'], autopct='%1.1f%%')\n        ax.pie(df['CNT'], labels=df['LABEL_'], autopct='%1.1f%%')\n\n        # Set the title\n        ax.set_title(title)\n\n        # Show the chart\n        plt.show()\n\n    def generate_excel_from_sql(self, title, sql_):#TODO: ESTO NO FUNCIONA\n        # Connect to the database and execute a query\n        df = self.read_sql_query(sql_)\n        # Create an Excel file from the DataFrame\n        writer = pd.ExcelWriter('output.xlsx', engine='xlsxwriter')\n        df.to_excel(writer, sheet_name='Sheet1', index=False)\n        writer.save()\n\n    def dev_pie(self):\n        \"\"\"dev_pie\"\"\"\n        self.generate_pie_from_sql('PIE0:Tablas con fecha',\"\"\"\n        SELECT 'SIN FECHA' AS LABEL_ , COUNT(CASE WHEN METADATA.OWNER IS NULL THEN 1 ELSE NULL END) AS CNT FROM v_METADATA_TABLE_SPACE TABLAS\n        left join METADATA_TABLE_DATE METADATA ON TABLAS.owner = METADATA.owner AND TABLAS.table_name = METADATA.table_name\n        UNION ALL\n        SELECT 'CON FECHA' AS LABEL_ , COUNT(CASE WHEN METADATA.OWNER IS NOT NULL THEN 1 ELSE NULL END) AS CNT FROM v_METADATA_TABLE_SPACE TABLAS\n        left join METADATA_TABLE_DATE METADATA ON TABLAS.owner = METADATA.owner AND TABLAS.table_name = METADATA.table_name\n        \"\"\")\n\n    def generate_report_start_step_3(self):\n        \"\"\"generate_report_start_step_3\"\"\"\n        sql_ = \"\"\"\n        SELECT A.*,case when mb_bk>0 then 1 else 0 end as FLAG_POSIBLE_BK from v_HISTORY_YEARS_POSIBLE_BK A\n        \"\"\"\n\n        datos = self.read_sql_query(sql_)\n\n        datos = datos.replace(0, None)\n        out__ = f\"{self.__cfg__.get_cfg('out_path')}{self.report_name__}/{self.report_name__}_POSIBLE_BK.xlsx\"\n\n        # Create an Excel file from the DataFrame\n        writer = pd.ExcelWriter(out__, engine='xlsxwriter')\n        datos.to_excel(writer, sheet_name='Sheet1', index=False)\n        writer.save()\n\n\n    def generate_report_start_step_3_2(self):\n        \"\"\"generate_report_start_step_4\"\"\"\n        sql_ = \"\"\"\n        select * from v_RPT_POSIBLE_BK\n        \"\"\"\n        datos = self.read_sql_query(sql_)\n        datos = datos.replace(0, None)\n        out__ = f\"{self.__cfg__.get_cfg('out_path')}{self.report_name__}/{self.report_name__}_RESUMEN_POSIBLE_BK.xlsx\"\n        # Create an Excel file from the DataFrame\n        writer = pd.ExcelWriter(out__, engine='xlsxwriter')\n        datos.to_excel(writer, sheet_name='RESUMEN_POSIBLE_BK', index=False)\n        writer.save()\n\n    def dev_rpt_evolutivo(self):\n        \"\"\"dev_rpt_evolutivo\"\"\"\n        sql_ = \"\"\"\n        SELECT mes_id, \n        case when Y2019 = 0 then NULL else Y2019 end as Y2019,\n        case when Y2020 = 0 then NULL else Y2020 end as Y2020,\n        case when Y2021 = 0 then NULL else Y2021 end as Y2021,\n        case when Y2022 = 0 then NULL else Y2022 end as Y2022,\n        case when Y2023 = 0 then NULL else Y2023 end as Y2023\n        from (\n            SELECT \n            mes_id, \n            sum(case when year_=2019 then mb_estimado else 0 end) as Y2019,\n            sum(case when year_=2020 then mb_estimado else 0 end) as Y2020,\n            sum(case when year_=2021 then mb_estimado else 0 end) as Y2021,\n            sum(case when year_=2022 then mb_estimado else 0 end) as Y2022,\n            sum(case when year_=2023 then mb_estimado else 0 end) as Y2023\n            FROM \n                v_HISTORY_MES_MB\n            WHERE mes_id>0\n                GROUP BY mes_id\n            ) A\n        \"\"\"\n\n        datos = self.read_sql_query(sql_)\n        datos = datos.replace(0, None)\n\n        # Colores aleatorios para cada año\n        colores = {}\n        for columna in datos.columns:\n            color = tuple(random.uniform(0, 1) for _ in range(3))\n            colores[columna] = color\n\n        # Gráfico evolutivo\n        for columna in datos.columns:\n            #print( f\"{columna}\")\n            if f\"{columna}\"=='mes_id':\n                self._log( f\"ommiting column in graph:{columna}\")\n                continue\n            plt.plot(datos.index, datos[columna], color=colores[columna], label=columna)\n\n        # Configuración del gráfico\n        plt.title('Gráfico evolutivo por mes')\n        plt.xlabel('Mes')\n        plt.ylabel('Valor')\n        plt.xticks(range(1, 13))\n        plt.legend()\n\n        # Mostrar el gráfico\n        plt.show()\n\n        #self.generate_pie_from_sql('PIE0:Tablas con fecha',\n\n\"\"\"\nreport_name__ = 'BRAHMS1P_stable_002'\ntarget_db_name = f'{report_name__}_EXPORT_HISTORY.db'\n__target_url__ = f\"sqlite:///{self.__cfg__.get_cfg('out_path')}/{target_db_name}\"\n\nhistory_charts= HistoryCharts(report_name__,  __target_url__ ,'ORACLE',True)\nhistory_charts.dev_EVOLUTIVO()\n\n\"\"\"",
+			"file": "/C/Users/rcastillosi/__REPOS__/db_history_oracle_sqlserver/class_history_charts.py",
+			"file_size": 24626,
+			"file_write_time": 133239266000412322,
+			"settings":
+			{
+				"buffer_size": 24012,
+				"line_ending": "Windows"
+			}
+		}
+	],
+	"build_system": "",
+	"build_system_choices":
+	[
+		[
+			[
+				[
+					"Packages/Python/Python.sublime-build",
+					""
+				],
+				[
+					"Packages/Python/Python.sublime-build",
+					"Syntax Check"
+				]
+			],
+			[
+				"Packages/Python/Python.sublime-build",
+				""
+			]
+		]
+	],
+	"build_varint": "",
+	"command_palette":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+			[
+				"virtual",
+				"Virtualenv: Activate"
+			],
+			[
+				"packa",
+				"Package Control: Install Package"
+			]
+		],
+		"width": 0.0
+	},
+	"console":
+	{
+		"height": 402.0,
+		"history":
+		[
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"expanded_folders":
+	[
+		"/C/Users/rcastillosi/__REPOS__/db_history_oracle_sqlserver"
+	],
+	"file_history":
+	[
+		"/C/Users/rcastillosi/__REPOS__/db_history_oracle_sqlserver/class_config.py",
+		"/C/Users/rcastillosi/__REPOS__/db_history_oracle_sqlserver/class_history_sqlserver.py",
+		"/C/Users/rcastillosi/__REPOS__/db_history_oracle_sqlserver/test_cnx.py",
+		"/C/Users/rcastillosi/__REPOS__/db_history_oracle_sqlserver/class_history_report.py",
+		"/C/Users/rcastillosi/__REPOS__/db_history_oracle_sqlserver/class_history_charts.py",
+		"/C/Users/rcastillosi/__REPOS__/db_history_oracle_sqlserver/class_chart_bar.py",
+		"/C/Users/rcastillosi/__REPOS__/db_history_oracle_sqlserver/class_history_oracle.py",
+		"/C/Users/rcastillosi/__REPOS__/db_history_oracle_sqlserver/class_database_clone_objects.py",
+		"/C/Users/rcastillosi/__REPOS__/db_history_oracle_sqlserver/test_banco_oracle_bi_db_GROUP2.py",
+		"/C/Users/rcastillosi/__REPOS__/db_history_oracle_sqlserver/class_chart_base_class.py",
+		"/C/Users/rcastillosi/__REPOS__/db_history_oracle_sqlserver/class_base_class.py",
+		"/C/Users/rcastillosi/__REPOS__/db_history_oracle_sqlserver/diagramas/classes/diagram_20230316.txt",
+		"/C/Users/rcastillosi/__REPOS__/db_history_oracle_sqlserver/class_cripto.py",
+		"/C/Users/rcastillosi/__REPOS__/db_history_oracle_sqlserver/test_banco_oracle_bi_db_GROUP1.py",
+		"/C/Users/rcastillosi/__REPOS__/db_history_oracle_sqlserver/html/hexagon.js",
+		"/C/Users/rcastillosi/__REPOS__/db_history_oracle_sqlserver/html/test_hexagon.html",
+		"/C/Users/rcastillosi/__REPOS__/db_history_oracle_sqlserver/test_charts.py",
+		"/C/Users/rcastillosi/__REPOS__/db_history_oracle_sqlserver/test_banco_oracle_BRAHMS1P.py",
+		"/C/Users/rcastillosi/__REPOS__/db_history_oracle_sqlserver/.gitignore",
+		"/C/Users/rcastillosi/__REPOS__/db_history_oracle_sqlserver/test_charts_data_2.py",
+		"/C/Users/rcastillosi/__REPOS__/db_history_oracle_sqlserver/class_chart_age.py",
+		"/C/Users/rcastillosi/__REPOS__/db_history_oracle_sqlserver/class_chart_base.py",
+		"/C/Users/rcastillosi/__REPOS__/db_history_oracle_sqlserver/class_chart_pie.py",
+		"/C/Users/rcastillosi/__REPOS__/the_basic_voice_bot/python/commands/COMMAND_RES_GLPI.json",
+		"/C/Users/rcastillosi/__REPOS__/db_history_oracle_sqlserver/comandos.txt",
+		"/C/Users/rcastillosi/AppData/Local/Packages/PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0/LocalCache/local-packages/Python310/site-packages/pandas/core/frame.py",
+		"/C/Users/rcastillosi/__REPOS__/db_history_oracle_sqlserver/test_class_html_history_report.py",
+		"/C/Users/rcastillosi/__REPOS__/db_history_oracle_sqlserver/test_chart_pies.py",
+		"/C/Users/rcastillosi/__REPOS__/db_history_oracle_sqlserver/test_html_frames.py",
+		"/C/Users/rcastillosi/__REPOS__/db_history_oracle_sqlserver/test_chart_data_4.py",
+		"/C/Users/rcastillosi/__REPOS__/db_history_oracle_sqlserver/class_html_history_report.py",
+		"/C/Users/rcastillosi/__REPOS__/db_history_oracle_sqlserver/test_charts_data.py",
+		"/C/Users/rcastillosi/__REPOS__/db_history_oracle_sqlserver/test_charts_data_3.py",
+		"/C/Users/rcastillosi/__REPOS__/db_history_oracle_sqlserver/output2.html",
+		"/C/Users/rcastillosi/__REPOS__/db_history_oracle_sqlserver/class_pdf_history_report_test_2.py",
+		"/C/Users/rcastillosi/__REPOS__/db_history_oracle_sqlserver/class_pdf_history_report.py",
+		"/C/Users/rcastillosi/__REPOS__/db_history_oracle_sqlserver/README.md",
+		"/C/Users/rcastillosi/__REPOS__/db_history_oracle_sqlserver/class_folder_history.py",
+		"/C/Users/rcastillosi/__REPOS__/db_history_oracle_sqlserver/__init__.py",
+		"/C/Users/rcastillosi/__REPOS__/db_history_oracle_sqlserver/class_text_art.py",
+		"/C/Users/rcastillosi/__REPOS__/db_history_oracle_sqlserver/test_banco_sqlserver.py",
+		"/C/Users/rcastillosi/__REPOS__/db_history_oracle_sqlserver/test_banco_oracle_history_oracle.py",
+		"/C/Users/rcastillosi/__REPOS__/db_history_oracle/.gitignore",
+		"/C/Users/rcastillosi/__REPOS__/db_history_oracle/class_history_report.py",
+		"/C/Users/rcastillosi/__REPOS__/db_history_oracle/demo_gui.py",
+		"/C/Users/rcastillosi/__REPOS__/db_history_oracle/test_banco_oracle_history_oracle.py",
+		"/C/Users/rcastillosi/__REPOS__/db_history_oracle/test_falabella.py",
+		"/C/Users/rcastillosi/__SQL_DATABASE_STATS__/__PYTHON_METADATA__/test_falabella_3_bi_db.py",
+		"/C/Users/rcastillosi/__SQL_DATABASE_STATS__/__PYTHON_METADATA__/OLD/ZZZ__TEST_SETEA_ENV.py",
+		"/C/Users/rcastillosi/__SQL_DATABASE_STATS__/__PYTHON_METADATA__/OLD/ZZZ__TEST_ORACLE_CX2.py",
+		"/C/Users/rcastillosi/__SQL_DATABASE_STATS__/__PYTHON_METADATA__/OLD/ZZZ__OLD_TEST_ORACLE_CX.py",
+		"/C/Users/rcastillosi/__SQL_DATABASE_STATS__/__PYTHON_METADATA__/GET_METADATA.py",
+		"/C/Users/rcastillosi/__SQL_DATABASE_STATS__/__PYTHON_METADATA__/demo_gui.py",
+		"/C/Users/rcastillosi/__SQL_DATABASE_STATS__/__PYTHON_METADATA__/test_history_oracle.py",
+		"/C/Users/rcastillosi/__SQL_DATABASE_STATS__/__PYTHON_METADATA__/class_history_report.py",
+		"/C/Users/rcastillosi/__SQL_DATABASE_STATS__/__PYTHON_METADATA__/class_history_oracle.py",
+		"/C/Users/rcastillosi/__SQL_DATABASE_STATS__/__PYTHON_METADATA__/class_cripto.py",
+		"/C/Users/rcastillosi/__SQL_DATABASE_STATS__/__PYTHON_METADATA__/class_config.py",
+		"/C/Users/rcastillosi/__SQL_DATABASE_STATS__/__PYTHON_METADATA__/class_database_clone_objects.py",
+		"/C/Users/rcastillosi/__SQL_DATABASE_STATS__/__PYTHON_METADATA__/test_falabella.py",
+		"/C/Users/rcastillosi/__SQL_DATABASE_STATS__/__PYTHON_METADATA__/test_open_ai.py",
+		"/C/Users/rcastillosi/AppData/Local/Packages/PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0/LocalCache/local-packages/Python310/site-packages/sqlalchemy/engine/url.py",
+		"/C/Users/rcastillosi/__SQL_DATABASE_STATS__/__PYTHON_METADATA__/test_oracle_cx_wpw__20221222.py",
+		"/C/Users/rcastillosi/__SQL_DATABASE_STATS__/__PYTHON_METADATA__/class_history_gui.py",
+		"/C/Users/rcastillosi/__SQL_DATABASE_STATS__/__PYTHON_METADATA__/class_history_report_detail.py",
+		"/C/Users/rcastillosi/__SQL_DATABASE_STATS__/__PYTHON_METADATA__/class_HistoryReportDetail.py",
+		"/C/Users/rcastillosi/__SQL_DATABASE_STATS__/__PYTHON_METADATA__/class_HistoryReport.py",
+		"/C/Users/rcastillosi/__SQL_DATABASE_STATS__/__PYTHON_METADATA__/class_HISTORY.py",
+		"/C/Users/rcastillosi/AppData/Local/Packages/PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0/LocalCache/local-packages/Python310/site-packages/pandas/core/indexes/base.py",
+		"/C/Users/rcastillosi/__SQL_DATABASE_STATS__/__PYTHON_METADATA__/TEST_LEE_METADATA_CSV.py",
+		"/C/Users/rcastillosi/__SQL_DATABASE_STATS__/__PYTHON_METADATA__/TEST_GET_DICCIONARIO.sql",
+		"/C/Users/rcastillosi/__SQL_DATABASE_STATS__/__PYTHON_METADATA__/TEST_ORACLE_CX_WPW.py",
+		"/C/Users/rcastillosi/__SQL_DATABASE_STATS__/__PYTHON_METADATA__/TEST_SETEA_ENV.py",
+		"/C/Users/rcastillosi/__SQL_DATABASE_STATS__/__PYTHON_METADATA__/cfg.env",
+		"/C/Users/rcastillosi/Downloads/PORTABLE/PYTHON_BANCO/METADATA/TEST_PARQUET.py",
+		"/C/Users/rcastillosi/Downloads/PORTABLE/PYTHON_BANCO/METADATA/TEST_GET_DICCIONARIO.sql",
+		"/C/Users/rcastillosi/Downloads/PORTABLE/PYTHON_BANCO/METADATA/TEST_LEE_METADATA_CSV.py",
+		"/C/Users/rcastillosi/__SQL_DATABASE_STATS__/__EXPORT_DATA__/METADATA_EVALUACION_FIXED.csv",
+		"/C/Users/rcastillosi/__SQL_DATABASE_STATS__/__EXPORT_DATA__/METADATA_EVALUACION_FIXED.json",
+		"/C/Users/rcastillosi/Downloads/PORTABLE/PYTHON_BANCO/METADATA/TEST_GET_DICCIONARIO.py",
+		"/C/Users/rcastillosi/Downloads/PORTABLE/PYTHON_BANCO/AUDIO/TEST_GENERA_AUDIO_GRABADO.py",
+		"/C/Users/rcastillosi/Downloads/PORTABLE/PYTHON_BANCO/AUDIO/TEST_OPCIONES.py",
+		"/C/Users/rcastillosi/Downloads/PORTABLE/PYTHON_BANCO/GET_METADATA.py",
+		"/C/Users/rcastillosi/Downloads/PORTABLE/PYTHON_BANCO/AUDIO/TEST_WH.py",
+		"/C/Users/rcastillosi/Downloads/PORTABLE/PYTHON_BANCO/AUDIO/TEST_AUDIO2TXT.py",
+		"/C/Users/rcastillosi/Downloads/PORTABLE/PYTHON_BANCO/test.py"
+	],
+	"find":
+	{
+		"height": 27.0
+	},
+	"find_in_files":
+	{
+		"height": 107.0,
+		"where_history":
+		[
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": true,
+		"find_history":
+		[
+			"SQLSERVER_QUERY_METADATA_TABLE_DATE",
+			"ORACLE",
+			"self._log",
+			"create_engine"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 4,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "/C/Users/rcastillosi/__REPOS__/db_history_oracle_sqlserver/class_cripto.py",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1543,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								713,
+								713
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Python/Python.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 4,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "/C/Users/rcastillosi/__REPOS__/db_history_oracle_sqlserver/test_cnx.py",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1242,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								73,
+								73
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Python/Python.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 7,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "/C/Users/rcastillosi/__REPOS__/db_history_oracle_sqlserver/test_banco_sqlserver.py",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 2157,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								627,
+								627
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Python/Python.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 3,
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "/C/Users/rcastillosi/__REPOS__/db_history_oracle_sqlserver/class_history_sqlserver.py",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 4068,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								319,
+								319
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Python/Python.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1517,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								209,
+								209
+							]
+						],
+						"settings":
+						{
+							"auto_indent": false,
+							"syntax": "Packages/Text/Plain text.tmLanguage",
+							"tab_width": 2,
+							"word_wrap": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 432.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				},
+				{
+					"buffer": 5,
+					"file": "/C/Users/rcastillosi/Downloads/PORTABLE/Sublime Text Build 3211/Data/Packages/Virtualenv/Virtualenv.sublime-settings",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 637,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								637,
+								637
+							]
+						],
+						"settings":
+						{
+							"mini_diff": false,
+							"syntax": "Packages/JavaScript/JSON.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 6,
+					"file": "/C/Users/rcastillosi/__REPOS__/db_history_oracle_sqlserver/class_history_report.py",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 16800,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2867,
+								2867
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Python/Python.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 882.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 5,
+					"type": "text"
+				},
+				{
+					"buffer": 7,
+					"file": "/C/Users/rcastillosi/__REPOS__/db_history_oracle_sqlserver/class_history_charts.py",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 24012,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								21243,
+								21243
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Python/Python.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 9072.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 6,
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 27.0
+	},
+	"input":
+	{
+		"height": 41.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.exec":
+	{
+		"height": 523.0
+	},
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"pinned_build_system": "",
+	"project": "sublime_project_db_history_20230403.sublime-project",
+	"replace":
+	{
+		"height": 50.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": true,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 368.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}

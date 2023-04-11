@@ -28,11 +28,11 @@ class HistoryCharts(BaseClass):
 
         try:
             os.mkdir(html_folder)
-            print(f"Folder '{html_folder}' created successfully.")
+            self._log(f"Folder: '{html_folder}'-->created successfully.")
         except FileExistsError:
-            print(f"Folder '{html_folder}' already exists.")
+            self._log(f"Folder: '{html_folder}'-->already exists.")
         except Exception as e:
-            print(f"An error occurred: {e}")
+            self._log(f"An error occurred: {e}")
 
     def get_engine_target(self):
         """method get_engine_target"""
@@ -525,16 +525,12 @@ class HistoryCharts(BaseClass):
         sql_ = """
         select * from v_RPT_POSIBLE_BK
         """
-
         datos = self.read_sql_query(sql_)
-
         datos = datos.replace(0, None)
         out__ = f"{self.__cfg__.get_cfg('out_path')}{self.report_name__}/{self.report_name__}_RESUMEN_POSIBLE_BK.xlsx"
-
         # Create an Excel file from the DataFrame
         writer = pd.ExcelWriter(out__, engine='xlsxwriter')
         datos.to_excel(writer, sheet_name='RESUMEN_POSIBLE_BK', index=False)
-
         writer.save()
 
     def dev_rpt_evolutivo(self):

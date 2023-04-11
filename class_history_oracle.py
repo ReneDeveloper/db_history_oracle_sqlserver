@@ -33,6 +33,7 @@
 
 from class_history_report import HistoryReport
 from class_config import Config
+import cx_Oracle
 
 ORACLE_QUERY_METADATA_COUNTS="""
 SELECT owner,
@@ -101,6 +102,9 @@ class HistoryOracle(HistoryReport):
         """__init__"""
         self.report_name__ = cfg.get_cfg('report_name')
         #self.__engine_url__ = None
+        #warnings.warn("DEPRECATED:DEBE EJECUTARSE SOLO EN CASO DE ORACLE:cx_Oracle.init_oracle_client(lib_dir)")
+        cx_Oracle.init_oracle_client(lib_dir= cfg.get_cfg('lib_dir'))
+
         HistoryReport.__init__(self,cfg)
         self.set_default_queries()
 
@@ -111,24 +115,5 @@ class HistoryOracle(HistoryReport):
         cfg_.set_query('ORACLE_QUERY_METADATA_DAILY_SPACE',ORACLE_QUERY_METADATA_DAILY_SPACE)
         cfg_.set_query('ORACLE_QUERY_METADATA_TABLE_DATE',ORACLE_QUERY_METADATA_TABLE_DATE)
 
-    def oracle_table_cost (self,owner_,table_name_,column_name_):#TODO:OBTAIN TOTAL COST IN ORACLE
-        """Obtiene oracle_table_cost"""
-        pars__ = {}
-        #year_ = '2023'
-        pars__['_OWNER'] = owner_
-        pars__['_TABLE_NAME'] = table_name_
-        pars__['_COLUMN_NAME'] = column_name_
-        pars__['year_'] = -1
-        query_ = self.query_history(pars__)
-        self._log(f'test:query_:{query_}')
-        self.execute_sql_source_without_result(f'DELETE FROM PLAN FOR {query_}')
-        self.execute_sql_source_without_result(f'EXPLAIN PLAN FOR {query_}')
 
-        #data = self.execute_sql_source("select * from table(dbms_xplan.display(null, null, 'SERIAL'))")
-        data = self.execute_sql_source("select * FROM PLAN")
-
-        salida = {}
-        #data = self.execute_sql_source('select * from table(dbms_xplan.display)')
-
-        self._log(data)
-        """Inicializa, con el inicio del nombre de los archivos, ej: caso HIST"""
+    

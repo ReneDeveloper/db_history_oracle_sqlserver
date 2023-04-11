@@ -4,6 +4,9 @@ from class_history_report import HistoryReport
 from class_config import Config
 
 
+SQLSERVER_QUERY_DATABASES="""
+
+"""
 
 SQLSERVER_QUERY_METADATA_COUNTS="""
 SELECT owner,

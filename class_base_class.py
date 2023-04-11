@@ -22,5 +22,6 @@ class BaseClass():
 
     def art_msg(self,var):
         """method art_msg"""
-        print(self.get_art(var))
+        #print(self.get_art(var))
+        pass
         
