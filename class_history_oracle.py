@@ -96,6 +96,34 @@ FROM DBA_TAB_COLUMNS c WHERE (owner, table_name, column_id) in (
 order by owner,table_name,column_name
 """
 
+
+ORACLE_ALERT_SECUENCES_malo_error_tipo_de_datos = """
+SELECT sequence_owner,
+       sequence_name,
+       cast(last_number as bigint)  AS last_number_,
+       cast(max_value as bigint)  as MAX_VALUE_,
+       cast ((last_number / max_value) * 100  as bigint) AS percentage,
+       CASE
+         WHEN (last_number / max_value) * 100 <= 90 THEN 'GREEN'
+         ELSE 'RED'
+       END AS color
+FROM dba_sequences
+"""
+
+ORACLE_ALERT_SECUENCES = """
+SELECT sequence_owner,
+       sequence_name,
+       cast(last_number as varchar2(100))  AS last_number_,
+       cast (max_value  as varchar2(100)) as MAX_VALUE_,
+       cast ( (last_number / max_value) * 100 as float)  AS percentage,
+       CASE
+         WHEN (last_number / max_value) * 100 <= 90 THEN 'GREEN'
+         ELSE 'RED'
+       END AS color
+FROM dba_sequences
+WHERE sequence_owner NOT IN ('SYS')
+"""
+
 class HistoryOracle(HistoryReport):
     """Procesa la historia de un servidor ORACLE"""
     def __init__(self,cfg):
@@ -114,6 +142,9 @@ class HistoryOracle(HistoryReport):
         cfg_.set_query('ORACLE_QUERY_METADATA_COUNTS',ORACLE_QUERY_METADATA_COUNTS)
         cfg_.set_query('ORACLE_QUERY_METADATA_DAILY_SPACE',ORACLE_QUERY_METADATA_DAILY_SPACE)
         cfg_.set_query('ORACLE_QUERY_METADATA_TABLE_DATE',ORACLE_QUERY_METADATA_TABLE_DATE)
+        cfg_.set_query('ORACLE_ALERT_SECUENCES',ORACLE_ALERT_SECUENCES)
 
 
-    
+
+
+   

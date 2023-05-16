@@ -198,12 +198,28 @@ class HistoryReport(BaseClass):
         #sql_  = cfg.get_par(parameter_name)
         sql_  = self.__cfg__.get_query(parameter_name)
         data  = self.execute_sql_source(sql_)
-
+        data = self.add_fecha_to_df(data)
         sql_delete = "DELETE FROM METADATA_COUNTS"
         self.target_execute(sql_delete)
         self.target_copy_to_table(data,'METADATA_COUNTS')
         self._log("export_metadata_counts:END")
         return data
+
+
+
+    def add_fecha_to_df(self,data):
+        """add_fecha_to_df"""
+        self._log("add_fecha_to_df:START")
+        fecha = self.get_today()
+        data['fecha']=fecha
+        return data
+
+    def get_today(self):
+        """get_today"""
+        from datetime import datetime
+        fecha = datetime.today().strftime('%Y%m%d')
+        return fecha
+        #print(f"fecha:{fecha}")
 
     def export_metadata_daily_space(self):
         """function export_metadata_daily_space"""
@@ -213,10 +229,30 @@ class HistoryReport(BaseClass):
         #sql_  = cfg.get_par(parameter_name)
         sql_  = self.__cfg__.get_query(parameter_name)
         data  = self.execute_sql_source(sql_)
+
+
+        data = self.add_fecha_to_df(data)
+
+
         sql_delete = "DELETE FROM METADATA_DAILY_SPACE"
         self.target_execute(sql_delete)
         self.target_copy_to_table(data,'METADATA_DAILY_SPACE')
         self._log("export_metadata_daily_space:END")
+        return data
+
+    def export_oracle_alert(self):
+        """function export_oracle_alert"""
+        self._log("export_oracle_alert:START")
+        self._log("export_oracle_alert:Obtaining use of secuences")
+        #parameter_name = self.__flavor__ + '_QUERY_METADATA_DAILY_SPACE'
+        #sql_  = cfg.get_par(parameter_name)
+        sql_  = self.__cfg__.get_query('ORACLE_ALERT_SECUENCES')
+        data  = self.execute_sql_source(sql_)
+        data = self.add_fecha_to_df(data)
+        sql_delete = "DELETE FROM ORACLE_ALERT_SECUENCES"
+        self.target_execute(sql_delete)
+        self.target_copy_to_table(data,'ORACLE_ALERT_SECUENCES')
+        self._log("export_oracle_alert:END")
         return data
 
     def query_history(self,pars_):
@@ -287,16 +323,18 @@ class HistoryReport(BaseClass):
                 empty_history = len(df_hist.index)==0
 
                 if empty_history:#issue NO_HISTORY
-                    target = cfg.get_par('TARGET_NAME_ISSUE')
-                    data_issue = cfg.get_par('data_issue').copy()
+                    target = cfg.get_par('TARGET_NAME_ALERT')
+                    #data_issue = cfg.get_par('data_issue').copy()
+                    data_issue = {}
                     sql_delete = f"""
                     DELETE FROM {target} where OWNER = '{owner_}' and TABLE_NAME='{table}'
                     """
                     self.target_execute(sql_delete)
                     data_issue['TABLE_NAME']=table_name_
                     data_issue['OWNER']=owner_
-                    data_issue['ISSUE']='NO_HISTORY'
+                    data_issue['ALERT_TYPE']='NO_HISTORY'
                     data_issue['VALUE']=0
+                    data_issue = self.add_fecha_to_df(data_issue)
                     df_hist = pd.DataFrame([data_issue])
                     self.target_copy_to_table(df_hist,target)
                     self._log(f'LEN:{len(df_hist.index)}')
@@ -307,6 +345,7 @@ class HistoryReport(BaseClass):
                     DELETE FROM {target} where OWNER = '{owner_}' and TABLE_NAME='{table}'
                     """
                     self.target_execute(sql_delete)
+                    df_hist = self.add_fecha_to_df(df_hist)
                     self.target_copy_to_table(df_hist,target)
 
                 return True
@@ -316,6 +355,31 @@ class HistoryReport(BaseClass):
         self.export_metadata_table_date(owner_)
         #self.export_history(f'METADATA_{owner_}.csv',2022)
         self.export_history_owner(owner_)
+
+    def alerta(self,dict, alerta_):
+        """Exporta la metadata de un owner y luego genera la historia usando esa metadata"""
+        self._log(f'INICIO ALERTA:{len(df_hist.index)}')
+        fecha__ = self.get_today()
+        self._log(f'fecha__:{fecha__}')
+
+        #self.export_metadata_table_date(owner_)
+        #self.export_history(f'METADATA_{owner_}.csv',2022)
+        #self.export_history_owner(owner_)
+        table_name_ = dict['table_name']
+        owner_ = dict['owner']
+        target = cfg.get_par('TARGET_NAME_ALERTA')
+        history_alert = cfg.get_par('history_alert').copy()
+        sql_delete = f"""
+        --DELETE FROM {target} where OWNER = '{owner_}' and TABLE_NAME='{table}'
+        """
+        self.target_execute(sql_delete)
+        history_alert['TABLE_NAME']= 'TEST_TABLE' #table_name_
+        history_alert['OWNER']= 'TEST_OWNER ' #owner_
+        history_alert['alerta']='GLOSA DE LA ALERTA' # + alerta_
+        history_alert['fecha']=fecha__
+        df_hist = pd.DataFrame([history_alert])
+        self.target_copy_to_table(df_hist,target)
+        self._log(f'ALERTA-LARGO-DATOS:{len(df_hist.index)}')
 
     def export_metadata_table_date_owners(self):
         """Exporta historia de las tablas contenidas en un owner"""
@@ -337,6 +401,7 @@ class HistoryReport(BaseClass):
         sql__ = sql_.format(__OWNER__=owner__)
         self._log(f'export_metadata:sql__:{sql__}')
         data  = self.execute_sql_source(sql__)
+
         #DELETE METADATA_TABLE_DATE
         sql_delete = f"DELETE FROM METADATA_TABLE_DATE where OWNER = '{owner__}'"
         self.target_execute(sql_delete)
@@ -357,6 +422,8 @@ class HistoryReport(BaseClass):
         self.art_msg('aging')
         self.export_metadata_daily_space()
         self.export_metadata_counts()
+        self.export_oracle_alert()
+
         clone = DatabaseCloneObjectSqllite(self.get_config(),'BRAHMS1P',
             self.report_name__, self.__log_active__)
         #clone_views = clone.clone_objects('table')
@@ -396,3 +463,51 @@ class HistoryReport(BaseClass):
     def dev(self):
         history_charts= HistoryCharts(self.__cfg__,self.__target_url__)
         history_charts.dev()
+
+    def generate_excel_complete(self):
+        """generate_excel_complete"""
+        out__ = f"{self.__cfg__.get_cfg('out_path')}{self.report_name__}/{self.report_name__}_COMPLETE.xlsx"
+
+        # Create an Excel file from the DataFrame
+        writer = pd.ExcelWriter(out__, engine='xlsxwriter')
+
+        __type__ = 'view'
+        self._log(f'CLONING OBJECTS:TYPE:{__type__}')
+        query_objects=f"""
+            SELECT
+            NAME,SQL
+            FROM 
+                sqlite_master
+            --WHERE type='{__type__}'
+            """
+        data_objects = self.read_sql_query(query_objects)
+        for _, row in data_objects.iterrows():
+            row = dict(row)
+            name_view = row['name']
+            sql_object = f"SELECT * from {name_view}"
+
+            self.generate_excel_add(writer,name_view,sql_object)
+        #self.generate_excel_add(writer,'POSIBLE_BK',"SELECT * from v_HISTORY_YEARS_POSIBLE_BK")
+        #self.generate_excel_add(writer,'POSIBLE_BK',"SELECT * from v_HISTORY_YEARS_POSIBLE_BK")
+        #self.generate_excel_add(writer,'POSIBLE_BK',"SELECT * from v_HISTORY_YEARS_POSIBLE_BK")
+        #self.generate_excel_add(writer,'POSIBLE_BK',"SELECT * from v_HISTORY_YEARS_POSIBLE_BK")
+        #self.generate_excel_add(writer,'POSIBLE_BK',"SELECT * from v_HISTORY_YEARS_POSIBLE_BK")
+        #self.generate_excel_add(writer,'POSIBLE_BK',"SELECT * from v_HISTORY_YEARS_POSIBLE_BK")
+        #self.generate_excel_add(writer,'POSIBLE_BK',"SELECT * from v_HISTORY_YEARS_POSIBLE_BK")
+        #datos = self.read_sql_query(sql_)
+
+        #datos = datos.replace(0, None)
+
+        #datos.to_excel(writer, sheet_name='v_HISTORY_YEARS_POSIBLE_BK', index=False)
+
+
+        writer.save()
+
+    def generate_excel_add(self,writer_,sheet_name_,sql_query):
+        """generate_excel_add"""
+        datos = self.read_sql_query(sql_query)
+        datos = datos.replace(0, None)
+        # ADD TO Excel file from the DataFrame
+        #writer = pd.ExcelWriter(out__, engine='xlsxwriter')
+        datos.to_excel(writer_, sheet_name=sheet_name_, index=False)
+        #writer.save()

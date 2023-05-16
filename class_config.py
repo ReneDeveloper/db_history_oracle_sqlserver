@@ -122,7 +122,26 @@ pars_["lib_dir"]="C:/Users/rcastillosi/Downloads/PORTABLE/instantclient_21_7"#wi
 ###DEPRECATED###pars_["out_dir"]="C:/Users/rcastillosi/__SQL_DATABASE_STATS__/__EXPORT_DATA__/"
 #parametros de bbdd TARGET
 pars_["TARGET_NAME"]="HISTORY_REPORT"
+pars_["TARGET_NAME_ALERT"]="HISTORY_ALERT"
 pars_["TARGET_NAME_ISSUE"]="HISTORY_ISSUE"
+
+
+"""
+target = cfg.get_par('TARGET_NAME_ISSUE')
+data_issue = cfg.get_par('data_issue').copy()
+sql_delete = f"""
+#DELETE FROM {target} where OWNER = '{owner_}' and TABLE_NAME='{table}'
+"""
+self.target_execute(sql_delete)
+data_issue['TABLE_NAME']=table_name_
+data_issue['OWNER']=owner_
+data_issue['ISSUE']='NO_HISTORY'
+data_issue['VALUE']=0
+df_hist = pd.DataFrame([data_issue])
+self.target_copy_to_table(df_hist,target)
+self._log(f'LEN:{len(df_hist.index)}')
+
+"""
 
 #pars_["out_path"]="C:/Users/rcastillosi/__SQL_DATABASE_STATS__/__EXPORT_DATA__/"
 ###DEPRECATED####pars_["out_sqllit_file"]='sqlite:///{out_path}/SQLLITE_EXPORT_HISTORY_{out_owner}.db'
@@ -130,13 +149,19 @@ pars_["TARGET_NAME_ISSUE"]="HISTORY_ISSUE"
 ###DEPRECATED#####parametros para nombres de archivos
 ###DEPRECATED#####pars_["pre_metadata"]="METADATA_"
 
-
 data_issue = {
 'OWNER': ['THE_OWNER'], 'TABLE_NAME': ['THE_TABLE'], 'ISSUE': ['THE_ISSUE'], 
-'VALUE': [0] 
+'ALERT_TYPE': [0] ,'fecha': ['THE_DATE'] 
 }
 
 pars_["data_issue"]=data_issue
+
+history_alert = {
+'OWNER': ['THE_OWNER'], 'TABLE_NAME': ['THE_TABLE'], 'ALERTA': ['THE_ALERT'], 
+'VALUE': [0], 'fecha': ['THE_DATE'] 
+}
+pars_["history_alert"]=history_alert
+
 
 # ██████╗ ██████╗  █████╗  ██████╗██╗     ███████╗
 #██╔═══██╗██╔══██╗██╔══██╗██╔════╝██║     ██╔════╝

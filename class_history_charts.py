@@ -113,7 +113,8 @@ class HistoryCharts(BaseClass):
         plt.savefig(f'{out__}{self.report_name__}/{self.report_name__}img_001_table_vs_index_{group_name}.png')
 
     def img_002_owner_history(self, group_desc, group_name):
-        
+        out__ = self.__cfg__.get_cfg('out_path') #+ "reports"
+        filename_ = f'{out__}{self.report_name__}/{self.report_name__}img_002_owner_history_{group_name}.png'
         owners_ = f"""
         SELECT 
         a.owner as Grupo,
@@ -129,6 +130,9 @@ class HistoryCharts(BaseClass):
         ='{group_name}'
         """
         df = self.read_sql_query(owners_)
+
+        if df.empty:
+            return False
 
         #df = pd.DataFrame(data).set_index('Grupo')
         df = df.set_index('Grupo')
@@ -163,9 +167,10 @@ class HistoryCharts(BaseClass):
         #plt.subplots_adjust(left=0.4, right=0.9, top=0.9, bottom=0.1)
         plt.subplots_adjust(left=0.3)
 
-        out__ = self.__cfg__.get_cfg('out_path') #+ "reports"
 
-        plt.savefig(f'{out__}{self.report_name__}/{self.report_name__}img_002_owner_history_{group_name}.png')
+
+        plt.savefig(filename_)
+        return True
 
 
     def get_html_sql(self, sql_):#TODO: ESTO NO FUNCIONA

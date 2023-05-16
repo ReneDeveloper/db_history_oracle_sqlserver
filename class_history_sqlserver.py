@@ -4,16 +4,25 @@ from class_history_report import HistoryReport
 from class_config import Config
 
 
-SQLSERVER_QUERY_DATABASES="""
+SQLSERVER_QUERY_METADATA_DATABASES="""
+SQLSERVER_QUERY_METADATA_DATABASES
 
 """
 
 SQLSERVER_QUERY_METADATA_COUNTS="""
-SELECT owner,
-       table_name,
-       num_rows
-from sys.dba_tables
-where owner not in ('SYS','SYSTEM','WMSYS','XDB','DBSNMP')
+SELECT DB_NAME() AS [owner, 
+       t.NAME AS [table_name], 
+       SUM(p.rows) AS [num_rows]
+FROM sys.tables t 
+INNER JOIN sys.partitions p ON t.object_id = p.OBJECT_ID
+WHERE t.is_ms_shipped = 0 AND p.index_id IN (1,0)
+GROUP BY t.NAME 
+ORDER BY [Current Count] DESC
+--SELECT owner,
+--       table_name,
+--       num_rows
+--from sys.dba_tables
+--where owner not in ('SYS','SYSTEM','WMSYS','XDB','DBSNMP')
 """
 
 SQLSERVER_QUERY_METADATA_DAILY_SPACE = """
@@ -81,6 +90,7 @@ class HistorySqlServer(HistoryReport):
     def set_default_queries(self):
         """set_default_queries"""
         cfg_=self.get_config()
+        cfg_.set_query('SQLSERVER_QUERY_METADATA_DATABASES',SQLSERVER_QUERY_METADATA_DATABASES)
         cfg_.set_query('SQLSERVER_QUERY_METADATA_COUNTS',SQLSERVER_QUERY_METADATA_COUNTS)
         cfg_.set_query('SQLSERVER_QUERY_METADATA_DAILY_SPACE',SQLSERVER_QUERY_METADATA_DAILY_SPACE)
         cfg_.set_query('SQLSERVER_QUERY_METADATA_TABLE_DATE',SQLSERVER_QUERY_METADATA_TABLE_DATE)

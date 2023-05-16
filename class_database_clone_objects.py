@@ -100,3 +100,55 @@ class DatabaseCloneObjectSqllite(BaseClass):
             sql = sql.replace('CREATE VIEW ' ,'CREATE VIEW  IF NOT EXISTS ')
             self.execute_ddl(sql)
         return status
+
+
+    def target_copy_to_table(self,data,table_name):
+        """function"""
+        status = "ok"
+        self._log(f"target_copy_to_table:START:{table_name}")
+        try:
+            engine = self.get_engine_target()
+            cnx = engine.connect()
+            data.to_sql(f'{table_name}',if_exists='append',con=cnx,index=False,chunksize=100)
+            #data.to_sql(f'{table_name}',if_exists='replace',con=cnx,index=False,chunksize=100)
+            del data
+            self._log(f"target_copy_to_table:END:{table_name}")
+        finally:
+            cnx.close()
+            engine.dispose()
+        return status
+
+
+    def add_fecha_to_df(self,data):
+        """add_fecha_to_df"""
+        self._log("add_fecha_to_df:START")
+        fecha = self.get_today()
+        data['fecha']=fecha
+        return data
+
+    def get_today(self):
+        """get_today"""
+
+        from datetime import datetime
+        fecha = datetime.today().strftime('%Y%m%d')
+        return fecha
+
+        #print(f"fecha:{fecha}")
+
+    def move_history(self):
+        """method  move_history: 
+        will move the history from source to the target, both SQLLITE
+        """
+        status = "OK"
+        #self.art_msg('move_history')
+        table_name_ = 'history_report'
+        self._log(f'CLONING move_history:table_name_:{table_name_}')
+        query_objects=f"""
+            SELECT      * from {table_name_}
+            """
+        data = self.execute_sql_source(query_objects)
+        data = self.add_fecha_to_df(data)
+
+        self.target_copy_to_table(data,table_name_)
+
+        return status
