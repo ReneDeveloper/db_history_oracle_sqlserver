@@ -32,42 +32,10 @@
 	"buffers":
 	[
 		{
-			"contents": "\n\"\"\"class_history_sqlserver.py\"\"\"\nfrom class_history_report import HistoryReport\nfrom class_config import Config\n\n\nSQLSERVER_QUERY_METADATA_DATABASES=\"\"\"\nSQLSERVER_QUERY_METADATA_DATABASES\n\n\"\"\"\n\nSQLSERVER_QUERY_METADATA_COUNTS=\"\"\"\nSELECT DB_NAME() AS [owner, \n       t.NAME AS [table_name], \n       SUM(p.rows) AS [num_rows]\nFROM sys.tables t \nINNER JOIN sys.partitions p ON t.object_id = p.OBJECT_ID\nWHERE t.is_ms_shipped = 0 AND p.index_id IN (1,0)\nGROUP BY t.NAME \nORDER BY [Current Count] DESC\n--SELECT owner,\n--       table_name,\n--       num_rows\n--from sys.dba_tables\n--where owner not in ('SYS','SYSTEM','WMSYS','XDB','DBSNMP')\n\"\"\"\n\nSQLSERVER_QUERY_METADATA_DAILY_SPACE = \"\"\"\nSELECT tablespace_name,owner, segment_name, segment_type,table_name_normalizado,\nSUM(bytes)/1024/1024 total_mb,\nSUM(CASE WHEN segment_type='INDEX' THEN bytes ELSE 0 END)/1024/1024 total_mb_index,\nSUM(CASE WHEN segment_type='TABLE' THEN bytes ELSE 0 END)/1024/1024 total_mb_table,\nCOUNT(1) AS cnt_seg  \nFROM \n    (\n    SELECT segments_.tablespace_name,segments_.owner, segments_.segment_name, segments_.segment_type,\n    CASE \n        WHEN segments_.segment_type = 'INDEX' THEN indexes_.table_name \n        WHEN segments_.segment_type = 'TABLE' THEN segments_.segment_name\n        WHEN segments_.segment_type = 'LOBSEGMENT' THEN lobs_.table_name\n        WHEN segments_.segment_type = 'TABLE PARTITION' THEN partitions_.table_name\n        WHEN segments_.segment_type = 'INDEX PARTITION' THEN index_partitions_.table_name\n        \n        --HERE ADD OTHER CASES\n    END AS table_name_normalizado,\n    segments_.bytes\n    FROM dba_segments segments_ \n    LEFT JOIN dba_indexes indexes_ ON segments_.segment_type='INDEX' AND indexes_.index_name = segments_.segment_name AND indexes_.owner = segments_.owner \n    LEFT JOIN dba_lobs lobs_ ON segments_.segment_type='LOBSEGMENT' AND segments_.owner = lobs_.owner AND segments_.segment_name = lobs_.segment_name AND segments_.tablespace_name = lobs_.tablespace_name\n    LEFT JOIN  (\n                SELECT --*\n                DISTINCT a.tablespace_name, a.table_owner, a.table_name\n                FROM   dba_tab_partitions a \n                --where owner = 'DMNORMA_ADM'  \n                )  partitions_ ON segments_.segment_type='TABLE PARTITION' AND segments_.owner = partitions_.table_owner AND segments_.segment_name = partitions_.table_name AND segments_.tablespace_name = partitions_.tablespace_name\n    LEFT JOIN ( --SE CONSTRUYE UN SUBQUERY DADO QUE UN INDICE PUEDE TENER N PARTICIONES DE INDICES\n                SELECT DISTINCT a.tablespace_name, a.index_owner, a.index_name, b.table_name\n                FROM  dba_ind_partitions a\n                LEFT JOIN DBA_INDEXES b on a.index_owner=b.owner  and a.index_name = b.index_name --FAIL ADDING THIS BECAUSE EXISTS TABLESPACE_NAME NULL IN DBA_INDEXES\n              ) index_partitions_ ON segments_.segment_type='INDEX PARTITION' AND indexes_.owner = index_partitions_.index_owner AND indexes_.index_name = index_partitions_.index_name AND indexes_.tablespace_name = index_partitions_.tablespace_name\n    \n        --HERE ADD OTHER CASES\n    ) RESULT\n--where segment_type = 'TABLE PARTITION' AND owner = 'DMNORMA_ADM'\nGROUP BY tablespace_name,OWNER, segment_name,segment_type,table_name_normalizado\nORDER BY segment_type\n\"\"\"\n\nSQLSERVER_QUERY_METADATA_TABLE_DATE = \"\"\"\nSELECT owner,table_name, column_name\nFROM DBA_TAB_COLUMNS c WHERE (owner, table_name, column_id) in (\n    SELECT owner,table_name, min(column_id) as min_column_id \n    from DBA_TAB_COLUMNS c WHERE \n    owner in ('{__OWNER__}') and \n    data_type in ('DATE')\n    group by owner,table_name\n)\norder by owner,table_name,column_name\n\"\"\"\n\nclass HistorySqlServer(HistoryReport):\n    \"\"\"Procesa la historia de un servidor SQL SERVER\"\"\"\n    def __init__(self,cfg):\n        \"\"\"__init__\"\"\"\n        self.report_name__ = cfg.get_cfg('report_name')\n        #self.__engine_url__ = None\n        HistoryReport.__init__(self,cfg)\n        self.set_default_queries()\n\n    def set_default_queries(self):\n        \"\"\"set_default_queries\"\"\"\n        cfg_=self.get_config()\n        cfg_.set_query('SQLSERVER_QUERY_METADATA_DATABASES',SQLSERVER_QUERY_METADATA_DATABASES)\n        cfg_.set_query('SQLSERVER_QUERY_METADATA_COUNTS',SQLSERVER_QUERY_METADATA_COUNTS)\n        cfg_.set_query('SQLSERVER_QUERY_METADATA_DAILY_SPACE',SQLSERVER_QUERY_METADATA_DAILY_SPACE)\n        cfg_.set_query('SQLSERVER_QUERY_METADATA_TABLE_DATE',SQLSERVER_QUERY_METADATA_TABLE_DATE)\n\n\n",
-			"file": "/C/Users/rcastillosi/__REPOS__/db_history_oracle_sqlserver/class_history_sqlserver.py",
-			"file_size": 4597,
-			"file_write_time": 133269178790656348,
+			"file": "/C/Users/rcastillosi/__REPOS__/db_history_oracle_sqlserver/test_banco_oracle_AMADEUS3.py",
 			"settings":
 			{
-				"buffer_size": 4485,
-				"encoding": "UTF-8",
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "/C/Users/rcastillosi/__REPOS__/db_history_oracle_sqlserver/demo_gui_intent_01.py",
-			"settings":
-			{
-				"buffer_size": 2311,
-				"encoding": "UTF-8",
-				"line_ending": "Windows",
-				"name": "demo_gui_intent_01.py"
-			}
-		},
-		{
-			"file": "/C/Users/rcastillosi/__REPOS__/db_history_oracle_sqlserver/demo_gui_intent_02.py",
-			"settings":
-			{
-				"buffer_size": 1245,
-				"encoding": "UTF-8",
-				"line_ending": "Windows",
-				"name": "demo_gui_intent_02.py"
-			}
-		},
-		{
-			"file": "/C/Users/rcastillosi/__REPOS__/db_history_oracle_sqlserver/test_banco_sqlserver.py",
-			"settings":
-			{
-				"buffer_size": 2158,
+				"buffer_size": 11916,
 				"encoding": "UTF-8",
 				"line_ending": "Windows"
 			}
@@ -149,25 +117,30 @@
 	},
 	"expanded_folders":
 	[
+		"/C/Users/rcastillosi/__REPOS__/db_history_oracle_sqlserver"
 	],
 	"file_history":
 	[
+		"/C/Users/rcastillosi/__REPOS__/db_history_oracle_sqlserver/class_history_report_type_sqlserver.py",
+		"/C/Users/rcastillosi/__REPOS__/db_history_oracle_sqlserver/class_base_class.py",
+		"/C/Users/rcastillosi/__REPOS__/db_history_oracle_sqlserver/class_history_report.py",
+		"/C/Users/rcastillosi/__REPOS__/db_history_oracle_sqlserver/class_history_sqlserver.py",
+		"/C/Users/rcastillosi/__REPOS__/db_history_oracle_sqlserver/test_create_cripted_url.py",
+		"/C/Users/rcastillosi/__REPOS__/db_history_oracle_sqlserver/comandos.txt",
+		"/C/Users/rcastillosi/__REPOS__/db_history_oracle_sqlserver/test_banco_sqlserver.py",
+		"/C/Users/rcastillosi/__REPOS__/db_history_oracle_sqlserver/demo_gui_intent_01.py",
+		"/C/Users/rcastillosi/__REPOS__/db_history_oracle_sqlserver/demo_gui_intent_02.py",
 		"/C/Users/rcastillosi/__REPOS__/db_history_oracle_sqlserver/test_banco_oracle_budapest.py",
 		"/C/Users/rcastillosi/__REPOS__/db_history_oracle_sqlserver/class_history_oracle.py",
 		"/C/Users/rcastillosi/__REPOS__/db_history_oracle_sqlserver/class_database_clone_objects.py",
-		"/C/Users/rcastillosi/__REPOS__/db_history_oracle_sqlserver/class_history_report.py",
 		"/C/Users/rcastillosi/__REPOS__/db_history_oracle_sqlserver/class_config.py",
 		"/C/Users/rcastillosi/__REPOS__/db_history_oracle_sqlserver/class_history_charts.py",
 		"/C/Users/rcastillosi/__REPOS__/db_history_oracle_sqlserver/test_banco_oracle_BRAHMS1P.py",
 		"/C/Users/rcastillosi/__REPOS__/db_history_oracle_sqlserver/test_fecha.py",
-		"/C/Users/rcastillosi/__REPOS__/db_history_oracle_sqlserver/test_create_cripted_url.py",
 		"/C/Users/rcastillosi/__REPOS__/db_history_oracle_sqlserver/class_chart_age.py",
-		"/C/Users/rcastillosi/__REPOS__/db_history_oracle_sqlserver/class_base_class.py",
 		"/C/Users/rcastillosi/__REPOS__/db_history_oracle_sqlserver/test_banco_oracle_bi_db.py",
-		"/C/Users/rcastillosi/__REPOS__/db_history_oracle_sqlserver/test_banco_sqlserver.py",
 		"/C/Users/rcastillosi/__REPOS__/db_history_oracle_sqlserver/class_cripto.py",
 		"/C/Users/rcastillosi/__REPOS__/db_history_oracle_sqlserver/test_cnx.py",
-		"/C/Users/rcastillosi/__REPOS__/db_history_oracle_sqlserver/class_history_sqlserver.py",
 		"/C/Program Files/WindowsApps/PythonSoftwareFoundation.Python.3.10_3.10.2800.0_x64__qbz5n2kfra8p0/lib/encodings/cp1252.py",
 		"/C/Users/rcastillosi/__REPOS__/db_history_oracle_sqlserver/diagramas/sublime/sublime_project_db_history_20230403.sublime-project",
 		"/C/Users/rcastillosi/Downloads/PORTABLE/Sublime Text Build 3211/Data/Packages/Virtualenv/Virtualenv.sublime-settings",
@@ -184,7 +157,6 @@
 		"/C/Users/rcastillosi/__REPOS__/db_history_oracle_sqlserver/class_chart_base.py",
 		"/C/Users/rcastillosi/__REPOS__/db_history_oracle_sqlserver/class_chart_pie.py",
 		"/C/Users/rcastillosi/__REPOS__/the_basic_voice_bot/python/commands/COMMAND_RES_GLPI.json",
-		"/C/Users/rcastillosi/__REPOS__/db_history_oracle_sqlserver/comandos.txt",
 		"/C/Users/rcastillosi/AppData/Local/Packages/PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0/LocalCache/local-packages/Python310/site-packages/pandas/core/frame.py",
 		"/C/Users/rcastillosi/__REPOS__/db_history_oracle_sqlserver/test_class_html_history_report.py",
 		"/C/Users/rcastillosi/__REPOS__/db_history_oracle_sqlserver/test_chart_pies.py",
@@ -264,6 +236,8 @@
 		"case_sensitive": true,
 		"find_history":
 		[
+			"art_msg",
+			"self.art_msg",
 			"DatabaseCloneObjectSqllite",
 			"target_copy_to_table",
 			"excel",
@@ -297,19 +271,19 @@
 			[
 				{
 					"buffer": 0,
-					"file": "/C/Users/rcastillosi/__REPOS__/db_history_oracle_sqlserver/class_history_sqlserver.py",
+					"file": "/C/Users/rcastillosi/__REPOS__/db_history_oracle_sqlserver/test_banco_oracle_AMADEUS3.py",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 4485,
+						"buffer_size": 11916,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								534,
-								534
+								11577,
+								11577
 							]
 						],
 						"settings":
@@ -319,98 +293,10 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 3466.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 0,
-					"type": "text"
-				},
-				{
-					"buffer": 1,
-					"file": "/C/Users/rcastillosi/__REPOS__/db_history_oracle_sqlserver/demo_gui_intent_01.py",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 2311,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								1020,
-								1020
-							]
-						],
-						"settings":
-						{
-							"auto_name": "demo_gui_intent_01.py",
-							"syntax": "Packages/Python/Python.sublime-syntax"
-						},
-						"translation.x": 0.0,
-						"translation.y": 1350.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 3,
-					"type": "text"
-				},
-				{
-					"buffer": 2,
-					"file": "/C/Users/rcastillosi/__REPOS__/db_history_oracle_sqlserver/demo_gui_intent_02.py",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 1245,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								858,
-								858
-							]
-						],
-						"settings":
-						{
-							"auto_name": "demo_gui_intent_02.py",
-							"syntax": "Packages/Python/Python.sublime-syntax"
-						},
-						"translation.x": 0.0,
-						"translation.y": 108.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 2,
-					"type": "text"
-				},
-				{
-					"buffer": 3,
-					"file": "/C/Users/rcastillosi/__REPOS__/db_history_oracle_sqlserver/test_banco_sqlserver.py",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 2158,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								922,
-								922
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/Python/Python.sublime-syntax",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 270.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 1,
 					"type": "text"
 				}
 			]
@@ -449,7 +335,7 @@
 	"menu_visible": true,
 	"output.exec":
 	{
-		"height": 437.0
+		"height": 504.0
 	},
 	"output.find_results":
 	{

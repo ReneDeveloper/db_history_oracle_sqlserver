@@ -1,9 +1,12 @@
 
 """class_history_sqlserver.py"""
 from class_history_report import HistoryReport
+from class_history_report_type_sqlserver import HistoryReportTypeSQLServer
+
+
 from class_config import Config
 
-
+"""class_history_sqlserver.py"""
 SQLSERVER_QUERY_METADATA_DATABASES="""
 SQLSERVER_QUERY_METADATA_DATABASES
 
@@ -78,13 +81,13 @@ FROM DBA_TAB_COLUMNS c WHERE (owner, table_name, column_id) in (
 order by owner,table_name,column_name
 """
 
-class HistorySqlServer(HistoryReport):
+class HistorySqlServer(HistoryReportTypeSQLServer):
     """Procesa la historia de un servidor SQL SERVER"""
     def __init__(self,cfg):
         """__init__"""
         self.report_name__ = cfg.get_cfg('report_name')
         #self.__engine_url__ = None
-        HistoryReport.__init__(self,cfg)
+        HistoryReportTypeSQLServer.__init__(self,cfg)
         self.set_default_queries()
 
     def set_default_queries(self):

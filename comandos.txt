@@ -1,6 +1,6 @@
 """comandos.txt"""
 
-git clone https://github.com/ReneDeveloper/db_history_oracle
+git clone https://github.com/ReneDeveloper/db_history_oracle_sqlserver
 
 git add .
 
