@@ -31,15 +31,6 @@
 	},
 	"buffers":
 	[
-		{
-			"file": "/C/Users/rcastillosi/__REPOS__/db_history_oracle_sqlserver/test_banco_oracle_AMADEUS3.py",
-			"settings":
-			{
-				"buffer_size": 11916,
-				"encoding": "UTF-8",
-				"line_ending": "Windows"
-			}
-		}
 	],
 	"build_system": "Packages/Virtualenv/Python + Virtualenv.sublime-build",
 	"build_system_choices":
@@ -115,12 +106,11 @@
 		"side_bar_visible": false,
 		"status_bar_visible": false
 	},
-	"expanded_folders":
-	[
-		"/C/Users/rcastillosi/__REPOS__/db_history_oracle_sqlserver"
-	],
 	"file_history":
 	[
+		"/C/Users/rcastillosi/__REPOS__/db_history_oracle_sqlserver/test_banco_oracle_BRAHMS1P.py",
+		"/C/Users/rcastillosi/__REPOS__/db_history_oracle_sqlserver/test_banco_oracle_AMADEUS3.py",
+		"/C/Users/rcastillosi/__REPOS__/db_history_oracle_sqlserver/class_db_select.py",
 		"/C/Users/rcastillosi/__REPOS__/db_history_oracle_sqlserver/class_history_report_type_sqlserver.py",
 		"/C/Users/rcastillosi/__REPOS__/db_history_oracle_sqlserver/class_base_class.py",
 		"/C/Users/rcastillosi/__REPOS__/db_history_oracle_sqlserver/class_history_report.py",
@@ -135,7 +125,6 @@
 		"/C/Users/rcastillosi/__REPOS__/db_history_oracle_sqlserver/class_database_clone_objects.py",
 		"/C/Users/rcastillosi/__REPOS__/db_history_oracle_sqlserver/class_config.py",
 		"/C/Users/rcastillosi/__REPOS__/db_history_oracle_sqlserver/class_history_charts.py",
-		"/C/Users/rcastillosi/__REPOS__/db_history_oracle_sqlserver/test_banco_oracle_BRAHMS1P.py",
 		"/C/Users/rcastillosi/__REPOS__/db_history_oracle_sqlserver/test_fecha.py",
 		"/C/Users/rcastillosi/__REPOS__/db_history_oracle_sqlserver/class_chart_age.py",
 		"/C/Users/rcastillosi/__REPOS__/db_history_oracle_sqlserver/test_banco_oracle_bi_db.py",
@@ -266,39 +255,8 @@
 	"groups":
 	[
 		{
-			"selected": 0,
 			"sheets":
 			[
-				{
-					"buffer": 0,
-					"file": "/C/Users/rcastillosi/__REPOS__/db_history_oracle_sqlserver/test_banco_oracle_AMADEUS3.py",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 11916,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								11577,
-								11577
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/Python/Python.sublime-syntax",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 3466.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 0,
-					"type": "text"
-				}
 			]
 		}
 	],
@@ -335,7 +293,7 @@
 	"menu_visible": true,
 	"output.exec":
 	{
-		"height": 504.0
+		"height": 347.0
 	},
 	"output.find_results":
 	{
