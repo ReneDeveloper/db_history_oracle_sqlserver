@@ -6,10 +6,10 @@ from PyQt5.QtWidgets import QApplication, QMainWindow, QAction, QMenu
 app = QApplication(sys.argv)
 
 options = {
-    "Nuevo": lambda: print("Función de nuevo archivo"),
-    "Abrir": lambda: print("Función de abrir archivo"),
-    "Guardar": lambda: print("Función de guardar archivo"),
-    "Guardar como...": lambda: print("Función de guardar como..."),
+    "Nuevo": lambda: print("Funcion nuevo server"),
+    "Analizar": lambda: print("Función analizar server"),
+    "Reporte": lambda: print("Función reporte server"),
+    "...": lambda: print("Función ..."),
     "Salir": lambda: app.quit()
 }
 

@@ -1,7 +1,7 @@
 """comandos.txt"""
 
 git clone https://github.com/ReneDeveloper/db_history_oracle_sqlserver
-
+git clone https://github.com/ReneDeveloper/me_private
 git add .
 
 git commit
