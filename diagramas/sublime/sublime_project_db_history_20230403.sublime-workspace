@@ -1,0 +1,349 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"__",
+				"__cfg__"
+			],
+			[
+				"get",
+				"get_config"
+			],
+			[
+				"lo",
+				"_log"
+			],
+			[
+				"set",
+				"set_default_queries"
+			],
+			[
+				"limi",
+				"limit_a"
+			],
+			[
+				"for",
+				"format"
+			]
+		]
+	},
+	"buffers":
+	[
+	],
+	"build_system": "Packages/Virtualenv/Python + Virtualenv.sublime-build",
+	"build_system_choices":
+	[
+		[
+			[
+				[
+					"Packages/Python/Python.sublime-build",
+					""
+				],
+				[
+					"Packages/Python/Python.sublime-build",
+					"Syntax Check"
+				]
+			],
+			[
+				"Packages/Python/Python.sublime-build",
+				""
+			]
+		],
+		[
+			[
+				[
+					"Packages/Python/Python.sublime-build",
+					""
+				],
+				[
+					"Packages/Python/Python.sublime-build",
+					"Syntax Check"
+				],
+				[
+					"Packages/Virtualenv/Python + Virtualenv.sublime-build",
+					""
+				]
+			],
+			[
+				"Packages/Virtualenv/Python + Virtualenv.sublime-build",
+				""
+			]
+		]
+	],
+	"build_varint": "",
+	"command_palette":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+			[
+				"virtual",
+				"Virtualenv: Deactivate"
+			],
+			[
+				"packa",
+				"Package Control: Install Package"
+			]
+		],
+		"width": 0.0
+	},
+	"console":
+	{
+		"height": 402.0,
+		"history":
+		[
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"file_history":
+	[
+		"/C/Users/rcastillosi/__REPOS__/db_history_oracle_sqlserver/test_banco_oracle_BRAHMS1P.py",
+		"/C/Users/rcastillosi/__REPOS__/db_history_oracle_sqlserver/test_banco_oracle_AMADEUS3.py",
+		"/C/Users/rcastillosi/__REPOS__/db_history_oracle_sqlserver/class_db_select.py",
+		"/C/Users/rcastillosi/__REPOS__/db_history_oracle_sqlserver/class_history_report_type_sqlserver.py",
+		"/C/Users/rcastillosi/__REPOS__/db_history_oracle_sqlserver/class_base_class.py",
+		"/C/Users/rcastillosi/__REPOS__/db_history_oracle_sqlserver/class_history_report.py",
+		"/C/Users/rcastillosi/__REPOS__/db_history_oracle_sqlserver/class_history_sqlserver.py",
+		"/C/Users/rcastillosi/__REPOS__/db_history_oracle_sqlserver/test_create_cripted_url.py",
+		"/C/Users/rcastillosi/__REPOS__/db_history_oracle_sqlserver/comandos.txt",
+		"/C/Users/rcastillosi/__REPOS__/db_history_oracle_sqlserver/test_banco_sqlserver.py",
+		"/C/Users/rcastillosi/__REPOS__/db_history_oracle_sqlserver/demo_gui_intent_01.py",
+		"/C/Users/rcastillosi/__REPOS__/db_history_oracle_sqlserver/demo_gui_intent_02.py",
+		"/C/Users/rcastillosi/__REPOS__/db_history_oracle_sqlserver/test_banco_oracle_budapest.py",
+		"/C/Users/rcastillosi/__REPOS__/db_history_oracle_sqlserver/class_history_oracle.py",
+		"/C/Users/rcastillosi/__REPOS__/db_history_oracle_sqlserver/class_database_clone_objects.py",
+		"/C/Users/rcastillosi/__REPOS__/db_history_oracle_sqlserver/class_config.py",
+		"/C/Users/rcastillosi/__REPOS__/db_history_oracle_sqlserver/class_history_charts.py",
+		"/C/Users/rcastillosi/__REPOS__/db_history_oracle_sqlserver/test_fecha.py",
+		"/C/Users/rcastillosi/__REPOS__/db_history_oracle_sqlserver/class_chart_age.py",
+		"/C/Users/rcastillosi/__REPOS__/db_history_oracle_sqlserver/test_banco_oracle_bi_db.py",
+		"/C/Users/rcastillosi/__REPOS__/db_history_oracle_sqlserver/class_cripto.py",
+		"/C/Users/rcastillosi/__REPOS__/db_history_oracle_sqlserver/test_cnx.py",
+		"/C/Program Files/WindowsApps/PythonSoftwareFoundation.Python.3.10_3.10.2800.0_x64__qbz5n2kfra8p0/lib/encodings/cp1252.py",
+		"/C/Users/rcastillosi/__REPOS__/db_history_oracle_sqlserver/diagramas/sublime/sublime_project_db_history_20230403.sublime-project",
+		"/C/Users/rcastillosi/Downloads/PORTABLE/Sublime Text Build 3211/Data/Packages/Virtualenv/Virtualenv.sublime-settings",
+		"/C/Users/rcastillosi/__REPOS__/db_history_oracle_sqlserver/class_chart_bar.py",
+		"/C/Users/rcastillosi/__REPOS__/db_history_oracle_sqlserver/test_banco_oracle_bi_db_GROUP2.py",
+		"/C/Users/rcastillosi/__REPOS__/db_history_oracle_sqlserver/class_chart_base_class.py",
+		"/C/Users/rcastillosi/__REPOS__/db_history_oracle_sqlserver/diagramas/classes/diagram_20230316.txt",
+		"/C/Users/rcastillosi/__REPOS__/db_history_oracle_sqlserver/test_banco_oracle_bi_db_GROUP1.py",
+		"/C/Users/rcastillosi/__REPOS__/db_history_oracle_sqlserver/html/hexagon.js",
+		"/C/Users/rcastillosi/__REPOS__/db_history_oracle_sqlserver/html/test_hexagon.html",
+		"/C/Users/rcastillosi/__REPOS__/db_history_oracle_sqlserver/test_charts.py",
+		"/C/Users/rcastillosi/__REPOS__/db_history_oracle_sqlserver/.gitignore",
+		"/C/Users/rcastillosi/__REPOS__/db_history_oracle_sqlserver/test_charts_data_2.py",
+		"/C/Users/rcastillosi/__REPOS__/db_history_oracle_sqlserver/class_chart_base.py",
+		"/C/Users/rcastillosi/__REPOS__/db_history_oracle_sqlserver/class_chart_pie.py",
+		"/C/Users/rcastillosi/__REPOS__/the_basic_voice_bot/python/commands/COMMAND_RES_GLPI.json",
+		"/C/Users/rcastillosi/AppData/Local/Packages/PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0/LocalCache/local-packages/Python310/site-packages/pandas/core/frame.py",
+		"/C/Users/rcastillosi/__REPOS__/db_history_oracle_sqlserver/test_class_html_history_report.py",
+		"/C/Users/rcastillosi/__REPOS__/db_history_oracle_sqlserver/test_chart_pies.py",
+		"/C/Users/rcastillosi/__REPOS__/db_history_oracle_sqlserver/test_html_frames.py",
+		"/C/Users/rcastillosi/__REPOS__/db_history_oracle_sqlserver/test_chart_data_4.py",
+		"/C/Users/rcastillosi/__REPOS__/db_history_oracle_sqlserver/class_html_history_report.py",
+		"/C/Users/rcastillosi/__REPOS__/db_history_oracle_sqlserver/test_charts_data.py",
+		"/C/Users/rcastillosi/__REPOS__/db_history_oracle_sqlserver/test_charts_data_3.py",
+		"/C/Users/rcastillosi/__REPOS__/db_history_oracle_sqlserver/output2.html",
+		"/C/Users/rcastillosi/__REPOS__/db_history_oracle_sqlserver/class_pdf_history_report_test_2.py",
+		"/C/Users/rcastillosi/__REPOS__/db_history_oracle_sqlserver/class_pdf_history_report.py",
+		"/C/Users/rcastillosi/__REPOS__/db_history_oracle_sqlserver/README.md",
+		"/C/Users/rcastillosi/__REPOS__/db_history_oracle_sqlserver/class_folder_history.py",
+		"/C/Users/rcastillosi/__REPOS__/db_history_oracle_sqlserver/__init__.py",
+		"/C/Users/rcastillosi/__REPOS__/db_history_oracle_sqlserver/class_text_art.py",
+		"/C/Users/rcastillosi/__REPOS__/db_history_oracle_sqlserver/test_banco_oracle_history_oracle.py",
+		"/C/Users/rcastillosi/__REPOS__/db_history_oracle/.gitignore",
+		"/C/Users/rcastillosi/__REPOS__/db_history_oracle/class_history_report.py",
+		"/C/Users/rcastillosi/__REPOS__/db_history_oracle/demo_gui.py",
+		"/C/Users/rcastillosi/__REPOS__/db_history_oracle/test_banco_oracle_history_oracle.py",
+		"/C/Users/rcastillosi/__REPOS__/db_history_oracle/test_falabella.py",
+		"/C/Users/rcastillosi/__SQL_DATABASE_STATS__/__PYTHON_METADATA__/test_falabella_3_bi_db.py",
+		"/C/Users/rcastillosi/__SQL_DATABASE_STATS__/__PYTHON_METADATA__/OLD/ZZZ__TEST_SETEA_ENV.py",
+		"/C/Users/rcastillosi/__SQL_DATABASE_STATS__/__PYTHON_METADATA__/OLD/ZZZ__TEST_ORACLE_CX2.py",
+		"/C/Users/rcastillosi/__SQL_DATABASE_STATS__/__PYTHON_METADATA__/OLD/ZZZ__OLD_TEST_ORACLE_CX.py",
+		"/C/Users/rcastillosi/__SQL_DATABASE_STATS__/__PYTHON_METADATA__/GET_METADATA.py",
+		"/C/Users/rcastillosi/__SQL_DATABASE_STATS__/__PYTHON_METADATA__/demo_gui.py",
+		"/C/Users/rcastillosi/__SQL_DATABASE_STATS__/__PYTHON_METADATA__/test_history_oracle.py",
+		"/C/Users/rcastillosi/__SQL_DATABASE_STATS__/__PYTHON_METADATA__/class_history_report.py",
+		"/C/Users/rcastillosi/__SQL_DATABASE_STATS__/__PYTHON_METADATA__/class_history_oracle.py",
+		"/C/Users/rcastillosi/__SQL_DATABASE_STATS__/__PYTHON_METADATA__/class_cripto.py",
+		"/C/Users/rcastillosi/__SQL_DATABASE_STATS__/__PYTHON_METADATA__/class_config.py",
+		"/C/Users/rcastillosi/__SQL_DATABASE_STATS__/__PYTHON_METADATA__/class_database_clone_objects.py",
+		"/C/Users/rcastillosi/__SQL_DATABASE_STATS__/__PYTHON_METADATA__/test_falabella.py",
+		"/C/Users/rcastillosi/__SQL_DATABASE_STATS__/__PYTHON_METADATA__/test_open_ai.py",
+		"/C/Users/rcastillosi/AppData/Local/Packages/PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0/LocalCache/local-packages/Python310/site-packages/sqlalchemy/engine/url.py",
+		"/C/Users/rcastillosi/__SQL_DATABASE_STATS__/__PYTHON_METADATA__/test_oracle_cx_wpw__20221222.py",
+		"/C/Users/rcastillosi/__SQL_DATABASE_STATS__/__PYTHON_METADATA__/class_history_gui.py",
+		"/C/Users/rcastillosi/__SQL_DATABASE_STATS__/__PYTHON_METADATA__/class_history_report_detail.py",
+		"/C/Users/rcastillosi/__SQL_DATABASE_STATS__/__PYTHON_METADATA__/class_HistoryReportDetail.py",
+		"/C/Users/rcastillosi/__SQL_DATABASE_STATS__/__PYTHON_METADATA__/class_HistoryReport.py",
+		"/C/Users/rcastillosi/__SQL_DATABASE_STATS__/__PYTHON_METADATA__/class_HISTORY.py",
+		"/C/Users/rcastillosi/AppData/Local/Packages/PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0/LocalCache/local-packages/Python310/site-packages/pandas/core/indexes/base.py",
+		"/C/Users/rcastillosi/__SQL_DATABASE_STATS__/__PYTHON_METADATA__/TEST_LEE_METADATA_CSV.py",
+		"/C/Users/rcastillosi/__SQL_DATABASE_STATS__/__PYTHON_METADATA__/TEST_GET_DICCIONARIO.sql",
+		"/C/Users/rcastillosi/__SQL_DATABASE_STATS__/__PYTHON_METADATA__/TEST_ORACLE_CX_WPW.py",
+		"/C/Users/rcastillosi/__SQL_DATABASE_STATS__/__PYTHON_METADATA__/TEST_SETEA_ENV.py",
+		"/C/Users/rcastillosi/__SQL_DATABASE_STATS__/__PYTHON_METADATA__/cfg.env",
+		"/C/Users/rcastillosi/Downloads/PORTABLE/PYTHON_BANCO/METADATA/TEST_PARQUET.py",
+		"/C/Users/rcastillosi/Downloads/PORTABLE/PYTHON_BANCO/METADATA/TEST_GET_DICCIONARIO.sql",
+		"/C/Users/rcastillosi/Downloads/PORTABLE/PYTHON_BANCO/METADATA/TEST_LEE_METADATA_CSV.py",
+		"/C/Users/rcastillosi/__SQL_DATABASE_STATS__/__EXPORT_DATA__/METADATA_EVALUACION_FIXED.csv",
+		"/C/Users/rcastillosi/__SQL_DATABASE_STATS__/__EXPORT_DATA__/METADATA_EVALUACION_FIXED.json",
+		"/C/Users/rcastillosi/Downloads/PORTABLE/PYTHON_BANCO/METADATA/TEST_GET_DICCIONARIO.py",
+		"/C/Users/rcastillosi/Downloads/PORTABLE/PYTHON_BANCO/AUDIO/TEST_GENERA_AUDIO_GRABADO.py",
+		"/C/Users/rcastillosi/Downloads/PORTABLE/PYTHON_BANCO/AUDIO/TEST_OPCIONES.py",
+		"/C/Users/rcastillosi/Downloads/PORTABLE/PYTHON_BANCO/GET_METADATA.py",
+		"/C/Users/rcastillosi/Downloads/PORTABLE/PYTHON_BANCO/AUDIO/TEST_WH.py",
+		"/C/Users/rcastillosi/Downloads/PORTABLE/PYTHON_BANCO/AUDIO/TEST_AUDIO2TXT.py",
+		"/C/Users/rcastillosi/Downloads/PORTABLE/PYTHON_BANCO/test.py"
+	],
+	"find":
+	{
+		"height": 39.0
+	},
+	"find_in_files":
+	{
+		"height": 107.0,
+		"where_history":
+		[
+			"C:\\Users\\rcastillosi\\__REPOS__\\db_history_oracle_sqlserver",
+			""
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": true,
+		"find_history":
+		[
+			"art_msg",
+			"self.art_msg",
+			"DatabaseCloneObjectSqllite",
+			"target_copy_to_table",
+			"excel",
+			"export_metadata_counts",
+			"dba_secuences",
+			"seccuence",
+			"system",
+			"SQLSERVER_QUERY_METADATA_TABLE_DATE",
+			"ORACLE",
+			"self._log",
+			"create_engine"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"sheets":
+			[
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 27.0
+	},
+	"input":
+	{
+		"height": 41.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.exec":
+	{
+		"height": 347.0
+	},
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"pinned_build_system": "",
+	"project": "sublime_project_db_history_20230403.sublime-project",
+	"replace":
+	{
+		"height": 50.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": true,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 364.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}

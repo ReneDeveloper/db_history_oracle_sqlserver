@@ -1,7 +1,7 @@
 """comandos.txt"""
 
-git clone https://github.com/ReneDeveloper/db_history_oracle
-
+git clone https://github.com/ReneDeveloper/db_history_oracle_sqlserver
+git clone https://github.com/ReneDeveloper/me_private
 git add .
 
 git commit
@@ -12,6 +12,7 @@ comunes:
 git add class_history_report.py
 git add .gitignore
 
+cd /C/Users/rcastillosi/__REPOS__/db_history_oracle_sqlserver
 pylint class_history_report.py
 
 
@@ -20,4 +21,4 @@ pylint class_history_report.py
 git config --global user.name "René Developer"
 
 C:/Users/rcastillosi/__REPOS__/db_history_oracle_sqlserver
-C/Users/rcastillosi/__REPOS__/db_history_oracle_sqlserver
+cd /C/Users/rcastillosi/__REPOS__/db_history_oracle_sqlserver

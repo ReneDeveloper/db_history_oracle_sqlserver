@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Documento HTML con estilo CSS</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #F2F2F2;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #FFFFFF;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #333333;
+            margin-bottom: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            text-align: left;
+            font-weight: bold;
+            padding: 8px;
+            color: #555555;
+        }
+
+        td {
+            padding: 8px;
+            color: #333333;
+        }
+
+        .gray-label {
+            color: #777777;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Título del documento</h1>
+        <table>
+            <tr>
+                <th>Servidor:</th>
+                <td>$server_name</td>
+            </tr>
+            <tr>
+                <th>Base de datos:</th>
+                <td>$database_name</td>
+            </tr>
+            <tr>
+                <th>Tamaño total:</th>
+                <td>$size</td>
+            </tr>
+            <tr>
+                <th class="gray-label">Tamaño últimos 12 años:</th>
+                <td>$size_last_12</td>
+            </tr>
+            <tr>
+                <th class="gray-label">Tamaño últimos 8 años:</th>
+                <td>$size_last_08</td>
+            </tr>
+            <tr>
+                <th class="gray-label">Tamaño últimos 4 años:</th>
+                <td>$size_last_04</td>
+            </tr>
+        </table>
+    </div>
+</body>
+</html>

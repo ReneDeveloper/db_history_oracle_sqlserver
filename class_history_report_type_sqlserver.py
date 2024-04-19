@@ -1,3 +1,4 @@
+"""class_history_report_type_sqlserver.py"""
 """class_history_report.py"""
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
@@ -44,17 +45,18 @@ from class_history_charts import HistoryCharts
 
 cfg = Config("NO_INICIALIZADO",'NO_INICIALIZADO')
 
-class HistoryReport(BaseClass):
+class HistoryReportTypeSQLServer():
     """Procesa la historia de servidor"""
     __source_url__ = None
     __cfg__ = None
+
 
     def __init__(self,cfg__):
         #self._log('DEPRECATED:HistoryReport:__init__')
         report_name__ = cfg__.get_cfg('report_name')
         #__flavor__ =
         self.__cfg__ = cfg__
-        super().__init__(cfg__.get_cfg('log_active'))
+        #super().__init__(cfg__.get_cfg('log_active'))
         target_db_name = f'{report_name__}_EXPORT_HISTORY.db'
 
         self.report_name__ = report_name__
@@ -63,6 +65,11 @@ class HistoryReport(BaseClass):
 
         fernet = Fernet(cfg__.get_cfg('crkey'))
         self.__source_url__ = fernet.decrypt(cfg__.get_encripted_source_url()).decode()
+
+    def _log(self,var):
+        """method _log"""#self.__cfg__.get_cfg('log_active')|self.__log_active__
+        if self.__cfg__.get_cfg('log_active'):
+            print(f"LOG:HistoryReportTypeSQLServer:{var}")
 
     def get_config(self):
         """get_config"""
@@ -74,12 +81,11 @@ class HistoryReport(BaseClass):
 
     def get_engine_source(self):
         """method get_engine_source"""
-        #oracle_cnx_string = 'oracle+cx_oracle://{username}:{password}@{host_}:{port}/{database}'
         engine = create_engine(self.__source_url__,pool_timeout=999999)
         return engine
 
     def target_execute(self,sql_):
-        """function target_execute"""
+        """method target_execute"""
         data = None
         try:
             self._log(f"target_execute:START:{sql_}")
@@ -96,7 +102,7 @@ class HistoryReport(BaseClass):
         return data
 
     def read_sql_query(self,sql_):
-        """function read_sql_query"""
+        """method read_sql_query"""
         data = None
         cnx = None
         try:
@@ -115,7 +121,7 @@ class HistoryReport(BaseClass):
         return data
 
     def target_execute_select(self,sql_):
-        """function target_execute"""
+        """method target_execute"""
         data = None
         cnx = None
         try:
@@ -133,7 +139,7 @@ class HistoryReport(BaseClass):
         return data
 
     def target_copy_to_table(self,data,table_name):
-        """function"""
+        """method target_copy_to_table"""
         status = "ok"
         self._log(f"target_copy_to_table:START:{table_name}")
         try:
@@ -189,8 +195,7 @@ class HistoryReport(BaseClass):
 
     def export_metadata_counts(self):
         """function export_metadata_counts"""
-        #self.art_msg('creating')
-        self.art_msg('metadata')
+     
         self._log("export_metadata_counts:START")
         self._log("export_metadata_counts:Obtaining counts by table")
 
@@ -417,18 +422,14 @@ class HistoryReport(BaseClass):
 
     def start(self):
         """function start: creates the metadata of the server"""
-        #self.art_msg('start')
-        self.art_msg('database')
-        self.art_msg('aging')
         self.export_metadata_daily_space()
         self.export_metadata_counts()
-        self.export_oracle_alert()
+        #self.export_oracle_alert()
 
         clone = DatabaseCloneObjectSqllite(self.get_config(),'BRAHMS1P',
-            self.report_name__, self.__log_active__)
+            self.report_name__, self.__cfg__.get_cfg('log_active'))
         #clone_views = clone.clone_objects('table')
         clone_objects = clone.clone_objects('view')
-        self.art_msg('created')
 
         #with this creating metadata table of date columns to all owners
         self.export_metadata_table_date_owners()
@@ -438,7 +439,7 @@ class HistoryReport(BaseClass):
         #self.export_history_owner('SYS')#to create the basic structure
 
         self._log(f"clone_objects:{clone_objects}")
-        self.art_msg('created')
+
 
     def generate_report_start_step_1(self):
         """generate_report_start_step_1"""
@@ -466,7 +467,8 @@ class HistoryReport(BaseClass):
 
     def generate_excel_complete(self):
         """generate_excel_complete"""
-        out__ = f"{self.__cfg__.get_cfg('out_path')}{self.report_name__}/{self.report_name__}_COMPLETE.xlsx"
+        filename = f'{self.report_name__}_COMPLETE.xlsx'
+        out__ = f'{self.__cfg__.get_cfg("out_path")}{self.report_name__}/{filename}'
 
         # Create an Excel file from the DataFrame
         writer = pd.ExcelWriter(out__, engine='xlsxwriter')
@@ -511,3 +513,91 @@ class HistoryReport(BaseClass):
         #writer = pd.ExcelWriter(out__, engine='xlsxwriter')
         datos.to_excel(writer_, sheet_name=sheet_name_, index=False)
         #writer.save()
+
+
+
+
+"""class_history_sqlserver.py"""
+SQLSERVER_QUERY_METADATA_DATABASES="""
+SQLSERVER_QUERY_METADATA_DATABASES
+
+"""
+
+SQLSERVER_QUERY_METADATA_COUNTS="""
+SELECT DB_NAME() AS [owner], 
+       t.NAME AS [table_name], 
+       SUM(p.rows) AS [num_rows]
+FROM sys.tables t 
+INNER JOIN sys.partitions p ON t.object_id = p.OBJECT_ID
+WHERE t.is_ms_shipped = 0 AND p.index_id IN (1,0)
+GROUP BY t.NAME 
+ORDER BY num_rows DESC
+--SELECT owner,
+--       table_name,
+--       num_rows
+--from sys.dba_tables
+--where owner not in ('SYS','SYSTEM','WMSYS','XDB','DBSNMP')
+"""
+
+SQLSERVER_QUERY_METADATA_DAILY_SPACE = """
+SELECT 'tablespace_name' as tablespace_name,'owner' as owner, 'segment_name' as segment_name, 
+'segment_type' as segment_type,
+'table_name_normalizado' as table_name_normalizado,
+0 as total_mb,
+0 as total_mb_index,
+0 as total_mb_table,
+0 AS cnt_seg  
+
+"""
+
+SQLSERVER_QUERY_METADATA_TABLE_DATE = """
+SELECT 
+'owner' as owner,
+'table_name' as table_name, 
+'column_name' as column_name
+
+"""
+
+class HistorySqlServer(HistoryReportTypeSQLServer):
+    """Procesa la historia de un servidor SQL SERVER"""
+    def __init__(self,cfg):
+        """__init__"""
+        self.report_name__ = cfg.get_cfg('report_name')
+        #self.__engine_url__ = None
+        HistoryReportTypeSQLServer.__init__(self,cfg)
+        self.set_default_queries()
+
+    def set_default_queries(self):
+        """set_default_queries"""
+        cfg_=self.get_config()
+        cfg_.set_query('SQLSERVER_QUERY_METADATA_DATABASES',SQLSERVER_QUERY_METADATA_DATABASES)
+        cfg_.set_query('SQLSERVER_QUERY_METADATA_COUNTS',SQLSERVER_QUERY_METADATA_COUNTS)
+        cfg_.set_query('SQLSERVER_QUERY_METADATA_DAILY_SPACE',SQLSERVER_QUERY_METADATA_DAILY_SPACE)
+        cfg_.set_query('SQLSERVER_QUERY_METADATA_TABLE_DATE',SQLSERVER_QUERY_METADATA_TABLE_DATE)
+
+
+
+
+"""test_banco_sqlserver.py"""
+
+#from class_config import Config
+#from class_history_sqlserver import HistorySqlServer
+
+#FORMAT engine: sql_string='mssql+pyodbc://{username}:{password}@{host_}:{port}/{database}?TrustServerCertificate=yes&driver=SQL+Server'
+
+engine_encriptado = b'gAAAAABkGcNUiRXO-n-qWss_bYQEm8NOc6BiqNdAqP7gBRdvIuUoCMG7QyZXdi3M1kQU7l-N5QDsGBrWiYQH141k17aGfQPEoNJPLumwWoPa7U1BGOkUdIU2vFtPdUbzGDwVkwt5nZU7d5KaarCqhY3-HGYu6ax1Q7gwM0VW0_KUdi5rClv3nYL_kIYr1Buo89OCXh3-oO_j'
+
+name_ = 'sql_ve_paris_20230613_D001'
+
+STATUS_TEST = "prueba_bbdd"#prueba_bbdd,prueba_reporte
+#status_test = "prueba_reporte"#prueba_bbdd,prueba_reporte
+
+if STATUS_TEST=="prueba_bbdd":
+    cfg = Config(name_,'SQLSERVER')
+    cfg.set_cfg('log_active',True)
+    cfg.set_encripted_source_url(engine_encriptado)
+
+    #hp = HistoryOracle(cfg,'BRAHMS1P_stable_002','url_mala')
+    hp = HistorySqlServer(cfg)
+    hp.start()
+    #hp.generate_report_start_step_1()
